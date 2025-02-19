@@ -1,0 +1,37 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class StatsUI : MonoBehaviour
+{
+    [SerializeField] Button vanishButtonSettings;
+    [SerializeField] Button vanishButtonShop;
+    [SerializeField] RectTransform stats;
+
+    public void OpenStats()
+    {
+        stats.gameObject.SetActive(true);
+        VanishCloseButtons();
+        AudioManager.Instance.PlaySFX("Open Menu");
+    }
+
+    public void CloseStats()
+    {
+        stats.gameObject.SetActive(false);
+        AppearCloseButtons();
+        AudioManager.Instance.PlaySFX("Open Menu");
+    }
+
+    void VanishCloseButtons()
+    {
+        vanishButtonSettings.gameObject.SetActive(false);
+        vanishButtonShop.gameObject.SetActive(false);
+    }
+
+    void AppearCloseButtons()
+    {
+        vanishButtonSettings.gameObject.SetActive(true);
+        vanishButtonShop.gameObject.SetActive(true);
+    }
+}
