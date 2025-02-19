@@ -23,7 +23,7 @@ public class ShopUI : MonoBehaviour
     {
         shop.gameObject.SetActive(true);
         VanishCloseButtons();
-        AudioManager.Instance.PlaySFX("Open Menu test");
+        AudioManager.Instance.PlaySFX("Open Menu");
     }
 
     public void CloseShop()

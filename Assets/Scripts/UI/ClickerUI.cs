@@ -31,7 +31,7 @@ public class ClickerUI : MonoBehaviour
     {
         string formattedAmount = FormatNumberWithDots(amount);
 
-        if(amount > 0)
+        if (amount > 0)
         {
             counterText.text = $"Waters \n {formattedAmount}";
         }
@@ -41,7 +41,7 @@ public class ClickerUI : MonoBehaviour
     {
         if (amount > 0)
         {
-            colectPoints.text = $"Colect Points: \n{amount}";
+            colectPoints.text = $"Colect Points \n{amount}";
         }
     }
 
@@ -49,7 +49,7 @@ public class ClickerUI : MonoBehaviour
     {
         if (amount > 0)
         {
-            colectPerSecond.text = $"Colect Per Second: \n{amount}";
+            colectPerSecond.text = $"Colect Per Second \n{amount}";
         }
     }
 
@@ -57,7 +57,7 @@ public class ClickerUI : MonoBehaviour
     {
         if (amount > 0)
         {
-            clickPerSecond.text = $"Per Second: \n{amount}";
+            clickPerSecond.text = $"Per Second \n{amount}";
         }
     }
 
@@ -65,7 +65,7 @@ public class ClickerUI : MonoBehaviour
     {
         if (amount > 0)
         {
-            counterClick.text = $"Clicks: \n{amount}";
+            counterClick.text = $"Clicks \n{amount}";
         }
     }
 
@@ -73,7 +73,7 @@ public class ClickerUI : MonoBehaviour
     {
         if (amount > 0)
         {
-            amountPurchase.text = $"Purchase: \n{amount}";
+            amountPurchase.text = $"Purchase \n{amount}";
         }
     }
 
@@ -88,15 +88,15 @@ public class ClickerUI : MonoBehaviour
 
         if (hours > 0)
         {
-            timerGame.text = $"Time: \n{hours:D1}h {minutes:D1}m {seconds:D1}s";
+            timerGame.text = $"Time \n{hours:D1}h {minutes:D1}m {seconds:D1}s";
         }
         else if (minutes > 0)
         {
-            timerGame.text = $"Time: \n{minutes:D1}m {seconds:D1}s";
+            timerGame.text = $"Time \n{minutes:D1}m {seconds:D1}s";
         }
         else
         {
-            timerGame.text = $"Time: \n{seconds:D1}s";
+            timerGame.text = $"Time \n{seconds:D1}s";
         }
     }
 

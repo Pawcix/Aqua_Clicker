@@ -52,7 +52,7 @@ public class ClickerManager : MonoBehaviour
     void Start()
     {
         clickerUI.UpdateUI(pointsCounter);
-        
+
         clickerButton.onClick.AddListener(AddPoints);
         clickerButton.onClick.AddListener(AmountClicks);
         clickerButton.onClick.AddListener(CounterAfterClickOnButton);
@@ -167,7 +167,7 @@ public class ClickerManager : MonoBehaviour
         counterAfterClick.raycastTarget = false;
 
         RectTransform rectTransform = counterAfterClick.GetComponent<RectTransform>();
-        rectTransform.anchoredPosition = new Vector2(UnityEngine.Random.Range(-80,80), UnityEngine.Random.Range(-130,130));
+        rectTransform.anchoredPosition = new Vector2(UnityEngine.Random.Range(-80, 80), UnityEngine.Random.Range(-130, 130));
     }
 
     void Scale()
