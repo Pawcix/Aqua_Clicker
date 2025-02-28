@@ -37,6 +37,14 @@ public class ClickerManager : MonoBehaviour
     [Header("Animation")]
     [SerializeField] AnimationManager animationUI;
 
+    [Header("DoubleClick Button status")]
+    [SerializeField] Image autoClickButtonImage;
+    [SerializeField] Sprite neutralIcon;
+    [SerializeField] Sprite activeIcon;
+    [SerializeField] Button doublePointsButton;
+    bool isDoublePointsActive = false;
+    Coroutine doublePointsCoroutine;
+
     int pointsCounter = 0;
     int pointsPerSecond = 0;
     int clicksNumber = 0;
@@ -57,6 +65,8 @@ public class ClickerManager : MonoBehaviour
         clickerButton.onClick.AddListener(AmountClicks);
         clickerButton.onClick.AddListener(CounterAfterClickOnButton);
         clickerButton.onClick.AddListener(Scale);
+
+        doublePointsButton.onClick.AddListener(ToggleDoublePoints);
 
         shopUI.CloseShop();
         OpenButtonShop.onClick.AddListener(shopUI.OpenShop);
@@ -149,11 +159,33 @@ public class ClickerManager : MonoBehaviour
 
     void AddPoints()
     {
-        pointsCounter++;
+        pointsCounter += isDoublePointsActive ? 2 : 1;
         clickerUI.UpdateUI(pointsCounter);
         RandomLocationCounterAfterClick();
         StartCoroutine(animationUI.PulseAnimation());
         AudioManager.Instance.PlaySFX("Water Click");
+    }
+
+    void ToggleDoublePoints()
+    {
+        if (isDoublePointsActive)
+        {
+            autoClickButtonImage.sprite = neutralIcon;
+            StopCoroutine(doublePointsCoroutine);
+            isDoublePointsActive = false;
+        }
+        else
+        {
+            autoClickButtonImage.sprite = activeIcon;
+            isDoublePointsActive = true;
+            doublePointsCoroutine = StartCoroutine(DisableDoublePointsAfterDelay(10f));
+        }
+    }
+
+    IEnumerator DisableDoublePointsAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        isDoublePointsActive = false;
     }
 
     void AmountClicks()
