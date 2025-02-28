@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 7356bc88e779c0e4695bf910337e3c95
+guid: 6e29c00961be01b44ba4b62ec4f86f29
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -1067448879976835226
-    second: Aqua_0
+      213: -3523494974787257582
+    second: Aqua Skin #6_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,7 +113,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Aqua_0
+      name: Aqua Skin #6_0
       rect:
         serializedVersion: 2
         x: 0
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 667971536e8af21f0800000000000000
-      internalID: -1067448879976835226
+      spriteID: 21b7eeb1df70a1fc0800000000000000
+      internalID: -3523494974787257582
       vertices: []
       indices: 
       edges: []
@@ -138,7 +138,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: ea6b9f2535b15e945aafc9e0f8592c74
+    spriteID: 8f735d50da728254aaf1fb40579bb8e0
     internalID: 0
     vertices: []
     indices: 
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Aqua_0: -1067448879976835226
+      Aqua Skin #6_0: -3523494974787257582
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
