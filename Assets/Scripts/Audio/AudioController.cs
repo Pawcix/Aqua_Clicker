@@ -23,25 +23,29 @@ public class AudioController : MonoBehaviour
 
     public void ToggleMusic()
     {
+        AudioManager.Instance.ToggleMusic();
         isMusicOn = !isMusicOn;
 
-        if(isMusicOn )
+        if (isMusicOn)
         {
             musicToggleButton.image.sprite = musicOnImage;
-        } else
+        }
+        else
         {
-            musicToggleButton.image.sprite=musicOffImage;
+            musicToggleButton.image.sprite = musicOffImage;
         }
     }
 
     public void ToggleSFX()
     {
-        isSFXOn= !isSFXOn;
+        AudioManager.Instance.ToggleSFX();
+        isSFXOn = !isSFXOn;
 
         if (isSFXOn)
         {
             sfxToogleButton.image.sprite = sfxOnImage;
-        } else
+        }
+        else
         {
             sfxToogleButton.image.sprite = sfxOffImage;
         }

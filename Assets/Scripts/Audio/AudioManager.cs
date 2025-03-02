@@ -23,14 +23,8 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    private void Start()
-    {
-        PlayMusic("Theme");
-    }
-
     public void PlayMusic(string name)
     {
-        
         Sound sound = Array.Find(musicSounds, x => x.name == name);
 
         if (sound == null)
@@ -58,9 +52,6 @@ public class AudioManager : MonoBehaviour
             sfxSource.Play();
         }
     }
-
-
-
 
     public void ToggleMusic()
     {
