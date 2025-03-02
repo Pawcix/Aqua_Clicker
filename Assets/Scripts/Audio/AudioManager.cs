@@ -10,6 +10,11 @@ public class AudioManager : MonoBehaviour
     [SerializeField] AudioSource musicSource, sfxSource;
     [SerializeField] Sound[] musicSounds, sfxSounds;
 
+    private void Start()
+    {
+        PlayMusic("Theme");
+    }
+
     void Awake()
     {
         if (Instance == null)
