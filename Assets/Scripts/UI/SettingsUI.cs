@@ -11,14 +11,12 @@ public class SettingsUI : MonoBehaviour
 
     public void OpenSettings()
     {
-        settings.gameObject.SetActive(true);
         VanishCloseButtons();
         AudioManager.Instance.PlaySFX("Open");
     }
 
     public void CloseSettings()
     {
-        settings.gameObject.SetActive(false);
         AppearCloseButtons();
         AudioManager.Instance.PlaySFX("Open");
     }
