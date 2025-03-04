@@ -11,14 +11,12 @@ public class StatsUI : MonoBehaviour
 
     public void OpenStats()
     {
-        stats.gameObject.SetActive(true);
         VanishCloseButtons();
         AudioManager.Instance.PlaySFX("Open");
     }
 
     public void CloseStats()
     {
-        stats.gameObject.SetActive(false);
         AppearCloseButtons();
         AudioManager.Instance.PlaySFX("Open");
     }

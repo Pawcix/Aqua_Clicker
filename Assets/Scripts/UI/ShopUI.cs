@@ -21,14 +21,12 @@ public class ShopUI : MonoBehaviour
 
     public void OpenShop()
     {
-        shop.gameObject.SetActive(true);
         VanishCloseButtons();
         AudioManager.Instance.PlaySFX("Open");
     }
 
     public void CloseShop()
     {
-        shop.gameObject.SetActive(false);
         AppearCloseButtons();
         AudioManager.Instance.PlaySFX("Open");
     }
