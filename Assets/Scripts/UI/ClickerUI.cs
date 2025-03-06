@@ -33,7 +33,7 @@ public class ClickerUI : MonoBehaviour
 
         if (amount > 0)
         {
-            counterText.text = $"Waters \n {formattedAmount}";
+            counterText.text = $"Waters \n{formattedAmount}";
         }
     }
 
