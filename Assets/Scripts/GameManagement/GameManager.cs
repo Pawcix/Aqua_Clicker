@@ -55,6 +55,8 @@ public class ClickerManager : MonoBehaviour
     int colectPointsPerSecond = 0;
     int colectPointsPerClick = 0;
 
+    string[] waterWords = { "Plunk", "Bloop", "Splish", "Blop", "Plip-plop" };
+
     public ShopWorkerUI shopWorkerUI;
 
     void Start()
@@ -216,7 +218,10 @@ public class ClickerManager : MonoBehaviour
 
     void CounterAfterClickOnButton()
     {
-        counterAfterClick.text = "+1";
+        float rotationZ = UnityEngine.Random.Range(-30f, 30f);
+
+        counterAfterClick.text = waterWords[UnityEngine.Random.Range(0, waterWords.Length)];
+        counterAfterClick.transform.rotation = Quaternion.Euler(0, 0, rotationZ);
         StartCoroutine(ResetTextAfterDelay(0.25f));
     }
 
@@ -224,5 +229,6 @@ public class ClickerManager : MonoBehaviour
     {
         yield return new WaitForSeconds(delay);
         counterAfterClick.text = "";
+        counterAfterClick.transform.rotation = Quaternion.identity;
     }
 }
