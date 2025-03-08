@@ -1128,12 +1128,12 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 72
+  m_fontSize: 100
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
   m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_fontSizeMax: 100
   m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
@@ -3181,8 +3181,6 @@ MonoBehaviour:
   Workers:
   - {fileID: 11400000, guid: 947962ee5851e594c93f4eae37557a4a, type: 2}
   - {fileID: 11400000, guid: 4c9440269d590394d90afd81739451ae, type: 2}
-  - {fileID: 11400000, guid: 3a2d678136d97df4683dfec411cce81f, type: 2}
-  - {fileID: 11400000, guid: ceb7d9f69a443ff48bcab9c9ac1395d9, type: 2}
   statsUI: {fileID: 258421405}
   OpenButtonStats: {fileID: 2112725383}
   CloseButtonStats: {fileID: 1759540533}
@@ -3480,8 +3478,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -40, y: 0}
-  m_SizeDelta: {x: 75, y: 75}
+  m_AnchoredPosition: {x: -25, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!114 &1068546470
 MonoBehaviour:
@@ -6790,10 +6788,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
-    m_Left: 0
-    m_Right: 0
+    m_Left: 25
+    m_Right: 25
     m_Top: 25
-    m_Bottom: 25
+    m_Bottom: 0
   m_ChildAlignment: 0
   m_Spacing: 20
   m_ChildForceExpandWidth: 1

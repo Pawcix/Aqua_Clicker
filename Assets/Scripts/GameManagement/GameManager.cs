@@ -8,9 +8,7 @@ using TMPro;
 
 public class ClickerManager : MonoBehaviour
 {
-
     public static UnityEvent<int, int> OnItemBought = new UnityEvent<int, int>();
-    public static UnityEvent<int, Worker> OnUpgradeItem = new UnityEvent<int, Worker>();
 
     [Header("General")]
     [SerializeField] ClickerUI clickerUI;
@@ -88,7 +86,6 @@ public class ClickerManager : MonoBehaviour
         }
 
         OnItemBought.AddListener(BuyItem);
-        OnUpgradeItem.AddListener(BuyUpgradeItem);
 
         InvokeRepeating(nameof(AddPointPerSecond), 0f, 1f);
         InvokeRepeating(nameof(CollectAllPointsInGame), 0f, 1f);
@@ -119,19 +116,6 @@ public class ClickerManager : MonoBehaviour
 
             clickerUI.ClickPerSecondUpdateUI(pointsPerSecond);
             clickerUI.UpdateUI(pointsCounter);
-        }
-    }
-
-    void BuyUpgradeItem(int price, Worker worker)
-    {
-        if (price <= pointsCounter)
-        {
-            pointsPerSecond += worker.powerUpgrade;
-            pointsCounter -= price;
-            worker.powerUpgrade += worker.initialPowerUpgrade;
-            worker.priceUpgrade += worker.initialPriceUpgrade;
-
-            UpdateShopUI(worker);
         }
     }
 

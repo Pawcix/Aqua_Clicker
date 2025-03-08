@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: "\u0141y\u017Ceczka wody"
   power: 1
-  powerUpgrade: 1
+  powerUpgrade: 2
   pricePower: 10
-  priceUpgrade: 5
+  priceUpgrade: 10
   initialPriceUpgrade: 10
-  initialPowerUpgrade: 1
+  initialPowerUpgrade: 10
