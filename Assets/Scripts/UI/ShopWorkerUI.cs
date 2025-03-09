@@ -10,6 +10,7 @@ public class ShopWorkerUI : MonoBehaviour
     [SerializeField] TextMeshProUGUI powerText;
     [SerializeField] TextMeshProUGUI priceBuyText;
     [SerializeField] Button buyButton;
+    [SerializeField] Image workerImage;
 
     Worker currentWorker;
 
@@ -20,6 +21,8 @@ public class ShopWorkerUI : MonoBehaviour
         nameText.text = currentWorker.name;
         powerText.text = "+" + currentWorker.power.ToString();
         priceBuyText.text = currentWorker.pricePower.ToString();
+
+        workerImage.sprite = currentWorker.image;
 
         buyButton.onClick.RemoveAllListeners();
         buyButton.onClick.AddListener(delegate { BuyButtonOnClick(currentWorker.pricePower, currentWorker.power); });

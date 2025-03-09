@@ -10,10 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5a714e85a039f0f43b6daaf89808662b, type: 3}
-  m_Name: 2
+  m_Name: '#1'
   m_EditorClassIdentifier: 
-  name: Miska Wody
-  power: 3
-  powerUpgrade: 3
-  pricePower: 50
-  priceUpgrade: 200
+  name: Spoon of Water
+  image: {fileID: -4286987140415026430, guid: b1c5e92de12dd744aa96abee999b682c, type: 3}
+  power: 1
+  pricePower: 20

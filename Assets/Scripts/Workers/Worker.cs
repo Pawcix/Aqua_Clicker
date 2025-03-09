@@ -8,6 +8,7 @@ public class Worker : ScriptableObject
 {
     [Header("General")]
     public new string name;
+    public Sprite image;
     public int power;
 
     [Header("Cost")]

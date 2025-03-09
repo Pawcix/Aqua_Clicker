@@ -964,3 +964,4 @@ MonoBehaviour:
   powerText: {fileID: 7529315840500478874}
   priceBuyText: {fileID: 6624065609716965600}
   buyButton: {fileID: 3500176674151605614}
+  workerImage: {fileID: 6395946871093182745}

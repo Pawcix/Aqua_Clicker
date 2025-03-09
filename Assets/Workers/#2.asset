@@ -10,12 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5a714e85a039f0f43b6daaf89808662b, type: 3}
-  m_Name: 1
+  m_Name: '#2'
   m_EditorClassIdentifier: 
-  name: "\u0141y\u017Ceczka wody"
-  power: 1
-  powerUpgrade: 2
-  pricePower: 10
-  priceUpgrade: 10
-  initialPriceUpgrade: 10
-  initialPowerUpgrade: 10
+  name: Cup of Water
+  image: {fileID: 4759361815419678373, guid: 1a81b4adb1997974890a35c16c66be6c, type: 3}
+  power: 2
+  pricePower: 50
