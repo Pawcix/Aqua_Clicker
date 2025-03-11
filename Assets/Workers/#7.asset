@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: '#7'
   m_EditorClassIdentifier: 
   name: 'Cart of Water '
-  image: {fileID: -2044449070527790831, guid: b19adb963d17d814f9e5065edf15011e, type: 3}
+  image: {fileID: -8498463399298751183, guid: 39e6d66bce52bb14e90ca3b1afb750f0, type: 3}
   power: 64
   pricePower: 4875

@@ -135,7 +135,7 @@ public class ClickerManager : MonoBehaviour
             pointsPerSecond += power;
             pointsCounter -= price;
 
-            //AudioManager.Instance.PlaySFX("Cash Register Purchase");
+            AudioManager.Instance.PlaySFX("Buy Sound");
             clickerUI.ClickPerSecondUpdateUI(pointsPerSecond);
             counterPointsPerSecond.text = $"Per Second\n" + pointsPerSecond.ToString() + " /s";
             clickerUI.AmountPurchasesUpdateUI(amountPurchase);

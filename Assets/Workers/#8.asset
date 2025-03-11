@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: '#8'
   m_EditorClassIdentifier: 
   name: 'Tank of Water '
-  image: {fileID: -2044449070527790831, guid: b19adb963d17d814f9e5065edf15011e, type: 3}
+  image: {fileID: 5501660522996333036, guid: 13e22a62ad85b674eb5dd3354e1486b5, type: 3}
   power: 128
   pricePower: 12187

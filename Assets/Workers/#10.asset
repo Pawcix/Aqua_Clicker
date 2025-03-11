@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: '#10'
   m_EditorClassIdentifier: 
   name: 'Ocean of Water '
-  image: {fileID: -2044449070527790831, guid: b19adb963d17d814f9e5065edf15011e, type: 3}
+  image: {fileID: -1235327265241926546, guid: 6c6a5d0e604aa31439feabfee9de6c8f, type: 3}
   power: 512
   pricePower: 76170

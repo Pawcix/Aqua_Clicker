@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: '#5'
   m_EditorClassIdentifier: 
   name: 'Bucket of Water '
-  image: {fileID: -2044449070527790831, guid: b19adb963d17d814f9e5065edf15011e, type: 3}
+  image: {fileID: 9125668733799979867, guid: 855ace51b6fea954e8da2e776ccbf76b, type: 3}
   power: 16
   pricePower: 780

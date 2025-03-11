@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: '#6'
   m_EditorClassIdentifier: 
   name: 'Barrel of Water '
-  image: {fileID: -2044449070527790831, guid: b19adb963d17d814f9e5065edf15011e, type: 3}
+  image: {fileID: -7113257120410992534, guid: 0ca71491a0147974694215f2a230d66d, type: 3}
   power: 32
   pricePower: 1950

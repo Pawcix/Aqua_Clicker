@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: '#4'
   m_EditorClassIdentifier: 
   name: 'Jug of Water '
-  image: {fileID: -2044449070527790831, guid: b19adb963d17d814f9e5065edf15011e, type: 3}
+  image: {fileID: 3366098424672465981, guid: 924e2b84928c0c749ab45a2a26a4dfe4, type: 3}
   power: 8
   pricePower: 312
