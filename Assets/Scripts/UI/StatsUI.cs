@@ -5,9 +5,9 @@ using UnityEngine.UI;
 
 public class StatsUI : MonoBehaviour
 {
+    [Header("Another UI Buttons")]
     [SerializeField] Button vanishButtonSettings;
     [SerializeField] Button vanishButtonShop;
-    [SerializeField] RectTransform stats;
 
     public void OpenStats()
     {

@@ -68,6 +68,21 @@ public class ClickerManager : MonoBehaviour
 
         doublePointsButton.onClick.AddListener(ToggleDoublePoints);
 
+        OpenCloseElementsUI();
+
+        foreach (Worker worker in Workers)
+        {
+            shopUI.AddWorker(worker);
+        }
+
+        OnItemBought.AddListener(BuyItem);
+
+        InvokeRepeating(nameof(AddPointPerSecond), 0f, 1f);
+        InvokeRepeating(nameof(CollectAllPointsInGame), 0f, 1f);
+    }
+
+    void OpenCloseElementsUI()
+    {
         shopUI.CloseShop();
         OpenButtonShop.onClick.AddListener(shopUI.OpenShop);
         CloseButtonShop.onClick.AddListener(shopUI.CloseShop);
@@ -79,16 +94,6 @@ public class ClickerManager : MonoBehaviour
         settingsUI.CloseSettings();
         OpenButtonSettings.onClick.AddListener(settingsUI.OpenSettings);
         CloseButtonSettings.onClick.AddListener(settingsUI.CloseSettings);
-
-        foreach (Worker worker in Workers)
-        {
-            shopUI.AddWorker(worker);
-        }
-
-        OnItemBought.AddListener(BuyItem);
-
-        InvokeRepeating(nameof(AddPointPerSecond), 0f, 1f);
-        InvokeRepeating(nameof(CollectAllPointsInGame), 0f, 1f);
     }
 
     void ColectPointsPerSecond()

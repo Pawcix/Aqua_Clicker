@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4343305045602179742}
   - component: {fileID: 731298947270328651}
   m_Layer: 5
-  m_Name: Tmp - Clicks
+  m_Name: Tmp - ColectPoints
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -65,7 +65,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Clicks
+  m_text: Collect points
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 148b13d36bdbc9a46a9635b19e2842a5, type: 2}
   m_sharedMaterial: {fileID: 7145518581805339885, guid: 148b13d36bdbc9a46a9635b19e2842a5, type: 2}
@@ -148,7 +148,7 @@ GameObject:
   - component: {fileID: 2238193741694922318}
   - component: {fileID: 1757652738519021625}
   m_Layer: 5
-  m_Name: Img - Clicks
+  m_Name: Img - ColectPoints
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -201,7 +201,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 3496416976752381988, guid: daaaf3ca8534465419bfb8cf288619c0, type: 3}
+  m_Sprite: {fileID: -4498235402390077896, guid: fc8194311a8795046b35b26f013414cf, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -223,7 +223,7 @@ GameObject:
   - component: {fileID: 7590459995325762419}
   - component: {fileID: 6524980582153313743}
   m_Layer: 0
-  m_Name: Stats
+  m_Name: Stats - ColectPoints
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -236,7 +236,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7202095832035787150}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -248,7 +248,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 125}
+  m_SizeDelta: {x: 0, y: 130}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7590459995325762419
 CanvasRenderer:

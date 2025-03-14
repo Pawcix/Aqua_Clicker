@@ -5,8 +5,10 @@ using UnityEngine.UI;
 
 public class ShopUI : MonoBehaviour
 {
+    [Header("Another UI Buttons")]
     [SerializeField] Button vanishButtonSettings;
     [SerializeField] Button vanishButtonStats;
+    
     [SerializeField] RectTransform shop;
     [SerializeField] RectTransform content;
 
