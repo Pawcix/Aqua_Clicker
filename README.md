@@ -6,7 +6,7 @@
 **Aqua Clicker** is a fun and addictive clicker game where you tap on a smiling water droplet to collect points and grow your water empire! The more you click, the more water you gather, allowing you to unlock upgrades and automated ways to generate even more droplets. With simple yet satisfying gameplay, charming visuals, and a refreshing water theme, it's the perfect game to relax and watch your water supply grow! 💧. Enjoy playing :D
 
 ## Platforms
-**Available:** PC 💻 / Mobile 📞
+**Available:** 💻PC | 📞Mobile 
 
 ## Link
 **Link to my game:** https://pawel-szatanik.itch.io/aqua-clicker
