@@ -22,6 +22,7 @@ public class Skins : MonoBehaviour
     {
         if (skins.Length == 0) return;
 
+        AudioManager.Instance.PlaySFX("Open");
         currentSkinIndex = (currentSkinIndex + 1) % skins.Length;
         clickerImage.sprite = skins[currentSkinIndex];
     }
