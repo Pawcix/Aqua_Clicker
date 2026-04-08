@@ -8,7 +8,7 @@ public class AudioManager : MonoBehaviour
     [SerializeField] AudioSource musicSource, sfxSource;
     [SerializeField] Sound[] musicSounds, sfxSounds;
 
-    private void Start()
+    void Start()
     {
         PlayMusic("Theme");
     }
@@ -61,14 +61,14 @@ public class AudioManager : MonoBehaviour
         musicSource.mute = !musicSource.mute;
     }
 
-    public void ToggleSFX()
-    {
-        sfxSource.mute = !sfxSource.mute;
-    }
-
     public void MusicVolume(float volume)
     {
         musicSource.volume = volume;
+    }
+
+    public void ToggleSFX()
+    {
+        sfxSource.mute = !sfxSource.mute;
     }
 
     public void SFXVolume(float volume)

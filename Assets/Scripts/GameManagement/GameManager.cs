@@ -30,7 +30,7 @@ public class ClickerManager : MonoBehaviour
     [Header("Settings")]
     [SerializeField] SettingsUI settingsUI;
     [SerializeField] Button OpenButtonSettings;
-    [SerializeField] Button CloseButtonSettings;
+    // [SerializeField] Button CloseButtonSettings;
 
     [Header("Animation")]
     [SerializeField] AnimationManager animationUI;
@@ -93,7 +93,7 @@ public class ClickerManager : MonoBehaviour
 
         settingsUI.CloseSettings();
         OpenButtonSettings.onClick.AddListener(settingsUI.OpenSettings);
-        CloseButtonSettings.onClick.AddListener(settingsUI.CloseSettings);
+        // CloseButtonSettings.onClick.AddListener(settingsUI.CloseSettings);
     }
 
     void ColectPointsPerSecond()

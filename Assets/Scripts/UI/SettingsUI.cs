@@ -12,13 +12,11 @@ public class SettingsUI : MonoBehaviour
     public void OpenSettings()
     {
         VanishCloseButtons();
-        AudioManager.Instance.PlaySFX("Open");
     }
 
     public void CloseSettings()
     {
         AppearCloseButtons();
-        AudioManager.Instance.PlaySFX("Open");
     }
 
     void VanishCloseButtons()
