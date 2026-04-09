@@ -10,12 +10,40 @@ public class Modal : MonoBehaviour
         {
             bool newState = !modalPanel.activeSelf;
             modalPanel.SetActive(newState);
-            AudioManager.Instance.PlaySFX("Open");
-            // Debug.Log($"[Modal] - {modalPanel.name} - is now: {(newState ? "ENABLED :)" : "DISABLED :(")}");
+            if (newState) AudioManager.Instance.PlaySFX("Open");
+        }
+    }
+
+    public void OpenWithOrder(int orderValue)
+    {
+        if (modalPanel != null)
+        {
+            modalPanel.SetActive(true);
+            Canvas canvas = modalPanel.GetComponent<Canvas>();
+
+            if (canvas != null)
+            {
+                canvas.overrideSorting = true;
+                canvas.sortingOrder = orderValue;
+            }
+
+            if (AudioManager.Instance != null)
+                AudioManager.Instance.PlaySFX("Open");
+
+            // Debug.Log($"[Modal] {modalPanel.name} opened with Order: {orderValue}");
+        }
+    }
+
+    public void CloseModal(GameObject targetModal)
+    {
+        if (targetModal != null)
+        {
+            targetModal.SetActive(false);
+            // Debug.Log($"[Modal] Closed: {targetModal.name}");
         }
         else
         {
-            // Debug.LogWarning("[Modal] Error: modalPanel is not assigned in the Inspector!");
+            // Debug.LogWarning("[Modal] Target modal is null! Check your Button settings.");
         }
     }
 }

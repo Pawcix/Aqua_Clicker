@@ -1,9 +1,9 @@
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class Settings : MonoBehaviour
 {
+    public GameObject settingsPanel;
     public Slider musicSlider, sfxSlider;
 
     [Header("Music Settings:")]
@@ -18,6 +18,31 @@ public class Settings : MonoBehaviour
 
     bool isMusicOn = true;
     bool isSFXOn = true;
+
+    void Awake()
+    {
+        if (settingsPanel != null)
+        {
+            settingsPanel.SetActive(false);
+        }
+    }
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            ToggleSettings();
+        }
+    }
+
+    public void ToggleSettings()
+    {
+        if (settingsPanel != null)
+        {
+            bool newState = !settingsPanel.activeSelf;
+            settingsPanel.SetActive(newState);
+        }
+    }
 
     public void ToggleMusic()
     {

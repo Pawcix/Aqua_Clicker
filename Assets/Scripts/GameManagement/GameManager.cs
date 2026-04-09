@@ -27,9 +27,9 @@ public class ClickerManager : MonoBehaviour
     [SerializeField] Button OpenButtonStats;
     [SerializeField] Button CloseButtonStats;
 
-    [Header("Settings")]
-    [SerializeField] SettingsUI settingsUI;
-    [SerializeField] Button OpenButtonSettings;
+    // [Header("Settings")]
+    // [SerializeField] SettingsUI settingsUI;
+    // [SerializeField] Button OpenButtonSettings;
     // [SerializeField] Button CloseButtonSettings;
 
     [Header("Animation")]
@@ -91,8 +91,8 @@ public class ClickerManager : MonoBehaviour
         OpenButtonStats.onClick.AddListener(statsUI.OpenStats);
         CloseButtonStats.onClick.AddListener(statsUI.CloseStats);
 
-        settingsUI.CloseSettings();
-        OpenButtonSettings.onClick.AddListener(settingsUI.OpenSettings);
+        // settingsUI.CloseSettings();
+        // OpenButtonSettings.onClick.AddListener(settingsUI.OpenSettings);
         // CloseButtonSettings.onClick.AddListener(settingsUI.CloseSettings);
     }
 
