@@ -17,7 +17,7 @@ public class LanguageSelector : MonoBehaviour
         if (_localeID >= 0 && _localeID < locales.Count)
         {
             LocalizationSettings.SelectedLocale = locales[_localeID];
-            Debug.Log("Language changed to: " + locales[_localeID].LocaleName);
+            // Debug.Log("Language changed to: " + locales[_localeID].LocaleName);
         }
         else
         {

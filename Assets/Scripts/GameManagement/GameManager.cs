@@ -22,11 +22,6 @@ public class ClickerManager : MonoBehaviour
     [SerializeField] Button CloseButtonShop;
     [SerializeField] List<Worker> Workers;
 
-    [Header("Stats")]
-    [SerializeField] StatsUI statsUI;
-    [SerializeField] Button OpenButtonStats;
-    [SerializeField] Button CloseButtonStats;
-
     [Header("Animation")]
     [SerializeField] AnimationManager animationUI;
 
@@ -81,10 +76,6 @@ public class ClickerManager : MonoBehaviour
         shopUI.CloseShop();
         OpenButtonShop.onClick.AddListener(shopUI.OpenShop);
         CloseButtonShop.onClick.AddListener(shopUI.CloseShop);
-
-        statsUI.CloseStats();
-        OpenButtonStats.onClick.AddListener(statsUI.OpenStats);
-        CloseButtonStats.onClick.AddListener(statsUI.CloseStats);
     }
 
     void ColectPointsPerSecond()
