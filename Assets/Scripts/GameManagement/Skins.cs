@@ -18,7 +18,7 @@ public class Skins : MonoBehaviour
         }
     }
 
-    void ChangeSkin()
+    public void ChangeSkin()
     {
         if (skins.Length == 0) return;
 
