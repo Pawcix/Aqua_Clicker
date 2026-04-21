@@ -3,6 +3,7 @@ using UnityEngine;
 public class Modal_Skills : MonoBehaviour
 {
     public GameObject skillsModal;
+    public KeyShorts keyShortsSource;
 
     void Awake()
     {
@@ -14,12 +15,18 @@ public class Modal_Skills : MonoBehaviour
 
     public void ToggleSettings()
     {
-        if (skillsModal != null)
-        {
-            bool isVisible = skillsModal.activeSelf;
-            skillsModal.SetActive(!isVisible);
+        if (skillsModal == null) return;
 
-            // Debug.Log($"[Modal_Skills] Modal jest teraz: {(!isVisible ? "WŁĄCZONY" : "WYŁĄCZONY")}");
+        bool wasActive = skillsModal.activeInHierarchy;
+
+        if (keyShortsSource != null)
+        {
+            keyShortsSource.CloseAllModals();
+        }
+
+        if (!wasActive)
+        {
+            skillsModal.SetActive(true);
         }
     }
 }

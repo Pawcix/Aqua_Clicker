@@ -27,11 +27,6 @@ public class DebugPanel : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.F3))
-        {
-            ToggleDebugPanel();
-        }
-
         if (displayParent != null && !displayParent.activeInHierarchy)
             return;
 

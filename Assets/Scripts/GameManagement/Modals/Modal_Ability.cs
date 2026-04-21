@@ -1,23 +1,23 @@
 using UnityEngine;
 
-public class Modal_Settings : MonoBehaviour
+public class Modal_Ability : MonoBehaviour
 {
-    public GameObject settingsModal;
+    public GameObject abilityModal;
     public KeyShorts keyShortsSource;
 
     void Awake()
     {
-        if (settingsModal != null)
+        if (abilityModal != null)
         {
-            settingsModal.SetActive(false);
+            abilityModal.SetActive(false);
         }
     }
 
     public void ToggleSettings()
     {
-        if (settingsModal == null) return;
+        if (abilityModal == null) return;
 
-        bool wasActive = settingsModal.activeInHierarchy;
+        bool wasActive = abilityModal.activeInHierarchy;
 
         if (keyShortsSource != null)
         {
@@ -26,7 +26,7 @@ public class Modal_Settings : MonoBehaviour
 
         if (!wasActive)
         {
-            settingsModal.SetActive(true);
+            abilityModal.SetActive(true);
         }
     }
 }
