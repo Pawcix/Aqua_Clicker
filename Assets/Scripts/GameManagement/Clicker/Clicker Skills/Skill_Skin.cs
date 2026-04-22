@@ -1,0 +1,29 @@
+using UnityEngine;
+using UnityEngine.UI;
+
+public class Skill_Skin : MonoBehaviour
+{
+    [SerializeField] Button clickerButton;
+    [SerializeField] Button changeSkinButton;
+    [SerializeField] Image clickerImage;
+    [SerializeField] Sprite[] skins;
+
+    int currentSkinIndex = 0;
+
+    void Start()
+    {
+        if (changeSkinButton != null)
+        {
+            changeSkinButton.onClick.AddListener(ChangeSkin);
+        }
+    }
+
+    public void ChangeSkin()
+    {
+        if (skins.Length == 0) return;
+
+        AudioManager.Instance.PlaySFX("Open");
+        currentSkinIndex = (currentSkinIndex + 1) % skins.Length;
+        clickerImage.sprite = skins[currentSkinIndex];
+    }
+}
