@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class Data_Reset : MonoBehaviour
 {
-    [Header("Settings:")]
     [SerializeField] System_Data systemData;
     [SerializeField] string fileName = "savegame.json";
 

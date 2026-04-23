@@ -1,48 +1,60 @@
 using System.IO;
 using UnityEngine;
+using System.Collections.Generic;
 
 public class Data_SaveManager : MonoBehaviour
 {
     public static Data_SaveManager instance;
 
     [SerializeField] System_Data systemData;
+    [SerializeField] Clicker_Skills clickerSkills;
+
     string savePath;
-    const string fileName = "savegame.json";
 
     void Awake()
     {
         instance = this;
         savePath = Path.Combine(Application.persistentDataPath, "savegame.json");
-
         LoadGame();
     }
 
     public void SaveGame()
     {
-        GameData dataToSave = new GameData { score = systemData.pointsCounter };
+        GameData dataToSave = new GameData
+        {
+            score = systemData.pointsCounter,
+            pps = systemData.pointsPerSecond,
+            workerLevels = new List<int>(systemData.workerLevels),
+            time = Timer.Instance != null ? Timer.Instance.TotalPlayTime : systemData.timer,
+            skinIndex = systemData.currentSkinIndex,
+            autoClickActive = systemData.isAutoClickerActive
+        };
+
         string json = JsonUtility.ToJson(dataToSave, true);
         File.WriteAllText(savePath, json);
-        // Debug.Log($"<color=green><b>[Save System]</b></color> Game Saved. Score: {dataToSave.score}");
     }
 
     public void LoadGame()
     {
-        if (File.Exists(savePath))
-        {
-            string json = File.ReadAllText(savePath);
-            GameData loadedData = JsonUtility.FromJson<GameData>(json);
+        if (!File.Exists(savePath)) return;
 
-            systemData.pointsCounter = loadedData.score;
-            // Debug.Log($"<color=cyan><b>[Save System]</b></color> Game Loaded. Score: {loadedData.score}");
-        }
-        else
+        string json = File.ReadAllText(savePath);
+        GameData loadedData = JsonUtility.FromJson<GameData>(json);
+
+        systemData.pointsCounter = loadedData.score;
+        systemData.pointsPerSecond = loadedData.pps;
+        systemData.timer = loadedData.time;
+        systemData.currentSkinIndex = loadedData.skinIndex;
+        systemData.isAutoClickerActive = loadedData.autoClickActive;
+
+        if (loadedData.workerLevels != null)
         {
-            // Debug.Log("<color=orange><b>[Save System]</b></color> No save file found. Starting fresh.");
+            systemData.workerLevels = new List<int>(loadedData.workerLevels);
         }
+
+        if (Timer.Instance != null) Timer.Instance.LoadSavedTime(loadedData.time);
+        if (clickerSkills != null) clickerSkills.RefreshSkillsVisuals();
     }
 
-    void OnApplicationQuit()
-    {
-        SaveGame();
-    }
+    void OnApplicationQuit() => SaveGame();
 }

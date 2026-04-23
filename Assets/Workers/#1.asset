@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a714e85a039f0f43b6daaf89808662b, type: 3}
   m_Name: '#1'
   m_EditorClassIdentifier: 
-  name: Spoon of Water
-  image: {fileID: -4286987140415026430, guid: b1c5e92de12dd744aa96abee999b682c, type: 3}
-  power: 1
-  pricePower: 20
+  workerName: "\u0141y\u017Ceczka Bo\u017Ca"
+  icon: {fileID: -4286987140415026430, guid: b1c5e92de12dd744aa96abee999b682c, type: 3}
+  description: "\u0141y\u017Ceczka Bo\u017Ca do Jebania ulanych kurew"
+  basePower: 5
+  basePrice: 10

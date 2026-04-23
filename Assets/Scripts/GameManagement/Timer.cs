@@ -22,15 +22,21 @@ public class Timer : MonoBehaviour
         TotalPlayTime += Time.deltaTime;
     }
 
+    public void LoadSavedTime(float time)
+    {
+        TotalPlayTime = time;
+    }
+
     public string GetFormattedTime()
     {
-        int t = Mathf.RoundToInt(TotalPlayTime);
+        int t = Mathf.FloorToInt(TotalPlayTime);
         int h = t / 3600;
         int m = (t % 3600) / 60;
         int s = t % 60;
 
-        if (h > 0) return $"{h:D1}h {m:D1}m {s:D1}s";
-        if (m > 0) return $"{m:D1}m {s:D1}s";
-        return $"{s:D1}s";
+        if (h > 0) return $"{h:00}:{m:00}:{s:00}";
+        if (m > 0) return $"{m:00}:{s:00}";
+        return $"{s}s";
     }
+
 }

@@ -4,8 +4,9 @@ public class Clicker_Prefabs : MonoBehaviour
 {
     [SerializeField] Prefab_Points prefabTotalPointsText;
     [SerializeField] Prefab_Timer prefabTimerText;
+    [SerializeField] Total_PPS prefabPPSText;
 
-    public void UpdateAllPrefabs(int totalPoints)
+    public void UpdateAllPrefabs(int totalPoints, int totalPPS)
     {
         if (prefabTotalPointsText != null)
         {
@@ -15,6 +16,11 @@ public class Clicker_Prefabs : MonoBehaviour
         if (prefabTimerText != null)
         {
             prefabTimerText.UpdateTimerPrefab();
+        }
+
+        if (prefabPPSText != null)
+        {
+            prefabPPSText.UpdatePPS(totalPPS);
         }
     }
 }
