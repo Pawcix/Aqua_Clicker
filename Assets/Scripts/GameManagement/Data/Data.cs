@@ -9,4 +9,5 @@ public class GameData
     public int skinIndex;
     public float time;
     public bool autoClickActive;
+    public int totalAwayEarnings;
 }

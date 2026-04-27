@@ -1,6 +1,7 @@
+using System;
 using System.IO;
-using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class Data_SaveManager : MonoBehaviour
 {
@@ -13,13 +14,24 @@ public class Data_SaveManager : MonoBehaviour
 
     void Awake()
     {
-        instance = this;
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+            return;
+        }
+
         savePath = Path.Combine(Application.persistentDataPath, "savegame.json");
         LoadGame();
     }
 
     public void SaveGame()
     {
+        if (systemData == null) return;
+
         GameData dataToSave = new GameData
         {
             score = systemData.pointsCounter,
@@ -29,6 +41,8 @@ public class Data_SaveManager : MonoBehaviour
             skinIndex = systemData.currentSkinIndex,
             autoClickActive = systemData.isAutoClickerActive
         };
+
+        dataToSave.totalAwayEarnings = systemData.totalAwayEarnings;
 
         string json = JsonUtility.ToJson(dataToSave, true);
         File.WriteAllText(savePath, json);
@@ -41,6 +55,8 @@ public class Data_SaveManager : MonoBehaviour
         string json = File.ReadAllText(savePath);
         GameData loadedData = JsonUtility.FromJson<GameData>(json);
 
+        if (loadedData == null) return;
+
         systemData.pointsCounter = loadedData.score;
         systemData.pointsPerSecond = loadedData.pps;
         systemData.timer = loadedData.time;
@@ -52,9 +68,38 @@ public class Data_SaveManager : MonoBehaviour
             systemData.workerLevels = new List<int>(loadedData.workerLevels);
         }
 
+        systemData.totalAwayEarnings = loadedData.totalAwayEarnings;
+
         if (Timer.Instance != null) Timer.Instance.LoadSavedTime(loadedData.time);
         if (clickerSkills != null) clickerSkills.RefreshSkillsVisuals();
     }
 
-    void OnApplicationQuit() => SaveGame();
+    public void SaveLastSeenTime()
+    {
+        PlayerPrefs.SetString("LastSeen", DateTime.Now.ToString());
+        PlayerPrefs.Save();
+    }
+
+    void OnApplicationQuit()
+    {
+        SaveLastSeenTime();
+        SaveGame();
+    }
+
+    void OnApplicationPause(bool pauseStatus)
+    {
+        if (pauseStatus)
+        {
+            SaveLastSeenTime();
+            SaveGame();
+        }
+        else
+        {
+            var awaySystem = UnityEngine.Object.FindFirstObjectByType<System_AwayIncome>();
+            if (awaySystem != null)
+            {
+                awaySystem.CalculateAwayIncome();
+            }
+        }
+    }
 }

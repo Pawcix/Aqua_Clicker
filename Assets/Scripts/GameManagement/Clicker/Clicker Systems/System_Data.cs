@@ -7,6 +7,7 @@ public class System_Data : MonoBehaviour
     public int pointsCounter = 0;
     public int pointsPerClick = 1;
     public int pointsPerSecond = 0;
+    public int totalAwayEarnings = 0;
 
     [Header("Workers Progress:")]
     public List<int> workerLevels = new List<int>();
