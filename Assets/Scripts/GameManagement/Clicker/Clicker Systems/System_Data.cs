@@ -18,4 +18,5 @@ public class System_Data : MonoBehaviour
     [Header("Skills Data:")]
     public int currentSkinIndex = 0;
     public bool isAutoClickerActive = false;
+    public bool isAntiCheatBypassActive = false;
 }

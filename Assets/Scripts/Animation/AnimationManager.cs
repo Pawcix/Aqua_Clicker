@@ -10,7 +10,7 @@ public class AnimationManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI counterPointsPerSecond;
     [SerializeField] Button clickerButton;
 
-    private void Start()
+    void Start()
     {
         StartCoroutine(BalanceAnimation());
         StartCoroutine(PulseAnimationClickerButton());

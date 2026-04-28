@@ -6,7 +6,7 @@ public class System_PassiveProduction : MonoBehaviour
     [SerializeField] Clicker_Prefabs prefabs;
     [SerializeField] Clicker_Stats stats;
 
-    private float timer = 0f;
+    float timer = 0f;
 
     void Update()
     {

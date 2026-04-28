@@ -5,9 +5,10 @@ public class GameData
 {
     public int score;
     public int pps;
-    public List<int> workerLevels;
     public int skinIndex;
+    public int totalAwayEarnings;
     public float time;
     public bool autoClickActive;
-    public int totalAwayEarnings;
+    public bool antiCheatBypassActive;
+    public List<int> workerLevels;
 }
