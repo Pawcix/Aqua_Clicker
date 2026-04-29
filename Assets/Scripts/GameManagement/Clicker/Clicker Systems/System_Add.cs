@@ -6,7 +6,8 @@ public class System_Add : MonoBehaviour
 
     public void AddPoints()
     {
-        data.pointsCounter += data.pointsPerClick;
+        int pointsToAdd = data.pointsPerClick * data.clickMultiplier;
+        data.pointsCounter += pointsToAdd;
     }
 
     public int GetTotal()

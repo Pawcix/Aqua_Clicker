@@ -39,6 +39,7 @@ public class Data_SaveManager : MonoBehaviour
             workerLevels = new List<int>(systemData.workerLevels),
             time = Timer.Instance != null ? Timer.Instance.TotalPlayTime : systemData.timer,
             skinIndex = systemData.currentSkinIndex,
+            clickMultiplier = systemData.clickMultiplier,
             autoClickActive = systemData.isAutoClickerActive,
             antiCheatBypassActive = systemData.isAntiCheatBypassActive
         };
@@ -62,6 +63,7 @@ public class Data_SaveManager : MonoBehaviour
         systemData.pointsPerSecond = loadedData.pps;
         systemData.timer = loadedData.time;
         systemData.currentSkinIndex = loadedData.skinIndex;
+        systemData.clickMultiplier = loadedData.clickMultiplier;
         systemData.isAntiCheatBypassActive = loadedData.antiCheatBypassActive;
         systemData.isAutoClickerActive = loadedData.autoClickActive;
 

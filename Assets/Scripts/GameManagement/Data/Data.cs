@@ -7,8 +7,10 @@ public class GameData
     public int pps;
     public int skinIndex;
     public int totalAwayEarnings;
+    public int clickMultiplier;
     public float time;
     public bool autoClickActive;
     public bool antiCheatBypassActive;
     public List<int> workerLevels;
+    public List<int> unlockedSkinIDs;
 }

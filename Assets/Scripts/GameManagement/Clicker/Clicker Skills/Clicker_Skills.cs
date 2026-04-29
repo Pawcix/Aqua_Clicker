@@ -2,13 +2,14 @@ using UnityEngine;
 
 public class Clicker_Skills : MonoBehaviour
 {
+    [SerializeField] public System_Data data;
+
     [Header("Visual Scripts:")]
-    [SerializeField] Skill_Skin skinSkill;
     [SerializeField] Skill_AutoClick autoClickSkill;
     [SerializeField] Skill_AntiCheat antiCheatSkill;
+    [SerializeField] Skill_Multiplier[] multiplierSkills;
 
-    [SerializeField] public System_Data data;
-    
+
     public bool isAntiCheatBypassActive
     {
         get => data.isAntiCheatBypassActive;
@@ -29,11 +30,21 @@ public class Clicker_Skills : MonoBehaviour
 
     public void UpdateAllSkills(int totalPoints) { }
 
+    public void RefreshMultiplierButtons()
+    {
+        foreach (var skill in multiplierSkills)
+        {
+            if (skill != null) skill.RefreshVisuals();
+        }
+    }
+
     public void RefreshSkillsVisuals()
     {
         if (data == null) return;
-        if (skinSkill != null) skinSkill.LoadSkin(data.currentSkinIndex);
+        var wardrobe = Object.FindFirstObjectByType<System_Wardrobe>();
+        if (wardrobe != null) wardrobe.LoadSkin(data.currentSkinIndex);
         if (autoClickSkill != null) autoClickSkill.SetAutoClickState(data.isAutoClickerActive);
         if (antiCheatSkill != null) antiCheatSkill.SetBypassState(data.isAntiCheatBypassActive);
+        RefreshMultiplierButtons();
     }
 }
