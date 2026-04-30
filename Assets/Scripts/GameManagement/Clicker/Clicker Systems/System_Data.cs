@@ -19,6 +19,7 @@ public class System_Data : MonoBehaviour
     public int clickMultiplier = 1;
     public int currentSkinIndex = 0;
     public bool isAutoClickerActive = false;
+    public bool isAutoCollectorActive = false;
     public bool isAntiCheatBypassActive = false;
     public List<int> unlockedSkinIDs = new List<int> { 0 };
 

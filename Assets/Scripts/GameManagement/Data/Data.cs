@@ -12,6 +12,7 @@ public class GameData
     public float goldenRainTimer;
     public float time;
     public bool autoClickActive;
+    public bool autoCollectorActive;
     public bool antiCheatBypassActive;
     public List<int> workerLevels;
     public List<int> unlockedSkinIDs;

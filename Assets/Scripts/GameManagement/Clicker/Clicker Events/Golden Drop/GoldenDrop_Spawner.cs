@@ -11,9 +11,13 @@ public class GoldenDrop_Spawner : MonoBehaviour
     [SerializeField] float minSpawnTime = 5f;
     [SerializeField] float maxSpawnTime = 15f;
 
-    private bool isInRainMode = false;
-    private float originalMinTime;
-    private float originalMaxTime;
+    [Header("Fall Speed Randomization:")]
+    [SerializeField] float minFallSpeed = 200f; // Minimalna prędkość
+    [SerializeField] float maxFallSpeed = 450f; // Maksymalna prędkość
+
+    bool isInRainMode = false;
+    float originalMinTime;
+    float originalMaxTime;
 
     void Awake()
     {
@@ -33,18 +37,24 @@ public class GoldenDrop_Spawner : MonoBehaviour
         GameObject drop = Instantiate(goldenDropPrefab, spawnArea);
         RectTransform dropRect = drop.GetComponent<RectTransform>();
 
+        // 1. Losowanie pozycji X
         float width = spawnArea.rect.width / 2;
         float randomX = Random.Range(-width + 50f, width - 50f);
         float startY = (spawnArea.rect.height / 2) + 100f;
-
         dropRect.anchoredPosition = new Vector2(randomX, startY);
+
+        // 2. LOSOWANIE PRĘDKOŚCI
+        GoldenDrop_Item itemScript = drop.GetComponent<GoldenDrop_Item>();
+        if (itemScript != null)
+        {
+            float randomSpeed = Random.Range(minFallSpeed, maxFallSpeed);
+            itemScript.SetSpeed(randomSpeed);
+        }
     }
 
     public void SetRainMode(bool active)
     {
         isInRainMode = active;
-
-        // Zatrzymujemy stare odliczanie, żeby nie dokańczało długiego czekania
         StopAllCoroutines();
 
         if (active)
@@ -58,7 +68,6 @@ public class GoldenDrop_Spawner : MonoBehaviour
             maxSpawnTime = originalMaxTime;
         }
 
-        // Odpalamy pętlę na nowo z nowymi wartościami czasu
         StartCoroutine(SpawnRoutine());
     }
 
@@ -68,7 +77,6 @@ public class GoldenDrop_Spawner : MonoBehaviour
         {
             float waitTime = Random.Range(minSpawnTime, maxSpawnTime);
             yield return new WaitForSeconds(waitTime);
-
             SpawnGoldenDrop();
         }
     }

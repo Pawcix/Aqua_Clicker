@@ -43,7 +43,8 @@ public class Data_SaveManager : MonoBehaviour
             autoClickActive = systemData.isAutoClickerActive,
             antiCheatBypassActive = systemData.isAntiCheatBypassActive,
             goldenDrops = systemData.goldenDrops,
-            goldenRainTimer = systemData.goldenRainTimer
+            goldenRainTimer = systemData.goldenRainTimer,
+            autoCollectorActive = systemData.isAutoCollectorActive
         };
 
         dataToSave.totalAwayEarnings = systemData.totalAwayEarnings;
@@ -71,6 +72,7 @@ public class Data_SaveManager : MonoBehaviour
         systemData.totalAwayEarnings = loadedData.totalAwayEarnings;
         systemData.goldenDrops = loadedData.goldenDrops;
         systemData.goldenRainTimer = loadedData.goldenRainTimer;
+        systemData.isAutoCollectorActive = loadedData.autoCollectorActive;
 
         if (loadedData.workerLevels != null)
         {

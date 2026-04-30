@@ -8,6 +8,10 @@ public class GoldenDrop_Item : MonoBehaviour
     [SerializeField] float fallSpeed = 300f;
     [SerializeField] GameObject bonusTextPrefab;
 
+    float existenceTime = 0f;
+    public float ExistenceTime => existenceTime; // Właściwość do odczytu dla AutoCollectora
+
+    bool wasCollected = false;
     System_Data data;
     RectTransform rectTransform;
 
@@ -19,8 +23,7 @@ public class GoldenDrop_Item : MonoBehaviour
     void Start()
     {
         data = Object.FindFirstObjectByType<System_Data>();
-
-        UnityEngine.UI.Button btn = GetComponent<UnityEngine.UI.Button>();
+        Button btn = GetComponent<Button>();
         if (btn != null) btn.onClick.AddListener(OnGoldenDropClicked);
 
         Destroy(gameObject, 10f);
@@ -28,25 +31,29 @@ public class GoldenDrop_Item : MonoBehaviour
 
     void Update()
     {
+        if (wasCollected) return;
+
+        // Liczymy czas życia kropli
+        existenceTime += Time.deltaTime;
+
+        // Ruch spadania
         if (rectTransform != null)
             rectTransform.anchoredPosition += Vector2.down * fallSpeed * Time.deltaTime;
     }
 
     public void OnGoldenDropClicked()
     {
-        if (data == null) return;
+        if (data == null || wasCollected) return;
+        wasCollected = true;
 
         int bonus = Mathf.RoundToInt(data.pointsCounter * 0.10f);
         if (bonus < 100) bonus = 100;
         data.pointsCounter += bonus;
-
         data.goldenDrops++;
 
         Clicker_Prefabs prefabsManager = Object.FindFirstObjectByType<Clicker_Prefabs>();
         if (prefabsManager != null)
-        {
             prefabsManager.UpdateAllPrefabs(data.pointsCounter, data.pointsPerSecond);
-        }
 
         SpawnBonusText(NumberFormatter.FormatWithDots(bonus));
         if (AudioManager.Instance != null) AudioManager.Instance.PlaySFX("GoldenCollect");
@@ -54,18 +61,17 @@ public class GoldenDrop_Item : MonoBehaviour
         Destroy(gameObject);
     }
 
+    public void SetSpeed(float newSpeed)
+    {
+        fallSpeed = newSpeed;
+    }
+
     void SpawnBonusText(string amountText)
     {
         if (bonusTextPrefab == null) return;
-
         GameObject textObj = Instantiate(bonusTextPrefab, transform.position, Quaternion.identity, transform.parent);
         TextMeshProUGUI textComp = textObj.GetComponentInChildren<TextMeshProUGUI>();
-
-        if (textComp != null)
-        {
-            textComp.text = $"+{amountText}";
-        }
-
+        if (textComp != null) textComp.text = $"+{amountText}";
         Destroy(textObj, 2f);
     }
 }
