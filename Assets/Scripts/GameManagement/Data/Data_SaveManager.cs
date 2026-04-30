@@ -41,7 +41,9 @@ public class Data_SaveManager : MonoBehaviour
             skinIndex = systemData.currentSkinIndex,
             clickMultiplier = systemData.clickMultiplier,
             autoClickActive = systemData.isAutoClickerActive,
-            antiCheatBypassActive = systemData.isAntiCheatBypassActive
+            antiCheatBypassActive = systemData.isAntiCheatBypassActive,
+            goldenDrops = systemData.goldenDrops,
+            goldenRainTimer = systemData.goldenRainTimer
         };
 
         dataToSave.totalAwayEarnings = systemData.totalAwayEarnings;
@@ -66,13 +68,14 @@ public class Data_SaveManager : MonoBehaviour
         systemData.clickMultiplier = loadedData.clickMultiplier;
         systemData.isAntiCheatBypassActive = loadedData.antiCheatBypassActive;
         systemData.isAutoClickerActive = loadedData.autoClickActive;
+        systemData.totalAwayEarnings = loadedData.totalAwayEarnings;
+        systemData.goldenDrops = loadedData.goldenDrops;
+        systemData.goldenRainTimer = loadedData.goldenRainTimer;
 
         if (loadedData.workerLevels != null)
         {
             systemData.workerLevels = new List<int>(loadedData.workerLevels);
         }
-
-        systemData.totalAwayEarnings = loadedData.totalAwayEarnings;
 
         if (Timer.Instance != null) Timer.Instance.LoadSavedTime(loadedData.time);
         if (clickerSkills != null) clickerSkills.RefreshSkillsVisuals();

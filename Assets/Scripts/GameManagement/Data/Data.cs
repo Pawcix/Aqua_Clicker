@@ -8,6 +8,8 @@ public class GameData
     public int skinIndex;
     public int totalAwayEarnings;
     public int clickMultiplier;
+    public int goldenDrops;
+    public float goldenRainTimer;
     public float time;
     public bool autoClickActive;
     public bool antiCheatBypassActive;

@@ -38,12 +38,17 @@ public class GoldenDrop_Item : MonoBehaviour
 
         int bonus = Mathf.RoundToInt(data.pointsCounter * 0.10f);
         if (bonus < 100) bonus = 100;
-
         data.pointsCounter += bonus;
 
-        string formattedBonus = NumberFormatter.FormatWithDots(bonus);
-        SpawnBonusText(formattedBonus);
+        data.goldenDrops++;
 
+        Clicker_Prefabs prefabsManager = Object.FindFirstObjectByType<Clicker_Prefabs>();
+        if (prefabsManager != null)
+        {
+            prefabsManager.UpdateAllPrefabs(data.pointsCounter, data.pointsPerSecond);
+        }
+
+        SpawnBonusText(NumberFormatter.FormatWithDots(bonus));
         if (AudioManager.Instance != null) AudioManager.Instance.PlaySFX("GoldenCollect");
 
         Destroy(gameObject);

@@ -6,6 +6,14 @@ public class Clicker_Prefabs : MonoBehaviour
     [SerializeField] Prefab_Timer prefabTimerText;
     [SerializeField] Total_PPS prefabPPSText;
     [SerializeField] Prefab_AwayIncome prefabAwayIncomeText;
+    [SerializeField] Prefab_GoldenDrop prefabGoldenDropText;
+
+    System_Data data;
+
+    void Awake()
+    {
+        data = Object.FindFirstObjectByType<System_Data>();
+    }
 
     public void UpdateAllPrefabs(int totalPoints, int totalPPS)
     {
@@ -27,6 +35,11 @@ public class Clicker_Prefabs : MonoBehaviour
         if (prefabAwayIncomeText != null)
         {
             prefabAwayIncomeText.UpdateTotalDisplay();
+        }
+
+        if (prefabGoldenDropText != null && data != null)
+        {
+            prefabGoldenDropText.UpdateTotalGoldenDropsPrefab(data.goldenDrops);
         }
     }
 }
