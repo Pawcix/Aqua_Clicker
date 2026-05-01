@@ -42,8 +42,9 @@ public class Data_SaveManager : MonoBehaviour
             antiCheatBypassActive = systemData.isAntiCheatBypassActive,
             goldenDrops = systemData.goldenDrops,
             goldenRainTimer = systemData.goldenRainTimer,
+            luckyBonus = systemData.luckyBonus,
             autoCollectorActive = systemData.isAutoCollectorActive,
-            totalAwayEarnings = systemData.totalAwayEarnings
+            totalAwayEarnings = systemData.totalAwayEarnings,
         };
 
         string json = JsonUtility.ToJson(dataToSave, true);
@@ -73,6 +74,7 @@ public class Data_SaveManager : MonoBehaviour
             systemData.isAutoClickerActive = loadedData.autoClickActive;
             systemData.totalAwayEarnings = loadedData.totalAwayEarnings;
             systemData.goldenDrops = loadedData.goldenDrops;
+            systemData.luckyBonus = loadedData.luckyBonus;
             systemData.goldenRainTimer = loadedData.goldenRainTimer;
             systemData.isAutoCollectorActive = loadedData.autoCollectorActive;
 

@@ -26,4 +26,5 @@ public class System_Data : MonoBehaviour
     [Header("Events:")]
     public int goldenDrops = 0;
     public float goldenRainTimer = 300f;
+    public int luckyBonus = 0;
 }

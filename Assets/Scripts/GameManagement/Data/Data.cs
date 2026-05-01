@@ -9,6 +9,7 @@ public class GameData
     public int totalAwayEarnings;
     public int clickMultiplier;
     public int goldenDrops;
+    public int luckyBonus;
     public float goldenRainTimer;
     public float time;
     public bool autoClickActive;

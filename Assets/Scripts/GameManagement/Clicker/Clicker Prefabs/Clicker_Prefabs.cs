@@ -8,6 +8,7 @@ public class Clicker_Prefabs : MonoBehaviour
     [SerializeField] Prefab_AwayIncome prefabAwayIncomeText;
     [SerializeField] Prefab_GoldenDrop prefabGoldenDropText;
     [SerializeField] Prefab_Skins prefabSkinsCounter;
+    [SerializeField] Prefab_LuckyBonus prefabLuckyBonus;
 
     System_Data data;
 
@@ -49,6 +50,11 @@ public class Clicker_Prefabs : MonoBehaviour
             int unlocked = System_Wardrobe.Instance.GetUnlockedSkinsCount();
 
             prefabSkinsCounter.UpdateSkinsPrefab(unlocked, total);
+        }
+
+        if (prefabLuckyBonus != null && data != null)
+        {
+            prefabLuckyBonus.UpdateTotalLuckyBonusesPrefab(data.luckyBonus);
         }
     }
 }

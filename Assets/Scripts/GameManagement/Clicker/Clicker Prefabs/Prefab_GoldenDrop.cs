@@ -10,7 +10,6 @@ public class Prefab_GoldenDrop : MonoBehaviour
         if (totalGoldenDropsText == null) return;
 
         string formattedValue = NumberFormatter.FormatWithDots(totalGoldenDrops);
-
         totalGoldenDropsText.text = $"Golden Drops\n{formattedValue}";
     }
 }
