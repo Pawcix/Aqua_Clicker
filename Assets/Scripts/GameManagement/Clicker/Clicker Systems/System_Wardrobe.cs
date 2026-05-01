@@ -90,6 +90,16 @@ public class System_Wardrobe : MonoBehaviour
         if (mainClickerDisplay != null) mainClickerDisplay.sprite = sp;
     }
 
+    public int GetUnlockedSkinsCount()
+    {
+        // Musimy się odwołać do danych przez masterSkills, tak jak w metodzie IsSkinUnlocked
+        if (masterSkills != null && masterSkills.data != null && masterSkills.data.unlockedSkinIDs != null)
+        {
+            return masterSkills.data.unlockedSkinIDs.Count;
+        }
+        return 0;
+    }
+
     IEnumerator ResetScrollRoutine()
     {
         yield return new WaitForEndOfFrame();

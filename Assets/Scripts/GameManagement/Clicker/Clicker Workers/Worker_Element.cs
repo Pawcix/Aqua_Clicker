@@ -17,6 +17,19 @@ public class Worker_Element : MonoBehaviour
     Worker workerTemplate;
     int workerID;
 
+    void Update()
+    {
+        if (buyButton != null && data != null && workerTemplate != null)
+        {
+            bool canAfford = data.pointsCounterFloat >= workerTemplate.basePrice;
+
+            if (buyButton.interactable != canAfford)
+            {
+                buyButton.interactable = canAfford;
+            }
+        }
+    }
+
     public void Setup(Worker worker, int id, System_Data dataRef)
     {
         workerTemplate = worker;
@@ -31,8 +44,10 @@ public class Worker_Element : MonoBehaviour
 
     void BuyWorker()
     {
-        if (data.pointsCounter >= workerTemplate.basePrice)
+        if (data.pointsCounterFloat >= workerTemplate.basePrice)
         {
+            data.pointsCounterFloat -= workerTemplate.basePrice;
+
             Clicker_System.OnItemBought.Invoke(workerTemplate.basePrice, workerTemplate.basePower);
 
             data.workerLevels[workerID]++;
@@ -42,17 +57,24 @@ public class Worker_Element : MonoBehaviour
 
     public void UpdateUI()
     {
+        if (data == null || workerTemplate == null) return;
+
         int currentLevel = data.workerLevels[workerID];
         int totalPPS = currentLevel * workerTemplate.basePower;
 
         nameText.text = workerTemplate.workerName;
         powerText.text = "+" + workerTemplate.basePower + "/s";
-        priceBuyText.text = workerTemplate.basePrice.ToString();
+
+        priceBuyText.text = NumberFormatter.FormatWithDots(workerTemplate.basePrice);
+
         workerImage.sprite = workerTemplate.icon;
         descriptionText.text = workerTemplate.description;
 
         if (levelText != null) levelText.text = "Level: " + currentLevel;
         if (totalBonusText != null) totalBonusText.text = "PPS: " + totalPPS;
-        if (descriptionText != null) descriptionText.text = workerTemplate.description;
+        if (buyButton != null)
+        {
+            buyButton.interactable = data.pointsCounterFloat >= workerTemplate.basePrice;
+        }
     }
 }

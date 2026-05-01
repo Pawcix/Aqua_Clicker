@@ -18,16 +18,17 @@ public class Clicker_Workers : MonoBehaviour
 
     void HandleWorkerPurchase(int price, int power)
     {
-        if (data.pointsCounter >= price)
-        {
-            data.pointsCounter -= price;
-            data.pointsPerSecond += power;
+        data.pointsPerSecond += power;
 
-            if (AudioManager.Instance != null)
-                AudioManager.Instance.PlaySFX("Buy Sound");
+        if (AudioManager.Instance != null)
+            AudioManager.Instance.PlaySFX("Buy Sound");
 
-            if (prefabs != null) prefabs.UpdateAllPrefabs(data.pointsCounter, data.pointsPerSecond);
-            if (stats != null) stats.UpdateAllStats(data.pointsCounter, data.pointsPerSecond);
-        }
+        int currentPointsInt = Mathf.RoundToInt(data.pointsCounterFloat);
+
+        if (prefabs != null)
+            prefabs.UpdateAllPrefabs(currentPointsInt, data.pointsPerSecond);
+
+        if (stats != null)
+            stats.UpdateAllStats(currentPointsInt, data.pointsPerSecond);
     }
 }

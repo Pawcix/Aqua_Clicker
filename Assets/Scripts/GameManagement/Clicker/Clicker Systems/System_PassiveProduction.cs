@@ -12,20 +12,24 @@ public class System_PassiveProduction : MonoBehaviour
     {
         if (data.pointsPerSecond <= 0) return;
 
-        timer += Time.deltaTime;
+        data.pointsCounterFloat += data.pointsPerSecond * Time.deltaTime;
 
+        timer += Time.deltaTime;
         if (timer >= 1f)
         {
-            AddPassivePoints();
+            RefreshHeavyUI();
             timer = 0f;
         }
     }
 
-    void AddPassivePoints()
+    void RefreshHeavyUI()
     {
-        data.pointsCounter += data.pointsPerSecond;
+        int currentPointsInt = (int)data.pointsCounterFloat;
 
-        if (prefabs != null) prefabs.UpdateAllPrefabs(data.pointsCounter, data.pointsPerSecond);
-        if (stats != null) stats.UpdateAllStats(data.pointsCounter, data.pointsPerSecond);
+        if (prefabs != null)
+            prefabs.UpdateAllPrefabs(currentPointsInt, data.pointsPerSecond);
+
+        if (stats != null)
+            stats.UpdateAllStats(currentPointsInt, data.pointsPerSecond);
     }
 }

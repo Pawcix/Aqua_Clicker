@@ -7,6 +7,7 @@ public class Clicker_Prefabs : MonoBehaviour
     [SerializeField] Total_PPS prefabPPSText;
     [SerializeField] Prefab_AwayIncome prefabAwayIncomeText;
     [SerializeField] Prefab_GoldenDrop prefabGoldenDropText;
+    [SerializeField] Prefab_Skins prefabSkinsCounter;
 
     System_Data data;
 
@@ -40,6 +41,14 @@ public class Clicker_Prefabs : MonoBehaviour
         if (prefabGoldenDropText != null && data != null)
         {
             prefabGoldenDropText.UpdateTotalGoldenDropsPrefab(data.goldenDrops);
+        }
+
+        if (prefabSkinsCounter != null && System_Wardrobe.Instance != null)
+        {
+            int total = System_Wardrobe.Instance.GetAllSkins().Count;
+            int unlocked = System_Wardrobe.Instance.GetUnlockedSkinsCount();
+
+            prefabSkinsCounter.UpdateSkinsPrefab(unlocked, total);
         }
     }
 }

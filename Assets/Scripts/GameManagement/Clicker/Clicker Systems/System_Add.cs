@@ -6,12 +6,12 @@ public class System_Add : MonoBehaviour
 
     public void AddPoints()
     {
-        int pointsToAdd = data.pointsPerClick * data.clickMultiplier;
-        data.pointsCounter += pointsToAdd;
+        float pointsToAdd = (float)data.pointsPerClick * data.clickMultiplier;
+        System_Economy.Instance.AddPoints(pointsToAdd);
     }
 
     public int GetTotal()
     {
-        return data.pointsCounter;
+        return Mathf.RoundToInt(System_Economy.Instance.TotalPointsFloat);
     }
 }

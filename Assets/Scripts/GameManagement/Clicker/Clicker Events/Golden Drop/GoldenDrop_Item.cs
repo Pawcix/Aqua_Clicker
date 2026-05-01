@@ -8,12 +8,12 @@ public class GoldenDrop_Item : MonoBehaviour
     [SerializeField] float fallSpeed = 300f;
     [SerializeField] GameObject bonusTextPrefab;
 
-    float existenceTime = 0f;
-    public float ExistenceTime => existenceTime; // Właściwość do odczytu dla AutoCollectora
-
-    bool wasCollected = false;
     System_Data data;
     RectTransform rectTransform;
+
+    float existenceTime = 0f;
+    public float ExistenceTime => existenceTime;
+    bool wasCollected = false;
 
     void Awake()
     {
@@ -33,10 +33,8 @@ public class GoldenDrop_Item : MonoBehaviour
     {
         if (wasCollected) return;
 
-        // Liczymy czas życia kropli
         existenceTime += Time.deltaTime;
 
-        // Ruch spadania
         if (rectTransform != null)
             rectTransform.anchoredPosition += Vector2.down * fallSpeed * Time.deltaTime;
     }
@@ -46,16 +44,20 @@ public class GoldenDrop_Item : MonoBehaviour
         if (data == null || wasCollected) return;
         wasCollected = true;
 
-        int bonus = Mathf.RoundToInt(data.pointsCounter * 0.10f);
-        if (bonus < 100) bonus = 100;
-        data.pointsCounter += bonus;
+        float bonus = data.pointsCounterFloat * 0.10f;
+        if (bonus < 100f) bonus = 100f;
+
+        data.pointsCounterFloat += bonus;
         data.goldenDrops++;
 
         Clicker_Prefabs prefabsManager = Object.FindFirstObjectByType<Clicker_Prefabs>();
         if (prefabsManager != null)
-            prefabsManager.UpdateAllPrefabs(data.pointsCounter, data.pointsPerSecond);
+        {
+            prefabsManager.UpdateAllPrefabs((int)data.pointsCounterFloat, data.pointsPerSecond);
+        }
 
-        SpawnBonusText(NumberFormatter.FormatWithDots(bonus));
+        SpawnBonusText(NumberFormatter.FormatWithDots(Mathf.RoundToInt(bonus)));
+
         if (AudioManager.Instance != null) AudioManager.Instance.PlaySFX("GoldenCollect");
 
         Destroy(gameObject);

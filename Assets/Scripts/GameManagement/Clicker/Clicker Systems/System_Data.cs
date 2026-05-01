@@ -4,7 +4,7 @@ using System.Collections.Generic;
 public class System_Data : MonoBehaviour
 {
     [Header("Economy:")]
-    public int pointsCounter = 0;
+    public float pointsCounterFloat = 0;
     public int pointsPerClick = 1;
     public int pointsPerSecond = 0;
     public int totalAwayEarnings = 0;

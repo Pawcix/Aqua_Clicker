@@ -13,53 +13,49 @@ public class Clicker_System : MonoBehaviour
     [SerializeField] Clicker_Skills clickerSkills;
     [SerializeField] Clicker_Stats clickerStats;
 
+    [Header("Visuals:")]
+    [SerializeField] PointsDisplay pointsDisplay;
+
     [Header("Systems:")]
     [SerializeField] System_Add addSystem;
     [SerializeField] System_AntiCheat antiCheat;
     [SerializeField] System_CPS cpsSystem;
     [SerializeField] System_WordsEffect clickWords;
 
+    float uiUpdateTimer = 0f;
+    float uiUpdateInterval = 0.1f;
+
+    void Update()
+    {
+        uiUpdateTimer += Time.deltaTime;
+        if (uiUpdateTimer >= uiUpdateInterval)
+        {
+            UpdateHeavyUI();
+            uiUpdateTimer = 0f;
+        }
+    }
+
+    void UpdateHeavyUI()
+    {
+        if (data == null) return;
+
+        int currentTotal = Mathf.RoundToInt(data.pointsCounterFloat);
+        int currentPPS = data.pointsPerSecond;
+
+        if (clickerPrefabs != null) clickerPrefabs.UpdateAllPrefabs(currentTotal, currentPPS);
+        if (clickerStats != null) clickerStats.UpdateAllStats(currentTotal, currentPPS);
+        if (clickerSkills != null) clickerSkills.UpdateAllSkills(currentTotal);
+    }
+
     public void Click()
     {
         if (addSystem == null || data == null) return;
-
-        if (antiCheat != null)
-        {
-            if (!antiCheat.CheckClickLegal()) return;
-        }
-
-        if (cpsSystem != null)
-        {
-            cpsSystem.OnClickRegistered();
-        }
+        if (antiCheat != null && !antiCheat.CheckClickLegal()) return;
+        if (cpsSystem != null) cpsSystem.OnClickRegistered();
 
         addSystem.AddPoints();
-        int currentTotal = addSystem.GetTotal();
-        int currentPPS = data.pointsPerSecond;
 
-        if (clickerPrefabs != null)
-        {
-            clickerPrefabs.UpdateAllPrefabs(currentTotal, currentPPS);
-        }
-
-        if (clickerStats != null)
-        {
-            clickerStats.UpdateAllStats(currentTotal, currentPPS);
-        }
-
-        if (clickerSkills != null)
-        {
-            clickerSkills.UpdateAllSkills(currentTotal);
-        }
-
-        if (clickWords != null)
-        {
-            clickWords.ShowRandomWord();
-        }
-
-        if (cpsSystem != null)
-        {
-            cpsSystem.OnClickRegistered();
-        }
+        if (pointsDisplay != null) pointsDisplay.Pulse();
+        if (clickWords != null) clickWords.ShowRandomWord();
     }
 }

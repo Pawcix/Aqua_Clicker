@@ -26,17 +26,19 @@ public class System_AwayIncome : MonoBehaviour
         if (DateTime.TryParse(lastSeenStr, out DateTime lastSeen))
         {
             TimeSpan timeAway = DateTime.Now - lastSeen;
-            int secondsAway = (int)timeAway.TotalSeconds;
+            double secondsAway = timeAway.TotalSeconds;
 
             if (secondsAway > 10 && data.pointsPerSecond > 0)
             {
-                int earned = secondsAway * data.pointsPerSecond;
+                float earned = (float)secondsAway * data.pointsPerSecond;
 
                 if (earned > 0)
                 {
-                    data.pointsCounter += earned;
-                    data.totalAwayEarnings += earned;
-                    DisplayNotification(earned, timeAway);
+                    data.pointsCounterFloat += earned;
+
+                    data.totalAwayEarnings += Mathf.RoundToInt(earned);
+
+                    DisplayNotification(Mathf.RoundToInt(earned), timeAway);
                     UpdateAllUI();
                 }
             }
@@ -66,7 +68,9 @@ public class System_AwayIncome : MonoBehaviour
 
     void UpdateAllUI()
     {
-        if (stats != null) stats.UpdateAllStats(data.pointsCounter, data.pointsPerSecond);
-        if (prefabs != null) prefabs.UpdateAllPrefabs(data.pointsCounter, data.pointsPerSecond);
+        int currentPointsInt = Mathf.RoundToInt(data.pointsCounterFloat);
+
+        if (stats != null) stats.UpdateAllStats(currentPointsInt, data.pointsPerSecond);
+        if (prefabs != null) prefabs.UpdateAllPrefabs(currentPointsInt, data.pointsPerSecond);
     }
 }

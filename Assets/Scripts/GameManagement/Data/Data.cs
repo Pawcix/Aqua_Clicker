@@ -3,7 +3,7 @@ using System.Collections.Generic;
 [System.Serializable]
 public class GameData
 {
-    public int score;
+    public float score;
     public int pps;
     public int skinIndex;
     public int totalAwayEarnings;
