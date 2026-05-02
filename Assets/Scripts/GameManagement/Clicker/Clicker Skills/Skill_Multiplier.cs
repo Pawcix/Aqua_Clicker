@@ -19,10 +19,8 @@ public class Skill_Multiplier : MonoBehaviour
             multiplierButton.onClick.RemoveAllListeners();
             multiplierButton.onClick.AddListener(SelectThisMultiplier);
         }
-        else
-        {
-            Debug.LogError($"Brak przypisanego przycisku w {gameObject.name}!");
-        }
+
+        RefreshVisuals();
     }
 
     public void RefreshVisuals()
@@ -46,6 +44,6 @@ public class Skill_Multiplier : MonoBehaviour
 
     void OnEnable()
     {
-        Invoke(nameof(RefreshVisuals), 0.05f);
+        RefreshVisuals();
     }
 }

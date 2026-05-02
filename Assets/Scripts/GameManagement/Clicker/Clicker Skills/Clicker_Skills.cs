@@ -46,9 +46,14 @@ public class Clicker_Skills : MonoBehaviour
 
     public void RefreshMultiplierButtons()
     {
-        foreach (var skill in multiplierSkills)
+        if (multiplierSkills == null || multiplierSkills.Length == 0)
         {
-            if (skill != null) skill.RefreshVisuals();
+            multiplierSkills = GetComponentsInChildren<Skill_Multiplier>(true);
+        }
+
+        foreach (Skill_Multiplier sm in multiplierSkills)
+        {
+            if (sm != null) sm.RefreshVisuals();
         }
     }
 
