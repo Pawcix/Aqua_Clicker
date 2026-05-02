@@ -21,7 +21,8 @@ public class Worker_Element : MonoBehaviour
     {
         if (buyButton != null && data != null && workerTemplate != null)
         {
-            bool canAfford = data.pointsCounterFloat >= workerTemplate.basePrice;
+            double currentPrice = workerTemplate.GetPriceForLevel(data.workerLevels[workerID]);
+            bool canAfford = data.pointsCounterFloat >= currentPrice;
 
             if (buyButton.interactable != canAfford)
             {
@@ -44,11 +45,14 @@ public class Worker_Element : MonoBehaviour
 
     void BuyWorker()
     {
-        if (data.pointsCounterFloat >= workerTemplate.basePrice)
-        {
-            data.pointsCounterFloat -= workerTemplate.basePrice;
+        int currentLevel = data.workerLevels[workerID];
+        double currentPrice = workerTemplate.GetPriceForLevel(currentLevel);
 
-            Clicker_System.OnItemBought.Invoke(workerTemplate.basePrice, workerTemplate.basePower);
+        if (data.pointsCounterFloat >= currentPrice)
+        {
+            data.pointsCounterFloat -= currentPrice;
+
+            Clicker_System.OnItemBought.Invoke(currentPrice, workerTemplate.basePower);
 
             data.workerLevels[workerID]++;
             UpdateUI();
@@ -60,21 +64,26 @@ public class Worker_Element : MonoBehaviour
         if (data == null || workerTemplate == null) return;
 
         int currentLevel = data.workerLevels[workerID];
-        int totalPPS = currentLevel * workerTemplate.basePower;
+        double currentPrice = workerTemplate.GetPriceForLevel(currentLevel);
+
+        float totalPPS = currentLevel * workerTemplate.basePower;
 
         nameText.text = workerTemplate.workerName;
-        powerText.text = "+" + workerTemplate.basePower + "/s";
 
-        priceBuyText.text = NumberFormatter.FormatWithDots(workerTemplate.basePrice);
+        powerText.text = "+" + workerTemplate.basePower.ToString("F1") + "/s";
 
+        priceBuyText.text = NumberFormatter.FormatWithDots(currentPrice);
         workerImage.sprite = workerTemplate.icon;
-        descriptionText.text = workerTemplate.description;
 
         if (levelText != null) levelText.text = "Level: " + currentLevel;
-        if (totalBonusText != null) totalBonusText.text = "PPS: " + totalPPS;
+
+        if (totalBonusText != null) totalBonusText.text = "PPS: " + totalPPS.ToString("F1");
+
+        if (descriptionText != null) descriptionText.text = workerTemplate.description;
+
         if (buyButton != null)
         {
-            buyButton.interactable = data.pointsCounterFloat >= workerTemplate.basePrice;
+            buyButton.interactable = data.pointsCounterFloat >= currentPrice;
         }
     }
 }

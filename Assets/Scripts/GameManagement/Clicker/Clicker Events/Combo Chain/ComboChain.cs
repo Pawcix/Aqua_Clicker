@@ -176,7 +176,11 @@ public class ComboChain : MonoBehaviour
             data.highestComboMultiplier = currentMultiplier;
 
             Clicker_Prefabs cp = Object.FindFirstObjectByType<Clicker_Prefabs>();
-            if (cp != null) cp.UpdateAllPrefabs(data.pointsCounterFloat, data.pointsPerSecond);
+            if (cp != null)
+            {
+                int displayPPS = (int)System.Math.Floor(data.pointsPerSecond);
+                cp.UpdateAllPrefabs(data.pointsCounterFloat, displayPPS);
+            }
         }
     }
 }

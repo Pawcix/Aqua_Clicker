@@ -52,16 +52,21 @@ public class GoldenDrop_Item : MonoBehaviour
         data.pointsCounterFloat += bonus;
         data.goldenDrops++;
 
-        PointsDisplay display = Object.FindFirstObjectByType<PointsDisplay>();
-        if (display != null)
+        if (PointsDisplay.Instance != null)
         {
-            display.Pulse();
+            PointsDisplay.Instance.Pulse();
+        }
+        else
+        {
+            PointsDisplay display = Object.FindFirstObjectByType<PointsDisplay>();
+            if (display != null) display.Pulse();
         }
 
         Clicker_Prefabs prefabsManager = Object.FindFirstObjectByType<Clicker_Prefabs>();
         if (prefabsManager != null)
         {
-            prefabsManager.UpdateAllPrefabs(data.pointsCounterFloat, data.pointsPerSecond);
+            int displayPPS = (int)System.Math.Floor(data.pointsPerSecond);
+            prefabsManager.UpdateAllPrefabs(data.pointsCounterFloat, displayPPS);
         }
 
         SpawnBonusText(NumberFormatter.FormatWithDots(bonus));

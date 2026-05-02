@@ -10,7 +10,7 @@ public class System_PassiveProduction : MonoBehaviour
 
     void Update()
     {
-        if (data.pointsPerSecond <= 0) return;
+        if (data == null || data.pointsPerSecond <= 0) return;
 
         data.pointsCounterFloat += (double)data.pointsPerSecond * Time.deltaTime;
 
@@ -24,12 +24,16 @@ public class System_PassiveProduction : MonoBehaviour
 
     void RefreshHeavyUI()
     {
+        if (data == null) return;
+
         double currentPoints = data.pointsCounterFloat;
 
+        int displayPPS = (int)System.Math.Floor(data.pointsPerSecond);
+
         if (prefabs != null)
-            prefabs.UpdateAllPrefabs(currentPoints, data.pointsPerSecond);
+            prefabs.UpdateAllPrefabs(currentPoints, displayPPS);
 
         if (stats != null)
-            stats.UpdateAllStats(currentPoints, data.pointsPerSecond);
+            stats.UpdateAllStats(currentPoints, displayPPS);
     }
 }

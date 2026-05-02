@@ -16,7 +16,7 @@ public class Clicker_Workers : MonoBehaviour
         Clicker_System.OnItemBought.RemoveListener(HandleWorkerPurchase);
     }
 
-    void HandleWorkerPurchase(double price, int power)
+    void HandleWorkerPurchase(double price, float power)
     {
         data.pointsPerSecond += power;
 
@@ -26,9 +26,9 @@ public class Clicker_Workers : MonoBehaviour
         double currentPoints = data.pointsCounterFloat;
 
         if (prefabs != null)
-            prefabs.UpdateAllPrefabs(currentPoints, data.pointsPerSecond);
+            prefabs.UpdateAllPrefabs(currentPoints, (int)data.pointsPerSecond);
 
         if (stats != null)
-            stats.UpdateAllStats(currentPoints, data.pointsPerSecond);
+            stats.UpdateAllStats(currentPoints, (int)data.pointsPerSecond);
     }
 }

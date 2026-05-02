@@ -4,12 +4,13 @@ public class Clicker_Prefabs : MonoBehaviour
 {
     [SerializeField] Prefab_Points prefabTotalPointsText;
     [SerializeField] Prefab_Timer prefabTimerText;
-    [SerializeField] Total_PPS prefabPPSText;
     [SerializeField] Prefab_AwayIncome prefabAwayIncomeText;
     [SerializeField] Prefab_GoldenDrop prefabGoldenDropText;
     [SerializeField] Prefab_Skins prefabSkinsCounter;
     [SerializeField] Prefab_LuckyBonus prefabLuckyBonus;
     [SerializeField] Prefab_ComboChain prefabComboChain;
+    [SerializeField] Prefab_PPS prefabPPS;
+    [SerializeField] Prefab_WorkerList prefabWorkerList;
 
     System_Data data;
 
@@ -28,11 +29,6 @@ public class Clicker_Prefabs : MonoBehaviour
         if (prefabTimerText != null)
         {
             prefabTimerText.UpdateTimerPrefab();
-        }
-
-        if (prefabPPSText != null)
-        {
-            prefabPPSText.UpdatePPS(totalPPS);
         }
 
         if (prefabAwayIncomeText != null)
@@ -61,6 +57,16 @@ public class Clicker_Prefabs : MonoBehaviour
         if (prefabComboChain != null && data != null)
         {
             prefabComboChain.UpdateMaxComboPrefab(data.highestComboMultiplier);
+        }
+
+        if (prefabPPS != null)
+        {
+            prefabPPS.UpdatePPS(data.pointsPerSecond);
+        }
+
+        if (prefabWorkerList != null && data != null)
+        {
+            prefabWorkerList.UpdateWorkerList(data.workerLevels);
         }
     }
 }

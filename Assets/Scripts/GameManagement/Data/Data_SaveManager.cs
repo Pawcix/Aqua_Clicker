@@ -34,6 +34,7 @@ public class Data_SaveManager : MonoBehaviour
             pps = systemData.pointsPerSecond,
             workerLevels = new List<int>(systemData.workerLevels),
             unlockedSkinIDs = new List<int>(systemData.unlockedSkinIDs),
+            // awayHistory = new List<HistoryList>(systemData.awayHistory),
             time = Timer.Instance != null ? Timer.Instance.TotalPlayTime : systemData.timer,
             skinIndex = systemData.currentSkinIndex,
             clickMultiplier = systemData.clickMultiplier,
@@ -41,6 +42,7 @@ public class Data_SaveManager : MonoBehaviour
             antiCheatBypassActive = systemData.isAntiCheatBypassActive,
             goldenDrops = systemData.goldenDrops,
             goldenRainTimer = systemData.goldenRainTimer,
+            goldRushTimer = systemData.goldRushTimer,
             luckyBonus = systemData.luckyBonus,
             highestComboMultiplier = systemData.highestComboMultiplier,
             autoCollectorActive = systemData.isAutoCollectorActive,
@@ -77,10 +79,12 @@ public class Data_SaveManager : MonoBehaviour
             systemData.goldenDrops = loadedData.goldenDrops;
             systemData.luckyBonus = loadedData.luckyBonus;
             systemData.goldenRainTimer = loadedData.goldenRainTimer;
+            systemData.goldRushTimer = loadedData.goldRushTimer;
             systemData.isAutoCollectorActive = loadedData.autoCollectorActive;
             systemData.isLuckyCollectorActive = loadedData.LuckyCollectorActive;
             systemData.highestComboMultiplier = loadedData.highestComboMultiplier;
-            
+            systemData.totalAwayEarnings = loadedData.totalAwayEarnings;
+
             if (loadedData.workerLevels != null)
                 systemData.workerLevels = new List<int>(loadedData.workerLevels);
 

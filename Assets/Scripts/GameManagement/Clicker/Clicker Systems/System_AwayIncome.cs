@@ -71,7 +71,9 @@ public class System_AwayIncome : MonoBehaviour
 
         double currentPoints = data.pointsCounterFloat;
 
-        if (stats != null) stats.UpdateAllStats(currentPoints, data.pointsPerSecond);
-        if (prefabs != null) prefabs.UpdateAllPrefabs(currentPoints, data.pointsPerSecond);
+        int displayPPS = (int)System.Math.Floor(data.pointsPerSecond);
+
+        if (stats != null) stats.UpdateAllStats(currentPoints, displayPPS);
+        if (prefabs != null) prefabs.UpdateAllPrefabs(currentPoints, displayPPS);
     }
 }

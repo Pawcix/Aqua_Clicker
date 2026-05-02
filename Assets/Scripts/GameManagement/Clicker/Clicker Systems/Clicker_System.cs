@@ -3,7 +3,7 @@ using UnityEngine.Events;
 
 public class Clicker_System : MonoBehaviour
 {
-    public static UnityEvent<double, int> OnItemBought = new UnityEvent<double, int>();
+    public static UnityEvent<double, float> OnItemBought = new UnityEvent<double, float>();
 
     [Header("Data Source:")]
     [SerializeField] System_Data data;
@@ -40,10 +40,11 @@ public class Clicker_System : MonoBehaviour
         if (data == null) return;
 
         double currentTotal = System.Math.Floor(data.pointsCounterFloat);
-        int currentPPS = data.pointsPerSecond;
+        float currentPPS = data.pointsPerSecond;
+        int displayPPS = (int)System.Math.Floor(currentPPS);
 
         if (clickerPrefabs != null)
-            clickerPrefabs.UpdateAllPrefabs(currentTotal, currentPPS);
+            clickerPrefabs.UpdateAllPrefabs(currentTotal, displayPPS);
 
         if (clickerSkills != null)
         {
@@ -52,7 +53,7 @@ public class Clicker_System : MonoBehaviour
         }
 
         if (clickerStats != null)
-            clickerStats.UpdateAllStats(currentTotal, currentPPS);
+            clickerStats.UpdateAllStats(currentTotal, displayPPS);
     }
 
     public void Click()
@@ -62,6 +63,11 @@ public class Clicker_System : MonoBehaviour
         if (cpsSystem != null) cpsSystem.OnClickRegistered();
 
         double pointsFromThisClick = (double)data.pointsPerClick * data.clickMultiplier;
+
+        if (data.isGoldRushActive)
+        {
+            pointsFromThisClick *= 2.0;
+        }
 
         addSystem.AddPoints();
 

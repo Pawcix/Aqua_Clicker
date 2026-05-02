@@ -8,6 +8,11 @@ public class System_Add : MonoBehaviour
     {
         double pointsToAdd = (double)data.pointsPerClick * data.clickMultiplier;
 
+        if (data.isGoldRushActive)
+        {
+            pointsToAdd *= 2.0;
+        }
+
         System_Economy.Instance.AddPoints(pointsToAdd);
     }
 

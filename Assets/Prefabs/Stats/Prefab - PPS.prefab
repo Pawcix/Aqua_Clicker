@@ -222,7 +222,7 @@ GameObject:
   - component: {fileID: 3045820964478666364}
   - component: {fileID: 7590459995325762419}
   - component: {fileID: 6524980582153313743}
-  - component: {fileID: 8534018324305464327}
+  - component: {fileID: 1673738208197170180}
   m_Layer: 0
   m_Name: Prefab - PPS
   m_TagString: Untagged
@@ -289,7 +289,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &8534018324305464327
+--- !u!114 &1673738208197170180
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -298,7 +298,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7202095832035787150}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e8292a2a486a81e4681023e292df89c5, type: 3}
+  m_Script: {fileID: 11500000, guid: 8145d81eb41520442bc6cc87846d99ed, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Prefab_Points
-  totalPointsText: {fileID: 731298947270328651}
+  m_EditorClassIdentifier: Assembly-CSharp::Prefab_PPS
+  totalPSSText: {fileID: 731298947270328651}
