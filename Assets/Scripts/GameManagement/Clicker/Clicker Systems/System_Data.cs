@@ -4,10 +4,10 @@ using System.Collections.Generic;
 public class System_Data : MonoBehaviour
 {
     [Header("Economy:")]
-    public float pointsCounterFloat = 0;
+    public double pointsCounterFloat = 0;
     public int pointsPerClick = 1;
     public int pointsPerSecond = 0;
-    public int totalAwayEarnings = 0;
+    public double totalAwayEarnings = 0;
 
     [Header("Workers Progress:")]
     public List<int> workerLevels = new List<int>();
@@ -21,10 +21,12 @@ public class System_Data : MonoBehaviour
     public bool isAutoClickerActive = false;
     public bool isAutoCollectorActive = false;
     public bool isAntiCheatBypassActive = false;
+    public bool isLuckyCollectorActive = false;
     public List<int> unlockedSkinIDs = new List<int> { 0 };
 
     [Header("Events:")]
     public int goldenDrops = 0;
     public float goldenRainTimer = 300f;
     public int luckyBonus = 0;
+    public double highestComboMultiplier = 1.0;
 }

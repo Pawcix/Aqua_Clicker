@@ -3,10 +3,13 @@ using System.Globalization;
 
 public class NumberFormatter : MonoBehaviour
 {
-    public static string FormatWithDots(int number)
+    public static string FormatWithDots(double value)
     {
-        CultureInfo cultureInfo = new CultureInfo("pl-PL");
-        cultureInfo.NumberFormat.NumberGroupSeparator = ".";
-        return number.ToString("N0", cultureInfo);
+        NumberFormatInfo nfi = new NumberFormatInfo();
+        nfi.NumberGroupSeparator = ".";
+        nfi.NumberDecimalSeparator = ",";
+        nfi.NumberGroupSizes = new int[] { 3 };
+
+        return System.Math.Floor(value).ToString("N0", nfi);
     }
 }

@@ -5,7 +5,7 @@ public class Total_PPS : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI ppsText;
 
-    public void UpdatePPS(int amount)
+    public void UpdatePPS(double amount)
     {
         if (ppsText == null) return;
 

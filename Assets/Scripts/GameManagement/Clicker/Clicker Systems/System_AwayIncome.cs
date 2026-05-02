@@ -30,22 +30,21 @@ public class System_AwayIncome : MonoBehaviour
 
             if (secondsAway > 10 && data.pointsPerSecond > 0)
             {
-                float earned = (float)secondsAway * data.pointsPerSecond;
+                double earned = secondsAway * (double)data.pointsPerSecond;
 
                 if (earned > 0)
                 {
                     data.pointsCounterFloat += earned;
+                    data.totalAwayEarnings += earned;
 
-                    data.totalAwayEarnings += Mathf.RoundToInt(earned);
-
-                    DisplayNotification(Mathf.RoundToInt(earned), timeAway);
+                    DisplayNotification(earned, timeAway);
                     UpdateAllUI();
                 }
             }
         }
     }
 
-    void DisplayNotification(int earned, TimeSpan time)
+    void DisplayNotification(double earned, TimeSpan time)
     {
         if (awayIncomeNotificationText != null)
         {
@@ -68,9 +67,11 @@ public class System_AwayIncome : MonoBehaviour
 
     void UpdateAllUI()
     {
-        int currentPointsInt = Mathf.RoundToInt(data.pointsCounterFloat);
+        if (data == null) return;
 
-        if (stats != null) stats.UpdateAllStats(currentPointsInt, data.pointsPerSecond);
-        if (prefabs != null) prefabs.UpdateAllPrefabs(currentPointsInt, data.pointsPerSecond);
+        double currentPoints = data.pointsCounterFloat;
+
+        if (stats != null) stats.UpdateAllStats(currentPoints, data.pointsPerSecond);
+        if (prefabs != null) prefabs.UpdateAllPrefabs(currentPoints, data.pointsPerSecond);
     }
 }

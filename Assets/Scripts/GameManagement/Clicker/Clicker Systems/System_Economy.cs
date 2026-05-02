@@ -12,20 +12,25 @@ public class System_Economy : MonoBehaviour
         else Destroy(gameObject);
     }
 
-    public int TotalPointsInt
+    public long TotalPointsInt
     {
-        get => (int)data.pointsCounterFloat;
+        get => (long)System.Math.Floor(data.pointsCounterFloat);
         set => data.pointsCounterFloat = value;
     }
 
-    public float TotalPointsFloat
+    public double TotalPointsDouble
     {
         get => data.pointsCounterFloat;
         set => data.pointsCounterFloat = value;
     }
 
-    public void AddPoints(float amount)
+    public void AddPoints(double amount)
     {
         data.pointsCounterFloat += amount;
+    }
+
+    public void AddPoints(float amount)
+    {
+        data.pointsCounterFloat += (double)amount;
     }
 }

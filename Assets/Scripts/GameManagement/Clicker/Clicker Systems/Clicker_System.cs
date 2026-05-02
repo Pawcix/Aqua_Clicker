@@ -3,7 +3,7 @@ using UnityEngine.Events;
 
 public class Clicker_System : MonoBehaviour
 {
-    public static UnityEvent<int, int> OnItemBought = new UnityEvent<int, int>();
+    public static UnityEvent<double, int> OnItemBought = new UnityEvent<double, int>();
 
     [Header("Data Source:")]
     [SerializeField] System_Data data;
@@ -39,12 +39,20 @@ public class Clicker_System : MonoBehaviour
     {
         if (data == null) return;
 
-        int currentTotal = Mathf.RoundToInt(data.pointsCounterFloat);
+        double currentTotal = System.Math.Floor(data.pointsCounterFloat);
         int currentPPS = data.pointsPerSecond;
 
-        if (clickerPrefabs != null) clickerPrefabs.UpdateAllPrefabs(currentTotal, currentPPS);
-        if (clickerStats != null) clickerStats.UpdateAllStats(currentTotal, currentPPS);
-        if (clickerSkills != null) clickerSkills.UpdateAllSkills(currentTotal);
+        if (clickerPrefabs != null)
+            clickerPrefabs.UpdateAllPrefabs(currentTotal, currentPPS);
+
+        if (clickerSkills != null)
+        {
+            int skillsValue = currentTotal > int.MaxValue ? int.MaxValue : (int)currentTotal;
+            clickerSkills.UpdateAllSkills(skillsValue);
+        }
+
+        if (clickerStats != null)
+            clickerStats.UpdateAllStats(currentTotal, currentPPS);
     }
 
     public void Click()
@@ -53,9 +61,16 @@ public class Clicker_System : MonoBehaviour
         if (antiCheat != null && !antiCheat.CheckClickLegal()) return;
         if (cpsSystem != null) cpsSystem.OnClickRegistered();
 
+        double pointsFromThisClick = (double)data.pointsPerClick * data.clickMultiplier;
+
         addSystem.AddPoints();
 
-        if (pointsDisplay != null) pointsDisplay.Pulse();
+        if (ComboChain.Instance != null)
+        {
+            ComboChain.Instance.OnClickRegistered(pointsFromThisClick);
+        }
+
+        if (PointsDisplay.Instance != null) PointsDisplay.Instance.Pulse();
         if (clickWords != null) clickWords.ShowRandomWord();
     }
 }

@@ -44,19 +44,27 @@ public class GoldenDrop_Item : MonoBehaviour
         if (data == null || wasCollected) return;
         wasCollected = true;
 
-        float bonus = data.pointsCounterFloat * 0.10f;
-        if (bonus < 100f) bonus = 100f;
+        double currentPoints = data.pointsCounterFloat;
+        double bonus = currentPoints * 0.10;
+
+        if (bonus < 100.0) bonus = 100.0;
 
         data.pointsCounterFloat += bonus;
         data.goldenDrops++;
 
+        PointsDisplay display = Object.FindFirstObjectByType<PointsDisplay>();
+        if (display != null)
+        {
+            display.Pulse();
+        }
+
         Clicker_Prefabs prefabsManager = Object.FindFirstObjectByType<Clicker_Prefabs>();
         if (prefabsManager != null)
         {
-            prefabsManager.UpdateAllPrefabs((int)data.pointsCounterFloat, data.pointsPerSecond);
+            prefabsManager.UpdateAllPrefabs(data.pointsCounterFloat, data.pointsPerSecond);
         }
 
-        SpawnBonusText(NumberFormatter.FormatWithDots(Mathf.RoundToInt(bonus)));
+        SpawnBonusText(NumberFormatter.FormatWithDots(bonus));
 
         if (AudioManager.Instance != null) AudioManager.Instance.PlaySFX("GoldenCollect");
 
@@ -71,9 +79,12 @@ public class GoldenDrop_Item : MonoBehaviour
     void SpawnBonusText(string amountText)
     {
         if (bonusTextPrefab == null) return;
+
         GameObject textObj = Instantiate(bonusTextPrefab, transform.position, Quaternion.identity, transform.parent);
         TextMeshProUGUI textComp = textObj.GetComponentInChildren<TextMeshProUGUI>();
+
         if (textComp != null) textComp.text = $"+{amountText}";
+
         Destroy(textObj, 2f);
     }
 }

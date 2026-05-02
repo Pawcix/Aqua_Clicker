@@ -16,19 +16,19 @@ public class Clicker_Workers : MonoBehaviour
         Clicker_System.OnItemBought.RemoveListener(HandleWorkerPurchase);
     }
 
-    void HandleWorkerPurchase(int price, int power)
+    void HandleWorkerPurchase(double price, int power)
     {
         data.pointsPerSecond += power;
 
         if (AudioManager.Instance != null)
             AudioManager.Instance.PlaySFX("Buy Sound");
 
-        int currentPointsInt = Mathf.RoundToInt(data.pointsCounterFloat);
+        double currentPoints = data.pointsCounterFloat;
 
         if (prefabs != null)
-            prefabs.UpdateAllPrefabs(currentPointsInt, data.pointsPerSecond);
+            prefabs.UpdateAllPrefabs(currentPoints, data.pointsPerSecond);
 
         if (stats != null)
-            stats.UpdateAllStats(currentPointsInt, data.pointsPerSecond);
+            stats.UpdateAllStats(currentPoints, data.pointsPerSecond);
     }
 }

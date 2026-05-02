@@ -9,6 +9,7 @@ public class Clicker_Prefabs : MonoBehaviour
     [SerializeField] Prefab_GoldenDrop prefabGoldenDropText;
     [SerializeField] Prefab_Skins prefabSkinsCounter;
     [SerializeField] Prefab_LuckyBonus prefabLuckyBonus;
+    [SerializeField] Prefab_ComboChain prefabComboChain;
 
     System_Data data;
 
@@ -17,7 +18,7 @@ public class Clicker_Prefabs : MonoBehaviour
         data = Object.FindFirstObjectByType<System_Data>();
     }
 
-    public void UpdateAllPrefabs(int totalPoints, int totalPPS)
+    public void UpdateAllPrefabs(double totalPoints, int totalPPS)
     {
         if (prefabTotalPointsText != null)
         {
@@ -55,6 +56,11 @@ public class Clicker_Prefabs : MonoBehaviour
         if (prefabLuckyBonus != null && data != null)
         {
             prefabLuckyBonus.UpdateTotalLuckyBonusesPrefab(data.luckyBonus);
+        }
+
+        if (prefabComboChain != null && data != null)
+        {
+            prefabComboChain.UpdateMaxComboPrefab(data.highestComboMultiplier);
         }
     }
 }

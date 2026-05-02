@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using System;
 using System.Collections;
 
 public class LuckyBonus : MonoBehaviour
@@ -40,7 +41,7 @@ public class LuckyBonus : MonoBehaviour
     {
         while (true)
         {
-            yield return new WaitForSeconds(Random.Range(minSpawnTime, maxSpawnTime));
+            yield return new WaitForSeconds(UnityEngine.Random.Range(minSpawnTime, maxSpawnTime));
 
             SpawnBonus();
 
@@ -48,7 +49,7 @@ public class LuckyBonus : MonoBehaviour
             shrinkCoroutine = StartCoroutine(ShrinkButtonRoutine());
 
             yield return new WaitForSeconds(visibleDuration);
-            bonusButtonObject.SetActive(false);
+            if (bonusButtonObject != null) bonusButtonObject.SetActive(false);
         }
     }
 
@@ -60,7 +61,6 @@ public class LuckyBonus : MonoBehaviour
         while (timer < visibleDuration)
         {
             timer += Time.deltaTime;
-
             float progress = timer / visibleDuration;
 
             if (buttonRect != null)
@@ -71,7 +71,7 @@ public class LuckyBonus : MonoBehaviour
             yield return null;
         }
 
-        buttonRect.localScale = Vector3.zero;
+        if (buttonRect != null) buttonRect.localScale = Vector3.zero;
     }
 
     void SpawnBonus()
@@ -86,8 +86,8 @@ public class LuckyBonus : MonoBehaviour
         float widthLimit = (canvasRect.rect.width - 100) / 2f;
         float heightLimit = (canvasRect.rect.height - 100) / 2f;
 
-        float x = Random.Range(-widthLimit, widthLimit);
-        float y = Random.Range(-heightLimit, heightLimit);
+        float x = UnityEngine.Random.Range(-widthLimit, widthLimit);
+        float y = UnityEngine.Random.Range(-heightLimit, heightLimit);
 
         buttonRect.anchoredPosition = new Vector2(x, y);
         bonusButtonObject.SetActive(true);
@@ -98,17 +98,16 @@ public class LuckyBonus : MonoBehaviour
         if (data == null || !bonusButtonObject.activeSelf) return;
         if (shrinkCoroutine != null) StopCoroutine(shrinkCoroutine);
 
-        float divider = bonusDivider > 0 ? bonusDivider : 1;
-        float bonusAmount = Mathf.Max(minBonusValue, data.pointsCounterFloat / divider);
-        int finalAmount = Mathf.RoundToInt(bonusAmount);
+        double divider = bonusDivider > 0 ? (double)bonusDivider : 1.0;
+        double bonusAmount = Math.Max((double)minBonusValue, data.pointsCounterFloat / divider);
 
         data.pointsCounterFloat += bonusAmount;
         data.luckyBonus++;
 
-        SpawnBonusText(NumberFormatter.FormatWithDots(finalAmount));
+        SpawnBonusText(NumberFormatter.FormatWithDots(bonusAmount));
 
-        if (Object.FindFirstObjectByType<PointsDisplay>() != null)
-            Object.FindFirstObjectByType<PointsDisplay>().Pulse();
+        if (UnityEngine.Object.FindFirstObjectByType<PointsDisplay>() != null)
+            UnityEngine.Object.FindFirstObjectByType<PointsDisplay>().Pulse();
 
         if (AudioManager.Instance != null)
             AudioManager.Instance.PlaySFX("Buy Sound");
@@ -123,5 +122,10 @@ public class LuckyBonus : MonoBehaviour
         TextMeshProUGUI textComp = textObj.GetComponentInChildren<TextMeshProUGUI>();
         if (textComp != null) textComp.text = $"+{amountText}";
         Destroy(textObj, 2f);
+    }
+
+    public bool IsBonusVisible()
+    {
+        return bonusButtonObject != null && bonusButtonObject.activeSelf;
     }
 }

@@ -11,23 +11,29 @@ public class PointsDisplay : MonoBehaviour
     [SerializeField] float speedMultiplier = 15f;
     [SerializeField] float pulseSpeed = 10f;
 
-    int lastPointInt = -1;
-    float displayedPoints;
+    double lastDisplayedValue = -1.0;
+    double displayedPoints;
+
+    public static PointsDisplay Instance;
+
+    void Awake()
+    {
+        Instance = this;
+    }
 
     void Start()
     {
-
         if (data != null)
             displayedPoints = data.pointsCounterFloat;
 
-        UpdateText(Mathf.RoundToInt(displayedPoints));
+        UpdateText(System.Math.Floor(displayedPoints));
     }
 
     void Update()
     {
         if (pointsText == null || data == null) return;
 
-        float target = data.pointsCounterFloat;
+        double target = data.pointsCounterFloat;
 
         if (speedMultiplier <= 0.01f)
         {
@@ -35,27 +41,43 @@ public class PointsDisplay : MonoBehaviour
         }
         else
         {
-            float distance = Mathf.Abs(target - displayedPoints);
-            float step = (distance + data.pointsPerSecond + 1f) * Time.deltaTime * speedMultiplier;
-            displayedPoints = Mathf.MoveTowards(displayedPoints, target, step);
+            double distance = System.Math.Abs(target - displayedPoints);
+            double step = (distance + (double)data.pointsPerSecond + 1.0) * Time.deltaTime * speedMultiplier;
+            displayedPoints = MoveTowardsDouble(displayedPoints, target, step);
         }
 
-        int currentPointInt = Mathf.RoundToInt(displayedPoints);
+        double currentFloorValue = System.Math.Floor(displayedPoints);
 
-        if (currentPointInt != lastPointInt)
+        if (System.Math.Abs(currentFloorValue - lastDisplayedValue) > 0.9)
         {
-            lastPointInt = currentPointInt;
-            UpdateText(lastPointInt);
+            lastDisplayedValue = currentFloorValue;
+            UpdateText(lastDisplayedValue);
         }
 
         if (transform.localScale.x > 1.0f)
             transform.localScale = Vector3.Lerp(transform.localScale, Vector3.one, Time.deltaTime * pulseSpeed);
     }
 
-    void UpdateText(int value)
+    double MoveTowardsDouble(double current, double target, double maxDelta)
     {
-        string formattedValue = NumberFormatter.FormatWithDots(value);
-        pointsText.text = prefix + formattedValue;
+        if (System.Math.Abs(target - current) <= maxDelta)
+        {
+            return target;
+        }
+        return current + System.Math.Sign(target - current) * maxDelta;
+    }
+
+    void UpdateText(double value)
+    {
+        if (value < 0.1)
+        {
+            pointsText.text = prefix.TrimEnd();
+        }
+        else
+        {
+            string formattedValue = NumberFormatter.FormatWithDots(value);
+            pointsText.text = prefix + formattedValue;
+        }
     }
 
     public void Pulse()

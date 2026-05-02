@@ -8,6 +8,7 @@ public class Clicker_Skills : MonoBehaviour
     [SerializeField] Skill_AutoClick autoClickSkill;
     [SerializeField] Skill_AntiCheat antiCheatSkill;
     [SerializeField] Skill_AutoCollector autoCollectorSkill;
+    [SerializeField] Skill_AutoLuckyBonusCollector autoluckyCollectorSkill;
     [SerializeField] Skill_Multiplier[] multiplierSkills;
 
 
@@ -35,6 +36,12 @@ public class Clicker_Skills : MonoBehaviour
         set => data.isAutoCollectorActive = value;
     }
 
+    public bool isLuckyCollectorActive
+    {
+        get => data.isLuckyCollectorActive;
+        set => data.isLuckyCollectorActive = value;
+    }
+
     public void UpdateAllSkills(int totalPoints) { }
 
     public void RefreshMultiplierButtons()
@@ -54,5 +61,7 @@ public class Clicker_Skills : MonoBehaviour
         if (antiCheatSkill != null) antiCheatSkill.SetBypassState(data.isAntiCheatBypassActive);
         RefreshMultiplierButtons();
         if (autoCollectorSkill != null) autoCollectorSkill.SetAutoCollectorState(data.isAutoCollectorActive);
+        if (autoluckyCollectorSkill != null)
+            autoluckyCollectorSkill.SetLuckyCollectorState(data.isLuckyCollectorActive);
     }
 }

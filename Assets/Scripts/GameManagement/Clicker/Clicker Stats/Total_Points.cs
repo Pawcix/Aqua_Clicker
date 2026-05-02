@@ -5,7 +5,7 @@ public class Total_Points : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI totalPointsText;
 
-    public void UpdateDisplay(int amount)
+    public void UpdateDisplay(double amount)
     {
         if (totalPointsText == null) return;
 
