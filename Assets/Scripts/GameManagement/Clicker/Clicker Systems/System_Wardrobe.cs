@@ -63,7 +63,7 @@ public class System_Wardrobe : MonoBehaviour
     {
         if (!IsSkinUnlocked(id))
         {
-            Debug.Log("Skin jest zablokowany!");
+            // Debug.Log("Skin jest zablokowany!");
             AudioManager.Instance.PlaySFX("Locked");
             return;
         }
@@ -92,7 +92,6 @@ public class System_Wardrobe : MonoBehaviour
 
     public int GetUnlockedSkinsCount()
     {
-        // Musimy się odwołać do danych przez masterSkills, tak jak w metodzie IsSkinUnlocked
         if (masterSkills != null && masterSkills.data != null && masterSkills.data.unlockedSkinIDs != null)
         {
             return masterSkills.data.unlockedSkinIDs.Count;

@@ -6,31 +6,23 @@ public class Data_Reset : MonoBehaviour
 {
     [SerializeField] System_Data systemData;
     [SerializeField] string fileName = "savegame.json";
-    [ContextMenu("Reset Game Data")]
 
     public void ResetGame()
     {
-        string savePath = Path.Combine(Application.persistentDataPath, fileName);
+        if (System_Achievements.Instance != null)
+            System_Achievements.Instance.DisableChecking();
 
-        if (File.Exists(savePath))
-        {
-            File.Delete(savePath);
-            Debug.Log("<color=red><b>[Data Reset]</b></color> Plik zapisu został usunięty.");
-        }
+        string savePath = Path.Combine(Application.persistentDataPath, fileName);
+        if (File.Exists(savePath)) File.Delete(savePath);
+
+        PlayerPrefs.DeleteAll();
 
         if (systemData != null)
         {
             systemData.pointsCounterFloat = 0f;
-            systemData.timer = 0f;
             systemData.goldenDrops = 0;
-
-            // Debug.Log("<color=cyan><b>[Data Reset]</b></color> Punkty i liczniki zostały wyzerowane.");
-
-            UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
-        }
-        else
-        {
-            // Debug.LogWarning("[Data Reset] Brak referencji do System_Data!");
+            systemData.unlockedAchievementIDs.Clear();
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
     }
 }

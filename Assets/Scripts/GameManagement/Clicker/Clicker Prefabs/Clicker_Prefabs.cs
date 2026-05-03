@@ -11,6 +11,7 @@ public class Clicker_Prefabs : MonoBehaviour
     [SerializeField] Prefab_ComboChain prefabComboChain;
     [SerializeField] Prefab_PPS prefabPPS;
     [SerializeField] Prefab_WorkerList prefabWorkerList;
+    [SerializeField] Prefab_Achievement prefabAchievement;
 
     System_Data data;
 
@@ -67,6 +68,14 @@ public class Clicker_Prefabs : MonoBehaviour
         if (prefabWorkerList != null && data != null)
         {
             prefabWorkerList.UpdateWorkerList(data.workerLevels);
+        }
+
+        if (prefabAchievement != null && data != null && System_Achievements.Instance != null)
+        {
+            int unlocked = data.unlockedAchievementIDs.Count;
+            int total = System_Achievements.Instance.GetAllAchievements().Count;
+
+            prefabAchievement.UpdateAchievementsPrefab(unlocked, total);
         }
     }
 }

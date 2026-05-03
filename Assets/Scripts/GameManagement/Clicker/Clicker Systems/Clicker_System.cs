@@ -18,9 +18,12 @@ public class Clicker_System : MonoBehaviour
 
     [Header("Systems:")]
     [SerializeField] System_Add addSystem;
-    [SerializeField] System_AntiCheat antiCheat;
     [SerializeField] System_CPS cpsSystem;
     [SerializeField] System_WordsEffect clickWords;
+    [SerializeField] System_Achievements achievementSystem;
+
+    [Header("Anti-Cheat:")]
+    [SerializeField] AntiCheat_Clicks antiClick;
 
     float uiUpdateTimer = 0f;
     float uiUpdateInterval = 0.1f;
@@ -59,7 +62,7 @@ public class Clicker_System : MonoBehaviour
     public void Click()
     {
         if (addSystem == null || data == null) return;
-        if (antiCheat != null && !antiCheat.CheckClickLegal()) return;
+        if (antiClick != null && !antiClick.CheckClickLegal()) return;
         if (cpsSystem != null) cpsSystem.OnClickRegistered();
 
         double pointsFromThisClick = (double)data.pointsPerClick * data.clickMultiplier;
@@ -78,5 +81,10 @@ public class Clicker_System : MonoBehaviour
 
         if (PointsDisplay.Instance != null) PointsDisplay.Instance.Pulse();
         if (clickWords != null) clickWords.ShowRandomWord();
+
+        if (System_Achievements.Instance != null)
+        {
+            System_Achievements.Instance.CheckAchievements();
+        }
     }
 }

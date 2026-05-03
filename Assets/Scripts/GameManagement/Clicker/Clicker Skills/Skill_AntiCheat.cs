@@ -28,7 +28,5 @@ public class Skill_AntiCheat : MonoBehaviour
         masterSkills.isAntiCheatBypassActive = active;
         if (bypassButtonImage != null)
             bypassButtonImage.sprite = active ? activeIcon : neutralIcon;
-
-        // Debug.Log($"<color=cyan>[Skill]</color> AntiCheat Bypass: {active}");
     }
 }

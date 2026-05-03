@@ -20,7 +20,6 @@ public class System_AwayIncome : MonoBehaviour
     public void CalculateAwayIncome()
     {
         if (!PlayerPrefs.HasKey("LastSeen")) return;
-
         string lastSeenStr = PlayerPrefs.GetString("LastSeen");
 
         if (DateTime.TryParse(lastSeenStr, out DateTime lastSeen))

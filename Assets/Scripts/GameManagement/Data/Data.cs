@@ -20,5 +20,5 @@ public class GameData
     public bool LuckyCollectorActive;
     public List<int> workerLevels;
     public List<int> unlockedSkinIDs;
-    // public List<HistoryList> awayHistory = new List<HistoryList>();
+    public List<string> unlockedAchievementIDs;
 }

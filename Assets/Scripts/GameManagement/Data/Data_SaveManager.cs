@@ -34,7 +34,6 @@ public class Data_SaveManager : MonoBehaviour
             pps = systemData.pointsPerSecond,
             workerLevels = new List<int>(systemData.workerLevels),
             unlockedSkinIDs = new List<int>(systemData.unlockedSkinIDs),
-            // awayHistory = new List<HistoryList>(systemData.awayHistory),
             time = Timer.Instance != null ? Timer.Instance.TotalPlayTime : systemData.timer,
             skinIndex = systemData.currentSkinIndex,
             clickMultiplier = systemData.clickMultiplier,
@@ -48,6 +47,7 @@ public class Data_SaveManager : MonoBehaviour
             autoCollectorActive = systemData.isAutoCollectorActive,
             LuckyCollectorActive = systemData.isLuckyCollectorActive,
             totalAwayEarnings = systemData.totalAwayEarnings,
+            unlockedAchievementIDs = new List<string>(systemData.unlockedAchievementIDs)
         };
 
         string json = JsonUtility.ToJson(dataToSave, true);
@@ -58,7 +58,11 @@ public class Data_SaveManager : MonoBehaviour
 
     public void LoadGame()
     {
-        if (!File.Exists(savePath)) return;
+        if (!File.Exists(savePath))
+        {
+            if (System_Achievements.Instance != null) System_Achievements.Instance.EnableChecking();
+            return;
+        }
 
         try
         {
@@ -84,6 +88,12 @@ public class Data_SaveManager : MonoBehaviour
             systemData.isLuckyCollectorActive = loadedData.LuckyCollectorActive;
             systemData.highestComboMultiplier = loadedData.highestComboMultiplier;
             systemData.totalAwayEarnings = loadedData.totalAwayEarnings;
+            systemData.unlockedAchievementIDs = new List<string>(loadedData.unlockedAchievementIDs);
+
+            if (loadedData.unlockedAchievementIDs != null)
+                systemData.unlockedAchievementIDs = new List<string>(loadedData.unlockedAchievementIDs);
+            else
+                systemData.unlockedAchievementIDs = new List<string>();
 
             if (loadedData.workerLevels != null)
                 systemData.workerLevels = new List<int>(loadedData.workerLevels);
@@ -96,15 +106,21 @@ public class Data_SaveManager : MonoBehaviour
 
             if (System_Wardrobe.Instance != null)
                 System_Wardrobe.Instance.LoadSkin(systemData.currentSkinIndex);
+
+            if (System_Achievements.Instance != null)
+            {
+                System_Achievements.Instance.EnableChecking();
+            }
         }
         catch (Exception e)
         {
-            Debug.LogError("Wykryto zmianę w pliku zapisu lub błąd konwersji: " + e.Message);
-
+            Debug.LogError($"Failed to load save data: {e.Message}");
             if (AntiCheat_JSON.Instance != null)
             {
                 AntiCheat_JSON.Instance.TriggerFileTamperProtection();
             }
+
+            if (System_Achievements.Instance != null) System_Achievements.Instance.EnableChecking();
         }
     }
 
@@ -139,7 +155,7 @@ public class Data_SaveManager : MonoBehaviour
         }
         else
         {
-            var away = UnityEngine.Object.FindFirstObjectByType<System_AwayIncome>();
+            var away = GameObject.FindAnyObjectByType<System_AwayIncome>();
             if (away != null) away.CalculateAwayIncome();
         }
     }
