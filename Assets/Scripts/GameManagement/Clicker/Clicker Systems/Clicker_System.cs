@@ -24,6 +24,7 @@ public class Clicker_System : MonoBehaviour
 
     [Header("Anti-Cheat:")]
     [SerializeField] AntiCheat_Clicks antiClick;
+    [SerializeField] AntiCheat_Break antiBreak;
 
     float uiUpdateTimer = 0f;
     float uiUpdateInterval = 0.1f;
