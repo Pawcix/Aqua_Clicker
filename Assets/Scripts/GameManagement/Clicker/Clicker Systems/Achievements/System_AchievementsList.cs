@@ -6,6 +6,7 @@ public class System_AchievementsList : MonoBehaviour
     [Header("References:")]
     [SerializeField] System_Data data;
     [SerializeField] System_Achievements achievementManager;
+    [SerializeField] System_AchievementsProgressBar progressBar;
 
     [Header("UI Settings:")]
     [SerializeField] GameObject achievementPrefab;
@@ -43,6 +44,11 @@ public class System_AchievementsList : MonoBehaviour
                 bool isUnlocked = data.unlockedAchievementIDs.Contains(ach.id);
                 prefabScript.Setup(ach, isUnlocked);
             }
+        }
+
+        if (progressBar != null)
+        {
+            progressBar.UpdateProgressBar();
         }
     }
 }

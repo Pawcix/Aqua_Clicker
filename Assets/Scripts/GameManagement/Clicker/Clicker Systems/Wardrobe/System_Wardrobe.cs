@@ -9,6 +9,7 @@ public class System_Wardrobe : MonoBehaviour
     public static System_Wardrobe Instance;
 
     [Header("References:")]
+    [SerializeField] System_WardrobeProgressBar wardrobeProgressBar;
     [SerializeField] Clicker_Skills masterSkills;
     [SerializeField] Image mainClickerDisplay;
 
@@ -33,6 +34,8 @@ public class System_Wardrobe : MonoBehaviour
         {
             StartCoroutine(ResetScrollRoutine());
         }
+
+        RefreshProgressBar();
     }
 
     public int GetCurrentSelectedID()
@@ -59,11 +62,33 @@ public class System_Wardrobe : MonoBehaviour
         return masterSkills.data.unlockedSkinIDs.Contains(id);
     }
 
+    public bool IsSkinNew(int id)
+    {
+        if (masterSkills == null || masterSkills.data == null) return false;
+
+        bool unlocked = IsSkinUnlocked(id);
+        bool seen = masterSkills.data.seenSkinIDs.Contains(id);
+
+        return unlocked && !seen;
+    }
+
+    public void MarkSkinAsSeen(int id)
+    {
+        if (masterSkills == null || masterSkills.data == null) return;
+
+        if (!masterSkills.data.seenSkinIDs.Contains(id))
+        {
+            masterSkills.data.seenSkinIDs.Add(id);
+            RefreshAllItemFrames();
+
+            if (Data_SaveManager.instance != null) Data_SaveManager.instance.SaveGame();
+        }
+    }
+
     public void SelectSkin(int id)
     {
         if (!IsSkinUnlocked(id))
         {
-            // Debug.Log("Skin jest zablokowany!");
             AudioManager.Instance.PlaySFX("Locked");
             return;
         }
@@ -73,6 +98,7 @@ public class System_Wardrobe : MonoBehaviour
         {
             masterSkills.currentSkinIndex = id;
             if (mainClickerDisplay != null) mainClickerDisplay.sprite = skin.skinSprite;
+            RefreshProgressBar();
 
             AudioManager.Instance.PlaySFX("Equip");
             RefreshAllItemFrames();
@@ -97,6 +123,34 @@ public class System_Wardrobe : MonoBehaviour
             return masterSkills.data.unlockedSkinIDs.Count;
         }
         return 0;
+    }
+
+    public void RefreshProgressBar()
+    {
+        if (wardrobeProgressBar != null)
+        {
+            wardrobeProgressBar.UpdateProgressBar();
+        }
+    }
+
+    public void UnlockSkin(int skinID)
+    {
+        if (masterSkills == null || masterSkills.data == null) return;
+
+        if (!masterSkills.data.unlockedSkinIDs.Contains(skinID))
+        {
+            masterSkills.data.unlockedSkinIDs.Add(skinID);
+
+            // TO JEST KLUCZOWE:
+            // Musimy odświeżyć wizualia wszystkich przedmiotów, 
+            // żeby te, które są już na scenie, zapaliły swoje kropki.
+            RefreshAllItemFrames();
+            RefreshProgressBar();
+
+            if (Data_SaveManager.instance != null) Data_SaveManager.instance.SaveGame();
+
+            Debug.Log($"<color=green>[Wardrobe]</color> Odblokowano i odświeżono skin ID: {skinID}");
+        }
     }
 
     IEnumerator ResetScrollRoutine()

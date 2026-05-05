@@ -20,7 +20,9 @@ public class Clicker_System : MonoBehaviour
     [SerializeField] System_Add addSystem;
     [SerializeField] System_CPS cpsSystem;
     [SerializeField] System_WordsEffect clickWords;
+    // [SerializeField] System_Notification wardrobeBadge;
     [SerializeField] System_Achievements achievementSystem;
+    [SerializeField] System_WardrobeUnlockSkin wardrobeUnlockSkin;
 
     [Header("Anti-Cheat:")]
     [SerializeField] AntiCheat_Clicks antiClick;
@@ -36,6 +38,11 @@ public class Clicker_System : MonoBehaviour
         {
             UpdateHeavyUI();
             uiUpdateTimer = 0f;
+        }
+
+        if (achievementSystem != null && achievementSystem.IsReady())
+        {
+            achievementSystem.CheckAchievements();
         }
     }
 

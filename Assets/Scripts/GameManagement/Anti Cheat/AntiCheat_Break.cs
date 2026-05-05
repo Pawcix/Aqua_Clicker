@@ -8,10 +8,9 @@ public class AntiCheat_Break : MonoBehaviour
 
     [Header("UI References:")]
     [SerializeField] GameObject healthModal;
-    [SerializeField] TextMeshProUGUI sessionTimeText;
 
-    private float sessionTimer = 0f;
-    private bool wasShownThisSession = false;
+    float sessionTimer = 0f;
+    bool wasShownThisSession = false;
 
     void Start()
     {
@@ -36,23 +35,15 @@ public class AntiCheat_Break : MonoBehaviour
 
     void ShowHealthReminder()
     {
-        Debug.Log("[Health Check] Aktywowano przypomnienie o przerwie.");
-
         if (Modal_AC_Break.Instance != null)
         {
-            Modal_AC_Break.Instance.ShowModal();
-        }
-        else
-        {
-            Debug.LogError("Nie znaleziono Modal_AC_Break na scenie! Sprawdź czy skrypt jest przypisany do obiektu.");
-        }
-    }
+            int hours = (int)(sessionTimer / 3600);
+            int minutes = (int)((sessionTimer % 3600) / 60);
+            int seconds = (int)(sessionTimer % 60);
+            string formattedTime = string.Format("{0:D2}:{1:D2}:{2:D2}", hours, minutes, seconds);
 
-    public void CloseModal()
-    {
-        if (healthModal != null)
-        {
-            healthModal.SetActive(false);
+            Modal_AC_Break.Instance.ShowModal(formattedTime);
+            wasShownThisSession = true;
         }
     }
 }

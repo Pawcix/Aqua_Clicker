@@ -17,3 +17,4 @@ MonoBehaviour:
   icon: {fileID: -1372219598972206952, guid: a82a0ca6a80e8234993867da85a44182, type: 3}
   type: 0
   requiredValue: 10000
+  rewardSkinID: 5

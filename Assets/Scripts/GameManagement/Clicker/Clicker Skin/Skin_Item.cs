@@ -10,6 +10,7 @@ public class Skin_Item : MonoBehaviour
     [SerializeField] Image frameImage;
     [SerializeField] Sprite normalFrame;
     [SerializeField] Sprite selectedFrame;
+    // [SerializeField] System_NotificationSkin skinBadge;
 
     Button button;
     System_Wardrobe wardrobe;
@@ -23,6 +24,13 @@ public class Skin_Item : MonoBehaviour
             btn.onClick.AddListener(OnItemClicked);
     }
 
+    void Start()
+    {
+        if (wardrobe == null) wardrobe = Object.FindFirstObjectByType<System_Wardrobe>();
+
+        Invoke(nameof(RefreshVisuals), 0.1f);
+    }
+
     void OnEnable()
     {
         RefreshVisuals();
@@ -32,6 +40,7 @@ public class Skin_Item : MonoBehaviour
     {
         if (System_Wardrobe.Instance == null) return;
 
+        System_Wardrobe.Instance.MarkSkinAsSeen(skinID);
         System_Wardrobe.Instance.SelectSkin(skinID);
     }
 
@@ -41,15 +50,19 @@ public class Skin_Item : MonoBehaviour
 
         int myID = skinID;
         bool isUnlocked = System_Wardrobe.Instance.IsSkinUnlocked(myID);
-        bool isSelected = System_Wardrobe.Instance.GetCurrentSelectedID() == myID;
 
-        frameImage.sprite = isSelected ? selectedFrame : normalFrame;
         var skinData = System_Wardrobe.Instance.GetAllSkins().Find(s => s.skinID == myID);
 
         if (skinData != null)
         {
             frameImage.sprite = isUnlocked ? skinData.skinSprite : skinData.lockedSprite;
-            frameImage.color = isUnlocked ? Color.white : new Color(0.5f, 0.5f, 0.5f, 1f);
+            frameImage.color = isUnlocked ? Color.white : new Color(0.2f, 0.2f, 0.2f, 1f);
         }
+
+        // if (skinBadge != null)
+        // {
+        //     bool isNew = System_Wardrobe.Instance.IsSkinNew(skinID);
+        //     skinBadge.SetBadge(isNew);
+        // }
     }
 }

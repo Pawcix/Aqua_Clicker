@@ -17,4 +17,7 @@ public class Achievement : ScriptableObject
     [Header("Requirements")]
     public AchievementType type;
     public double requiredValue;
+
+    [Header("Reward")]
+    public int rewardSkinID = -1;
 }

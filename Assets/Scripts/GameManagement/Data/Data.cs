@@ -20,5 +20,6 @@ public class GameData
     public bool LuckyCollectorActive;
     public List<int> workerLevels;
     public List<int> unlockedSkinIDs;
+    public List<int> seenSkinIDs;
     public List<string> unlockedAchievementIDs;
 }

@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 
 public class Modal_AC_Break : MonoBehaviour
@@ -6,6 +7,7 @@ public class Modal_AC_Break : MonoBehaviour
 
     [Header("UI Elements:")]
     [SerializeField] GameObject breakModal;
+    [SerializeField] TextMeshProUGUI sessionTimeText;
 
     void Awake()
     {
@@ -18,12 +20,16 @@ public class Modal_AC_Break : MonoBehaviour
         }
     }
 
-    public void ShowModal()
+    public void ShowModal(string timeSpent)
     {
         if (breakModal != null)
         {
             breakModal.SetActive(true);
-            Time.timeScale = 0f;
+
+            if (sessionTimeText != null)
+            {
+                sessionTimeText.text = $"Session: <color=yellow>{timeSpent}</color>";
+            }
         }
     }
 
@@ -32,7 +38,6 @@ public class Modal_AC_Break : MonoBehaviour
         if (breakModal != null)
         {
             breakModal.SetActive(false);
-            Time.timeScale = 1f;
         }
     }
 }

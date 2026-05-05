@@ -27,6 +27,22 @@ public class Modal_Wardrobe : MonoBehaviour
         if (!wasActive)
         {
             wardrobeModal.SetActive(true);
+            // if (System_Notification.Instance != null)
+            // {
+            //     System_Notification.Instance.SetAlert(false);
+            // }
         }
+        else
+        {
+            wardrobeModal.SetActive(false);
+        }
+    }
+
+    public void OnWardrobeButtonClicked()
+    {
+        // if (System_Notification.Instance != null)
+        // {
+        //     System_Notification.Instance.SetAlert(false);
+        // }
     }
 }

@@ -1,6 +1,6 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 using System.Collections.Generic;
 
 public class System_Achievements : MonoBehaviour
@@ -71,6 +71,11 @@ public class System_Achievements : MonoBehaviour
     {
         if (data.unlockedAchievementIDs.Contains(ach.id)) return;
         data.unlockedAchievementIDs.Add(ach.id);
+
+        if (System_WardrobeUnlockSkin.Instance != null)
+        {
+            System_WardrobeUnlockSkin.Instance.GrantReward(ach);
+        }
 
         if (notificationPanel != null)
         {

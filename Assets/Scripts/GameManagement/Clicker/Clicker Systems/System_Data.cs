@@ -24,6 +24,7 @@ public class System_Data : MonoBehaviour
     public bool isLuckyCollectorActive = false;
     public bool isGoldRushActive = false;
     public List<int> unlockedSkinIDs = new List<int> { 0 };
+    public List<int> seenSkinIDs = new List<int> { 0 };
 
     [Header("Events:")]
     public int goldenDrops = 0;
