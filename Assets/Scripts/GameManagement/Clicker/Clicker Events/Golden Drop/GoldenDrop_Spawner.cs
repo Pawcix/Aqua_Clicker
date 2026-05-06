@@ -12,8 +12,8 @@ public class GoldenDrop_Spawner : MonoBehaviour
     [SerializeField] float maxSpawnTime = 15f;
 
     [Header("Fall Speed Randomization:")]
-    [SerializeField] float minFallSpeed = 200f; // Minimalna prędkość
-    [SerializeField] float maxFallSpeed = 450f; // Maksymalna prędkość
+    [SerializeField] float minFallSpeed = 200f;
+    [SerializeField] float maxFallSpeed = 450f;
 
     bool isInRainMode = false;
     float originalMinTime;
@@ -37,13 +37,11 @@ public class GoldenDrop_Spawner : MonoBehaviour
         GameObject drop = Instantiate(goldenDropPrefab, spawnArea);
         RectTransform dropRect = drop.GetComponent<RectTransform>();
 
-        // 1. Losowanie pozycji X
         float width = spawnArea.rect.width / 2;
         float randomX = Random.Range(-width + 50f, width - 50f);
         float startY = (spawnArea.rect.height / 2) + 100f;
         dropRect.anchoredPosition = new Vector2(randomX, startY);
 
-        // 2. LOSOWANIE PRĘDKOŚCI
         GoldenDrop_Item itemScript = drop.GetComponent<GoldenDrop_Item>();
         if (itemScript != null)
         {

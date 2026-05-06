@@ -31,8 +31,6 @@ public class AntiCheat_JSON : MonoBehaviour
             antiCheatPanel.SetActive(true);
 
             Time.timeScale = 0f;
-
-            // Debug.LogWarning("[AntiCheat] Wykryto manipulację w plikach lokalnych! Gra zablokowana.");
         }
     }
 

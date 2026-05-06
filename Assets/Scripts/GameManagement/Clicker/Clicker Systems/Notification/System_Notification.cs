@@ -1,52 +1,41 @@
-// using UnityEngine;
+using UnityEngine;
 
-// public enum NotificationType { Skin, Achievement, ShopItem, GeneralWardrobe }
+public class System_Notification : MonoBehaviour
+{
+    public static System_Notification Instance;
+    public GameObject badgeObject;
+    [SerializeField] System_Data data;
 
-// public class System_Notification : MonoBehaviour
-// {
-//     public static System_Notification Instance;
+    void Awake()
+    {
+        if (Instance == null) Instance = this;
+    }
 
-//     [SerializeField] System_Data data; 
+    void Start()
+    {
+        CheckGlobalNotification();
+    }
 
-//     void Awake()
-//     {
-//         if (Instance == null) Instance = this;
-//     }
+    public void CheckGlobalNotification()
+    {
+        if (data == null || badgeObject == null) return;
 
-//     public bool ShouldShowNotification(NotificationType type, int id)
-//     {
-//         if (data == null) return false;
+        bool hasAnyNewSkin = false;
+        foreach (int id in data.unlockedSkinIDs)
+        {
+            if (id == 0) continue;
 
-//         switch (type)
-//         {
-//             case NotificationType.Skin:
-//                 // Sprawdza konkretny skin po ID
-//                 return data.unlockedSkinIDs.Contains(id) && !data.seenSkinIDs.Contains(id);
+            if (!data.seenSkinIDs.Contains(id))
+            {
+                hasAnyNewSkin = true;
+                break;
+            }
+        }
+        badgeObject.SetActive(hasAnyNewSkin);
+    }
 
-//             case NotificationType.GeneralWardrobe:
-//                 // Sprawdza, czy w CAŁEJ garderobie jest jakikolwiek nieobejrzany skin
-//                 // Pętla przechodzi przez wszystkie odblokowane i sprawdza czy są w "seen"
-//                 foreach (int unlockedID in data.unlockedSkinIDs)
-//                 {
-//                     if (!data.seenSkinIDs.Contains(unlockedID)) return true;
-//                 }
-//                 return false;
-
-//             case NotificationType.Achievement:
-//                 return !data.unlockedAchievementIDs.Contains(id.ToString());
-
-//             default:
-//                 return false;
-//         }
-//     }
-
-//     // Metoda, która odświeży wszystkie kropki na scenie
-//     public void RefreshAllBadges()
-//     {
-//         System_NotificationBadge[] allBadges = Object.FindObjectsByType<System_NotificationBadge>(FindObjectsSortMode.None);
-//         foreach (var badge in allBadges)
-//         {
-//             badge.Refresh();
-//         }
-//     }
-// }
+    public void SetAlert(bool state)
+    {
+        if (badgeObject != null) badgeObject.SetActive(state);
+    }
+}

@@ -17,10 +17,10 @@ public class System_WardrobeUnlockSkin : MonoBehaviour
         {
             System_Wardrobe.Instance.UnlockSkin(achievement.rewardSkinID);
 
-            // if (System_Notification.Instance != null)
-            // {
-            //     System_Notification.Instance.SetAlert(true);
-            // }
+            if (System_Notification.Instance != null)
+            {
+                System_Notification.Instance.SetAlert(true);
+            }
         }
     }
 }

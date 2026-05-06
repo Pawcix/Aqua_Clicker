@@ -36,6 +36,5 @@ public class Resolution : MonoBehaviour
     {
         UnityEngine.Resolution res = resolutions[index];
         Screen.SetResolution(res.width, res.height, Screen.fullScreen);
-        // Debug.Log("Resolution set to: " + res.width + " x " + res.height);
     }
 }

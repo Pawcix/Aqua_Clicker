@@ -29,8 +29,6 @@ public class Modal : MonoBehaviour
 
             if (AudioManager.Instance != null)
                 AudioManager.Instance.PlaySFX("Open");
-
-            // Debug.Log($"[Modal] {modalPanel.name} opened with Order: {orderValue}");
         }
     }
 
@@ -39,11 +37,6 @@ public class Modal : MonoBehaviour
         if (targetModal != null)
         {
             targetModal.SetActive(false);
-            // Debug.Log($"[Modal] Closed: {targetModal.name}");
-        }
-        else
-        {
-            // Debug.LogWarning("[Modal] Target modal is null! Check your Button settings.");
         }
     }
 }

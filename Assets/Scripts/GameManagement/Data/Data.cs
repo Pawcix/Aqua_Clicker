@@ -18,8 +18,9 @@ public class GameData
     public bool autoCollectorActive;
     public bool antiCheatBypassActive;
     public bool LuckyCollectorActive;
-    public List<int> workerLevels;
-    public List<int> unlockedSkinIDs;
-    public List<int> seenSkinIDs;
-    public List<string> unlockedAchievementIDs;
+
+    public List<int> workerLevels = new List<int>();
+    public List<int> unlockedSkinIDs = new List<int>();
+    public List<int> seenSkinIDs = new List<int>();
+    public List<string> unlockedAchievementIDs = new List<string>();
 }

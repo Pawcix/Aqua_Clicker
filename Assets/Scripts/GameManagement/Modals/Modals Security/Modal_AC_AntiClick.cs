@@ -44,7 +44,6 @@ public class Modal_AC_AntiClick : MonoBehaviour
             currentTime--;
         }
 
-        // KONIEC KARY
         if (timerText != null) timerText.text = "Returning to game...";
         yield return new WaitForSecondsRealtime(0.5f);
 

@@ -18,8 +18,6 @@ public class Modal_DebugPanel : MonoBehaviour
         {
             bool isVisible = debugPanelModal.activeSelf;
             debugPanelModal.SetActive(!isVisible);
-
-            // Debug.Log($"[debugPanelModal] Modal jest teraz: {(!isVisible ? "WŁĄCZONY" : "WYŁĄCZONY")}");
         }
     }
 }

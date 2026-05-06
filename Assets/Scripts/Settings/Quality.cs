@@ -16,9 +16,4 @@ public class Quality : MonoBehaviour
         qualityDropdown.value = QualitySettings.GetQualityLevel();
         qualityDropdown.RefreshShownValue();
     }
-
-    public void SetQuality(int index)
-    {
-        // Debug.Log("Quality level: " + QualitySettings.names[index]);
-    }
 }

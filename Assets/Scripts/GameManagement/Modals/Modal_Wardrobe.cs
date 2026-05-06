@@ -7,10 +7,7 @@ public class Modal_Wardrobe : MonoBehaviour
 
     void Awake()
     {
-        if (wardrobeModal != null)
-        {
-            wardrobeModal.SetActive(false);
-        }
+        if (wardrobeModal != null) wardrobeModal.SetActive(false);
     }
 
     public void ToggleSettings()
@@ -19,30 +16,24 @@ public class Modal_Wardrobe : MonoBehaviour
 
         bool wasActive = wardrobeModal.activeInHierarchy;
 
-        if (keyShortsSource != null)
-        {
-            keyShortsSource.CloseAllModals();
-        }
-
-        if (!wasActive)
-        {
-            wardrobeModal.SetActive(true);
-            // if (System_Notification.Instance != null)
-            // {
-            //     System_Notification.Instance.SetAlert(false);
-            // }
-        }
-        else
+        if (wasActive)
         {
             wardrobeModal.SetActive(false);
         }
-    }
 
-    public void OnWardrobeButtonClicked()
-    {
-        // if (System_Notification.Instance != null)
-        // {
-        //     System_Notification.Instance.SetAlert(false);
-        // }
+        else
+        {
+            if (keyShortsSource != null) keyShortsSource.CloseAllModals();
+
+            wardrobeModal.SetActive(true);
+
+            if (System_Notification.Instance != null)
+            {
+                System_Notification.Instance.SetAlert(false);
+            }
+
+            if (AudioManager.Instance != null) AudioManager.Instance.PlaySFX("Open");
+        }
     }
 }
+

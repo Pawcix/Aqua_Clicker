@@ -79,9 +79,12 @@ public class System_Wardrobe : MonoBehaviour
         if (!masterSkills.data.seenSkinIDs.Contains(id))
         {
             masterSkills.data.seenSkinIDs.Add(id);
-            RefreshAllItemFrames();
 
             if (Data_SaveManager.instance != null) Data_SaveManager.instance.SaveGame();
+            if (System_Notification.Instance != null)
+                System_Notification.Instance.CheckGlobalNotification();
+
+            RefreshAllItemFrames();
         }
     }
 
@@ -141,17 +144,17 @@ public class System_Wardrobe : MonoBehaviour
         {
             masterSkills.data.unlockedSkinIDs.Add(skinID);
 
-            // TO JEST KLUCZOWE:
-            // Musimy odświeżyć wizualia wszystkich przedmiotów, 
-            // żeby te, które są już na scenie, zapaliły swoje kropki.
             RefreshAllItemFrames();
             RefreshProgressBar();
 
-            if (Data_SaveManager.instance != null) Data_SaveManager.instance.SaveGame();
+            if (System_Notification.Instance != null)
+                System_Notification.Instance.CheckGlobalNotification();
 
-            Debug.Log($"<color=green>[Wardrobe]</color> Odblokowano i odświeżono skin ID: {skinID}");
+            if (Data_SaveManager.instance != null) Data_SaveManager.instance.SaveGame();
         }
     }
+
+    public System_Data data => masterSkills != null ? masterSkills.data : null;
 
     IEnumerator ResetScrollRoutine()
     {

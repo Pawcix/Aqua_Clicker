@@ -69,8 +69,8 @@ public class Data_SaveManager : MonoBehaviour
         {
             string encryptedJson = File.ReadAllText(savePath);
             string json = EncryptDecrypt(encryptedJson);
-
             GameData loadedData = JsonUtility.FromJson<GameData>(json);
+
             if (loadedData == null) throw new Exception("Invalid Data");
 
             systemData.pointsCounterFloat = loadedData.score;
@@ -78,41 +78,29 @@ public class Data_SaveManager : MonoBehaviour
             systemData.pointsPerSecond = loadedData.pps;
             systemData.timer = loadedData.time;
             systemData.currentSkinIndex = loadedData.skinIndex;
-            systemData.seenSkinIDs = loadedData.seenSkinIDs;
             systemData.clickMultiplier = loadedData.clickMultiplier;
-            systemData.isAntiCheatBypassActive = loadedData.antiCheatBypassActive;
-            systemData.isAutoClickerActive = loadedData.autoClickActive;
+
             systemData.goldenDrops = loadedData.goldenDrops;
             systemData.luckyBonus = loadedData.luckyBonus;
             systemData.goldenRainTimer = loadedData.goldenRainTimer;
             systemData.goldRushTimer = loadedData.goldRushTimer;
+            systemData.highestComboMultiplier = loadedData.highestComboMultiplier;
+
+            systemData.isAntiCheatBypassActive = loadedData.antiCheatBypassActive;
+            systemData.isAutoClickerActive = loadedData.autoClickActive;
             systemData.isAutoCollectorActive = loadedData.autoCollectorActive;
             systemData.isLuckyCollectorActive = loadedData.LuckyCollectorActive;
-            systemData.highestComboMultiplier = loadedData.highestComboMultiplier;
-            systemData.totalAwayEarnings = loadedData.totalAwayEarnings;
-            systemData.unlockedAchievementIDs = new List<string>(loadedData.unlockedAchievementIDs);
 
-            if (loadedData.unlockedAchievementIDs != null)
-                systemData.unlockedAchievementIDs = new List<string>(loadedData.unlockedAchievementIDs);
-            else
-                systemData.unlockedAchievementIDs = new List<string>();
-
-            if (loadedData.workerLevels != null)
-                systemData.workerLevels = new List<int>(loadedData.workerLevels);
-
-            if (loadedData.unlockedSkinIDs != null)
-                systemData.unlockedSkinIDs = new List<int>(loadedData.unlockedSkinIDs);
+            systemData.workerLevels = loadedData.workerLevels ?? new List<int>();
+            systemData.unlockedSkinIDs = loadedData.unlockedSkinIDs ?? new List<int> { 0 };
+            systemData.seenSkinIDs = loadedData.seenSkinIDs ?? new List<int> { 0 };
+            systemData.unlockedAchievementIDs = loadedData.unlockedAchievementIDs ?? new List<string>();
 
             if (Timer.Instance != null) Timer.Instance.LoadSavedTime(loadedData.time);
             if (clickerSkills != null) clickerSkills.RefreshSkillsVisuals();
-
-            if (System_Wardrobe.Instance != null)
-                System_Wardrobe.Instance.LoadSkin(systemData.currentSkinIndex);
-
-            if (System_Achievements.Instance != null)
-            {
-                System_Achievements.Instance.EnableChecking();
-            }
+            if (System_Wardrobe.Instance != null) System_Wardrobe.Instance.LoadSkin(systemData.currentSkinIndex);
+            if (System_Notification.Instance != null) System_Notification.Instance.CheckGlobalNotification();
+            if (System_Achievements.Instance != null) System_Achievements.Instance.EnableChecking();
         }
         catch (Exception e)
         {
