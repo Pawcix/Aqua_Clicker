@@ -16,17 +16,25 @@ public class Worker_Element : MonoBehaviour
     System_Data data;
     Worker workerTemplate;
     int workerID;
+    int cachedAmount;
+    double cachedTotalPrice;
 
     void Update()
     {
         if (buyButton != null && data != null && workerTemplate != null)
         {
-            double currentPrice = workerTemplate.GetPriceForLevel(data.workerLevels[workerID]);
-            bool canAfford = data.pointsCounterFloat >= currentPrice;
+            CalculateCurrentBulkStats();
+
+            bool canAfford = data.pointsCounterFloat >= cachedTotalPrice && cachedAmount > 0;
 
             if (buyButton.interactable != canAfford)
             {
                 buyButton.interactable = canAfford;
+            }
+
+            if (Worker_PurchaseSettings.CurrentMode == Worker_PurchaseSettings.PurchaseMode.Max)
+            {
+                UpdatePriceText();
             }
         }
     }
@@ -43,18 +51,44 @@ public class Worker_Element : MonoBehaviour
         buyButton.onClick.AddListener(BuyWorker);
     }
 
-    void BuyWorker()
+    void CalculateCurrentBulkStats()
     {
         int currentLevel = data.workerLevels[workerID];
-        double currentPrice = workerTemplate.GetPriceForLevel(currentLevel);
 
-        if (data.pointsCounterFloat >= currentPrice)
+        switch (Worker_PurchaseSettings.CurrentMode)
         {
-            data.pointsCounterFloat -= currentPrice;
+            case Worker_PurchaseSettings.PurchaseMode.x1:
+                cachedAmount = 1;
+                break;
+            case Worker_PurchaseSettings.PurchaseMode.x5:
+                cachedAmount = 5;
+                break;
+            case Worker_PurchaseSettings.PurchaseMode.x10:
+                cachedAmount = 10;
+                break;
+            case Worker_PurchaseSettings.PurchaseMode.Max:
+                cachedAmount = workerTemplate.GetMaxAffordable(currentLevel, data.pointsCounterFloat);
+                if (cachedAmount <= 0) cachedAmount = 1;
+                break;
+        }
 
-            Clicker_System.OnItemBought.Invoke(currentPrice, workerTemplate.basePower);
+        cachedTotalPrice = workerTemplate.GetTotalCost(currentLevel, cachedAmount);
+    }
 
-            data.workerLevels[workerID]++;
+    void BuyWorker()
+    {
+        CalculateCurrentBulkStats();
+
+        if (data.pointsCounterFloat >= cachedTotalPrice && cachedAmount > 0)
+        {
+            data.pointsCounterFloat -= cachedTotalPrice;
+
+            float totalPowerGained = workerTemplate.basePower * cachedAmount;
+
+            Clicker_System.OnItemBought.Invoke(cachedTotalPrice, totalPowerGained);
+
+            data.workerLevels[workerID] += cachedAmount;
+
             UpdateUI();
         }
     }
@@ -64,26 +98,36 @@ public class Worker_Element : MonoBehaviour
         if (data == null || workerTemplate == null) return;
 
         int currentLevel = data.workerLevels[workerID];
-        double currentPrice = workerTemplate.GetPriceForLevel(currentLevel);
-
         float totalPPS = currentLevel * workerTemplate.basePower;
 
         nameText.text = workerTemplate.workerName;
-
         powerText.text = "+" + workerTemplate.basePower.ToString("F1") + "/s";
-
-        priceBuyText.text = NumberFormatter.FormatWithDots(currentPrice);
         workerImage.sprite = workerTemplate.icon;
 
-        if (levelText != null) levelText.text = "Level: " + currentLevel;
-
+        if (levelText != null) levelText.text = "Lvl: " + currentLevel;
         if (totalBonusText != null) totalBonusText.text = "PPS: " + totalPPS.ToString("F1");
-
         if (descriptionText != null) descriptionText.text = workerTemplate.description;
 
-        if (buyButton != null)
+        UpdatePriceText();
+    }
+
+    void UpdatePriceText()
+    {
+        CalculateCurrentBulkStats();
+
+        if (priceBuyText == null) return;
+
+        string finalButtonText = "";
+
+        if (Worker_PurchaseSettings.CurrentMode == Worker_PurchaseSettings.PurchaseMode.Max)
         {
-            buyButton.interactable = data.pointsCounterFloat >= currentPrice;
+            finalButtonText = $"MAX ({cachedAmount})\n{NumberFormatter.FormatWithDots(cachedTotalPrice)}";
         }
+        else
+        {
+            finalButtonText = NumberFormatter.FormatWithDots(cachedTotalPrice);
+        }
+
+        priceBuyText.text = finalButtonText;
     }
 }

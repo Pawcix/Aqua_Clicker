@@ -22,4 +22,18 @@ public class Worker : ScriptableObject
     {
         return basePrice * System.Math.Pow((double)priceMultiplier, level);
     }
+
+    public double GetTotalCost(int currentLevel, int count)
+    {
+        double r = priceMultiplier;
+        double a = basePrice * System.Math.Pow(r, currentLevel);
+        return a * (System.Math.Pow(r, count) - 1) / (r - 1);
+    }
+
+    public int GetMaxAffordable(int currentLevel, double currentPoints)
+    {
+        double r = priceMultiplier;
+        double a = basePrice * System.Math.Pow(r, currentLevel);
+        return (int)System.Math.Floor(System.Math.Log((currentPoints * (r - 1) / a) + 1, r));
+    }
 }

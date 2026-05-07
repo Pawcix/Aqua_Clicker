@@ -8,6 +8,8 @@ public class Worker_List : MonoBehaviour
     [SerializeField] GameObject shopItemPrefab;
     [SerializeField] Transform container;
 
+    List<Worker_Element> spawnedElements = new List<Worker_Element>();
+
     void Start()
     {
         if (data == null)
@@ -27,8 +29,9 @@ public class Worker_List : MonoBehaviour
         }
     }
 
-    void GenerateShop()
+    public void GenerateShop()
     {
+        spawnedElements.Clear();
         foreach (Transform child in container) Destroy(child.gameObject);
 
         for (int i = 0; i < availableWorkers.Count; i++)
@@ -41,7 +44,16 @@ public class Worker_List : MonoBehaviour
             if (ui != null)
             {
                 ui.Setup(availableWorkers[i], i, data);
+                spawnedElements.Add(ui);
             }
+        }
+    }
+
+    public void RefreshAllElements()
+    {
+        foreach (Worker_Element element in spawnedElements)
+        {
+            if (element != null) element.UpdateUI();
         }
     }
 }

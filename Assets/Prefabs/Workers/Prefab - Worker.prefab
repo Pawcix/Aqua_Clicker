@@ -766,6 +766,7 @@ MonoBehaviour:
   descriptionText: {fileID: 4082071985665033654}
   buyButton: {fileID: 7676733774466339307}
   workerImage: {fileID: 1226110314015654707}
+  boxWarning: {fileID: 0}
 --- !u!1 &9200477087953111411
 GameObject:
   m_ObjectHideFlags: 0
