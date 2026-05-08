@@ -67,4 +67,13 @@ public class ToolTip : MonoBehaviour
             PositionTooltip();
         }
     }
+
+    public void UpdateDynamicContent(string newText)
+    {
+        if (tooltipWindow.activeSelf)
+        {
+            tooltipText.text = newText;
+            LayoutRebuilder.ForceRebuildLayoutImmediate(windowRect);
+        }
+    }
 }

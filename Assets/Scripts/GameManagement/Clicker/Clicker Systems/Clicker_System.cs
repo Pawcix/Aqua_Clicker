@@ -32,6 +32,18 @@ public class Clicker_System : MonoBehaviour
 
     void Update()
     {
+        if (data != null && data.pointsPerSecond > 0)
+        {
+            double ppsThisFrame = data.pointsPerSecond * Time.deltaTime;
+
+            data.pointsCounterFloat += ppsThisFrame;
+
+            if (System_Leveling.Instance != null)
+            {
+                System_Leveling.Instance.RegisterPointGain(ppsThisFrame);
+            }
+        }
+
         uiUpdateTimer += Time.deltaTime;
         if (uiUpdateTimer >= uiUpdateInterval)
         {
@@ -80,6 +92,11 @@ public class Clicker_System : MonoBehaviour
         }
 
         addSystem.AddPoints();
+
+        if (System_Leveling.Instance != null)
+        {
+            System_Leveling.Instance.RegisterPointGain(pointsFromThisClick);
+        }
 
         if (ComboChain.Instance != null)
         {

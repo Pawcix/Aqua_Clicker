@@ -23,4 +23,9 @@ public class GameData
     public List<int> unlockedSkinIDs = new List<int>();
     public List<int> seenSkinIDs = new List<int>();
     public List<string> unlockedAchievementIDs = new List<string>();
+
+    public int currentLevel;
+    public int skillPoints;
+    public double currentXP;
+    public double xpToNextLevel;
 }

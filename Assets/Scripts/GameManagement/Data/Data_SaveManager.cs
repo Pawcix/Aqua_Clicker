@@ -48,7 +48,11 @@ public class Data_SaveManager : MonoBehaviour
             autoCollectorActive = systemData.isAutoCollectorActive,
             LuckyCollectorActive = systemData.isLuckyCollectorActive,
             totalAwayEarnings = systemData.totalAwayEarnings,
-            unlockedAchievementIDs = new List<string>(systemData.unlockedAchievementIDs)
+            unlockedAchievementIDs = new List<string>(systemData.unlockedAchievementIDs),
+            currentLevel = systemData.currentLevel,
+            currentXP = systemData.currentXP,
+            xpToNextLevel = systemData.xpToNextLevel,
+            skillPoints = systemData.skillPoints
         };
 
         string json = JsonUtility.ToJson(dataToSave, true);
@@ -95,6 +99,15 @@ public class Data_SaveManager : MonoBehaviour
             systemData.unlockedSkinIDs = loadedData.unlockedSkinIDs ?? new List<int> { 0 };
             systemData.seenSkinIDs = loadedData.seenSkinIDs ?? new List<int> { 0 };
             systemData.unlockedAchievementIDs = loadedData.unlockedAchievementIDs ?? new List<string>();
+
+            systemData.currentLevel = loadedData.currentLevel;
+            systemData.currentXP = loadedData.currentXP;
+            systemData.skillPoints = loadedData.skillPoints;
+
+            if (loadedData.xpToNextLevel > 0)
+                systemData.xpToNextLevel = loadedData.xpToNextLevel;
+            else
+                systemData.xpToNextLevel = 500;
 
             if (Timer.Instance != null) Timer.Instance.LoadSavedTime(loadedData.time);
             if (clickerSkills != null) clickerSkills.RefreshSkillsVisuals();

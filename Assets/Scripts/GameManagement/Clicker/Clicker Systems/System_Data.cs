@@ -25,7 +25,7 @@ public class System_Data : MonoBehaviour
     public bool isGoldRushActive = false;
     public List<int> unlockedSkinIDs = new List<int> { 0 };
     public List<int> seenSkinIDs = new List<int> { 0 };
-    
+
     [Header("Events:")]
     public int goldenDrops = 0;
     public float goldenRainTimer = 300f;
@@ -35,4 +35,10 @@ public class System_Data : MonoBehaviour
 
     [Header("Achievements:")]
     public List<string> unlockedAchievementIDs = new List<string>();
+
+    [Header("Leveling")]
+    public int currentLevel = 1;
+    public double currentXP = 0;
+    public double xpToNextLevel = 0;
+    public int skillPoints = 0;
 }

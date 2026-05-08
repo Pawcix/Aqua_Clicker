@@ -36,6 +36,11 @@ public class System_AwayIncome : MonoBehaviour
                     data.pointsCounterFloat += earned;
                     data.totalAwayEarnings += earned;
 
+                    if (System_Leveling.Instance != null)
+                    {
+                        System_Leveling.Instance.RegisterPointGain(earned);
+                    }
+
                     DisplayNotification(earned, timeAway);
                     UpdateAllUI();
                 }
