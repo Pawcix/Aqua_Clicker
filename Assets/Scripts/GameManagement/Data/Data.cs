@@ -28,4 +28,7 @@ public class GameData
     public int skillPoints;
     public double currentXP;
     public double xpToNextLevel;
+
+    public float critChance;
+    public float critMultiplier;
 }

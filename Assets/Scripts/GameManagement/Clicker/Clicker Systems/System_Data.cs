@@ -41,4 +41,8 @@ public class System_Data : MonoBehaviour
     public double currentXP = 0;
     public double xpToNextLevel = 0;
     public int skillPoints = 0;
+
+    [Header("Critical Click Settings:")]
+    public float critChance = 0.01f;
+    public float critMultiplier = 5.0f;
 }

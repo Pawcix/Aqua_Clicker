@@ -52,7 +52,9 @@ public class Data_SaveManager : MonoBehaviour
             currentLevel = systemData.currentLevel,
             currentXP = systemData.currentXP,
             xpToNextLevel = systemData.xpToNextLevel,
-            skillPoints = systemData.skillPoints
+            skillPoints = systemData.skillPoints,
+            critChance = systemData.critChance,
+            critMultiplier = systemData.critMultiplier
         };
 
         string json = JsonUtility.ToJson(dataToSave, true);
@@ -103,6 +105,9 @@ public class Data_SaveManager : MonoBehaviour
             systemData.currentLevel = loadedData.currentLevel;
             systemData.currentXP = loadedData.currentXP;
             systemData.skillPoints = loadedData.skillPoints;
+
+            systemData.critChance = loadedData.critChance;
+            systemData.critMultiplier = loadedData.critMultiplier;
 
             if (loadedData.xpToNextLevel > 0)
                 systemData.xpToNextLevel = loadedData.xpToNextLevel;

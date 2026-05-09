@@ -3,6 +3,7 @@ using UnityEngine.UI;
 
 public class Skill_AutoClick : MonoBehaviour
 {
+    [SerializeField] System_Data data;
     [SerializeField] Clicker_Skills masterSkills;
     [SerializeField] Button autoClickButton;
     [SerializeField] Image autoClickButtonImage;

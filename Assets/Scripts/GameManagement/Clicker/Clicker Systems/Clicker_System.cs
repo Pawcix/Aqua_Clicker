@@ -22,6 +22,7 @@ public class Clicker_System : MonoBehaviour
     [SerializeField] System_WordsEffect clickWords;
     [SerializeField] System_Achievements achievementSystem;
     [SerializeField] System_WardrobeUnlockSkin wardrobeUnlockSkin;
+    [SerializeField] System_Critical criticalSystem;
 
     [Header("Anti-Cheat:")]
     [SerializeField] AntiCheat_Clicks antiClick;
@@ -82,33 +83,30 @@ public class Clicker_System : MonoBehaviour
     {
         if (addSystem == null || data == null) return;
         if (antiClick != null && !antiClick.CheckClickLegal()) return;
-        if (cpsSystem != null) cpsSystem.OnClickRegistered();
 
-        double pointsFromThisClick = (double)data.pointsPerClick * data.clickMultiplier;
+        double basePoints = (double)data.pointsPerClick * data.clickMultiplier;
+        if (data.isGoldRushActive) basePoints *= 2.0;
 
-        if (data.isGoldRushActive)
-        {
-            pointsFromThisClick *= 2.0;
-        }
+        bool isCrit;
+        double finalPoints = System_Critical.Instance.CalculateCriticalDamage(basePoints, out isCrit);
 
-        addSystem.AddPoints();
+        System_Economy.Instance.AddPoints(finalPoints);
 
         if (System_Leveling.Instance != null)
+            System_Leveling.Instance.RegisterPointGain(finalPoints);
+
+        if (isCrit)
         {
-            System_Leveling.Instance.RegisterPointGain(pointsFromThisClick);
+
+        }
+        else
+        {
+            if (clickWords != null) clickWords.ShowRandomWord();
         }
 
-        if (ComboChain.Instance != null)
-        {
-            ComboChain.Instance.OnClickRegistered(pointsFromThisClick);
-        }
-
+        if (ComboChain.Instance != null) ComboChain.Instance.OnClickRegistered(finalPoints);
         if (PointsDisplay.Instance != null) PointsDisplay.Instance.Pulse();
-        if (clickWords != null) clickWords.ShowRandomWord();
-
-        if (System_Achievements.Instance != null)
-        {
-            System_Achievements.Instance.CheckAchievements();
-        }
+        if (System_Achievements.Instance != null) System_Achievements.Instance.CheckAchievements();
+        if (clickWords != null && isCrit == false) { }
     }
 }
