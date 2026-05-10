@@ -20,8 +20,10 @@ public class Clicker_Prefabs : MonoBehaviour
         data = Object.FindFirstObjectByType<System_Data>();
     }
 
-    public void UpdateAllPrefabs(double totalPoints, int totalPPS)
+    public void UpdateAllPrefabs(double totalPoints, double totalPPS)
     {
+        if (data == null) return;
+
         if (prefabTotalPointsText != null)
         {
             prefabTotalPointsText.UpdateTotalPointsPrefab(totalPoints);
@@ -37,7 +39,7 @@ public class Clicker_Prefabs : MonoBehaviour
             prefabAwayIncomeText.UpdateTotalDisplay();
         }
 
-        if (prefabGoldenDropText != null && data != null)
+        if (prefabGoldenDropText != null)
         {
             prefabGoldenDropText.UpdateTotalGoldenDropsPrefab(data.goldenDrops);
         }
@@ -46,35 +48,37 @@ public class Clicker_Prefabs : MonoBehaviour
         {
             int total = System_Wardrobe.Instance.GetAllSkins().Count;
             int unlocked = System_Wardrobe.Instance.GetUnlockedSkinsCount();
-
             prefabSkinsCounter.UpdateSkinsPrefab(unlocked, total);
         }
 
-        if (prefabLuckyBonus != null && data != null)
+        if (prefabLuckyBonus != null)
         {
             prefabLuckyBonus.UpdateTotalLuckyBonusesPrefab(data.luckyBonus);
         }
 
-        if (prefabComboChain != null && data != null)
+        if (prefabComboChain != null)
         {
             prefabComboChain.UpdateMaxComboPrefab(data.highestComboMultiplier);
         }
 
         if (prefabPPS != null)
         {
-            prefabPPS.UpdatePPS(data.pointsPerSecond);
+            double realPPS = (data.basePPS + data.workersPPS) * data.currentDailyMultiplier;
+
+            if (data.isGoldRushActive) realPPS *= 2.0;
+
+            prefabPPS.UpdatePPS(realPPS);
         }
 
-        if (prefabWorkerList != null && data != null)
+        if (prefabWorkerList != null)
         {
             prefabWorkerList.UpdateWorkerList(data.workerLevels);
         }
 
-        if (prefabAchievement != null && data != null && System_Achievements.Instance != null)
+        if (prefabAchievement != null && System_Achievements.Instance != null)
         {
             int unlocked = data.unlockedAchievementIDs.Count;
             int total = System_Achievements.Instance.GetAllAchievements().Count;
-
             prefabAchievement.UpdateAchievementsPrefab(unlocked, total);
         }
     }

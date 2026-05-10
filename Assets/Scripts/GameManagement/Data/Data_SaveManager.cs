@@ -54,7 +54,20 @@ public class Data_SaveManager : MonoBehaviour
             xpToNextLevel = systemData.xpToNextLevel,
             skillPoints = systemData.skillPoints,
             critChance = systemData.critChance,
-            critMultiplier = systemData.critMultiplier
+            critMultiplier = systemData.critMultiplier,
+            loginStreak = systemData.loginStreak,
+            lastBonusDate = systemData.lastBonusDate,
+            currentDailyMultiplier = systemData.currentDailyMultiplier,
+            basePPS = systemData.basePPS,
+            workersPPS = systemData.workersPPS,
+            clickMasteryLvl = systemData.clickMasteryLvl,
+            critMasteryLvl = systemData.critMasteryLvl,
+            clickMasteryXP = systemData.clickMasteryXP,
+            critMasteryXP = systemData.critMasteryXP,
+            comboMasteryLvl = systemData.comboMasteryLvl,
+            comboMasteryXP = systemData.comboMasteryXP,
+            awayMasteryLvl = systemData.awayMasteryLvl,
+            awayMasteryXP = systemData.awayMasteryXP,
         };
 
         string json = JsonUtility.ToJson(dataToSave, true);
@@ -108,6 +121,22 @@ public class Data_SaveManager : MonoBehaviour
 
             systemData.critChance = loadedData.critChance;
             systemData.critMultiplier = loadedData.critMultiplier;
+
+            systemData.loginStreak = loadedData.loginStreak;
+            systemData.lastBonusDate = loadedData.lastBonusDate;
+            systemData.currentDailyMultiplier = loadedData.currentDailyMultiplier;
+
+            systemData.basePPS = loadedData.basePPS;
+            systemData.workersPPS = loadedData.workersPPS;
+
+            systemData.clickMasteryLvl = loadedData.clickMasteryLvl;
+            systemData.critMasteryLvl = loadedData.critMasteryLvl;
+            systemData.clickMasteryXP = loadedData.clickMasteryXP;
+            systemData.critMasteryXP = loadedData.critMasteryXP;
+            systemData.comboMasteryLvl = loadedData.comboMasteryLvl;
+            systemData.comboMasteryXP = loadedData.comboMasteryXP;
+            systemData.awayMasteryLvl = loadedData.awayMasteryLvl;
+            systemData.awayMasteryXP = loadedData.awayMasteryXP;
 
             if (loadedData.xpToNextLevel > 0)
                 systemData.xpToNextLevel = loadedData.xpToNextLevel;

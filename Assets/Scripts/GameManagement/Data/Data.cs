@@ -31,4 +31,20 @@ public class GameData
 
     public float critChance;
     public float critMultiplier;
+
+    public int loginStreak;
+    public string lastBonusDate;
+    public float currentDailyMultiplier;
+
+    public double basePPS;
+    public double workersPPS;
+
+    public int clickMasteryLvl;
+    public int critMasteryLvl;
+    public int comboMasteryLvl;
+    public int awayMasteryLvl;
+    public float clickMasteryXP;
+    public float critMasteryXP;
+    public float comboMasteryXP;
+    public float awayMasteryXP;
 }

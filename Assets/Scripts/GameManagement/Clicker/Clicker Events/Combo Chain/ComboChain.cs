@@ -100,6 +100,11 @@ public class ComboChain : MonoBehaviour
         {
             comboUIContainer.transform.localScale = Vector3.one * (currentBaseScale * pulseAmount);
         }
+
+        if (Mastery.Instance != null)
+        {
+            Mastery.Instance.AddMasteryXP(Mastery.MasteryType.Combo, 2f);
+        }
     }
 
     void StartCombo()

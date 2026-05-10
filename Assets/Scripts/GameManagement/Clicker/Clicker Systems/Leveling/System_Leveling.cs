@@ -36,7 +36,10 @@ public class System_Leveling : MonoBehaviour
         {
             LevelUp();
         }
+    }
 
+    void Update()
+    {
         UpdateLevelUI();
     }
 
@@ -62,15 +65,13 @@ public class System_Leveling : MonoBehaviour
     {
         if (xpSlider != null)
         {
+            float targetXP = (float)data.currentXP;
             xpSlider.maxValue = (float)data.xpToNextLevel;
-            xpSlider.value = (float)data.currentXP;
+            xpSlider.value = targetXP;
         }
 
         if (levelText != null)
             levelText.text = "LVL: " + data.currentLevel;
-
-        if (skillPointsText != null)
-            skillPointsText.text = "Skill Points: " + data.skillPoints;
 
         if (percentText != null)
         {

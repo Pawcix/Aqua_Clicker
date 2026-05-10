@@ -3,7 +3,7 @@ using UnityEngine;
 public class Clicker_Stats : MonoBehaviour
 {
     [SerializeField] Total_Points totalPointsDisplay;
-    [SerializeField] Total_PPS totalPPSDisplay;
+    // [SerializeField] Total_PPS totalPPSDisplay;
 
     public void UpdateAllStats(double totalPoints, double totalPPS)
     {
@@ -12,9 +12,9 @@ public class Clicker_Stats : MonoBehaviour
             totalPointsDisplay.UpdateDisplay(totalPoints);
         }
 
-        if (totalPPSDisplay != null)
-        {
-            totalPPSDisplay.UpdatePPS(totalPPS);
-        }
+        // if (totalPPSDisplay != null)
+        // {
+        //     totalPPSDisplay.UpdatePPS(totalPPS);
+        // }
     }
 }

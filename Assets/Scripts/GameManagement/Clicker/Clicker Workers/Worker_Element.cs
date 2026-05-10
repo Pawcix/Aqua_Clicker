@@ -63,9 +63,6 @@ public class Worker_Element : MonoBehaviour
             case Worker_PurchaseSettings.PurchaseMode.x5:
                 cachedAmount = 5;
                 break;
-            case Worker_PurchaseSettings.PurchaseMode.x10:
-                cachedAmount = 10;
-                break;
             case Worker_PurchaseSettings.PurchaseMode.Max:
                 cachedAmount = workerTemplate.GetMaxAffordable(currentLevel, data.pointsCounterFloat);
                 if (cachedAmount <= 0) cachedAmount = 1;

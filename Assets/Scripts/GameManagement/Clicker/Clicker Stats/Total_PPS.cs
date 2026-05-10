@@ -1,15 +1,6 @@
-using TMPro;
-using UnityEngine;
 
-public class Total_PPS : MonoBehaviour
-{
-    [SerializeField] TextMeshProUGUI ppsText;
 
-    public void UpdatePPS(double amount)
-    {
-        if (ppsText == null) return;
+// public class Total_PPS : MonoBehaviour
+// {
 
-        string formattedValue = NumberFormatter.FormatWithDots(amount);
-        ppsText.text = $"Per Second \n{formattedValue} /s";
-    }
-}
+// }

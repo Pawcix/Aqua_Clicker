@@ -7,34 +7,61 @@ public class System_AwayIncome : MonoBehaviour
     [SerializeField] System_Data data;
     [SerializeField] Clicker_Stats stats;
     [SerializeField] Clicker_Prefabs prefabs;
+    [SerializeField] GameObject awayIncomeDisplayBox;
     [SerializeField] TextMeshProUGUI awayIncomeNotificationText;
 
     void Start()
     {
-        if (awayIncomeNotificationText != null)
-            awayIncomeNotificationText.gameObject.SetActive(false);
-
         Invoke(nameof(CalculateAwayIncome), 0.5f);
     }
 
+    void OnApplicationQuit() { UpdateLastSeen(); }
+    void OnApplicationPause(bool pause) { if (pause) UpdateLastSeen(); }
+
     public void CalculateAwayIncome()
     {
-        if (!PlayerPrefs.HasKey("LastSeen")) return;
+        if (!PlayerPrefs.HasKey("LastSeen"))
+        {
+            UpdateLastSeen();
+            return;
+        }
+
         string lastSeenStr = PlayerPrefs.GetString("LastSeen");
 
         if (DateTime.TryParse(lastSeenStr, out DateTime lastSeen))
         {
-            TimeSpan timeAway = DateTime.Now - lastSeen;
+            DateTime now = DateTime.Now;
+            TimeSpan timeAway = now - lastSeen;
             double secondsAway = timeAway.TotalSeconds;
 
-            if (secondsAway > 10 && data.pointsPerSecond > 0)
+            if (secondsAway < 10) return;
+
+            double maxSeconds = 2592000;
+            if (secondsAway > maxSeconds) secondsAway = maxSeconds;
+
+            double totalBasePPS = data.basePPS + data.workersPPS;
+
+            if (totalBasePPS > 0)
             {
-                double earned = secondsAway * (double)data.pointsPerSecond;
+
+                float masteryBonus = 0f;
+                if (Mastery.Instance != null)
+                {
+                    masteryBonus = Mastery.Instance.GetMasteryBonus(Mastery.MasteryType.AwayIncome);
+                }
+
+                double earned = (totalBasePPS * secondsAway) * (1.0f + masteryBonus);
 
                 if (earned > 0)
                 {
                     data.pointsCounterFloat += earned;
                     data.totalAwayEarnings += earned;
+
+                    if (Mastery.Instance != null)
+                    {
+                        float xpGained = (float)(secondsAway / 60f);
+                        Mastery.Instance.AddMasteryXP(Mastery.MasteryType.AwayIncome, xpGained);
+                    }
 
                     if (System_Leveling.Instance != null)
                     {
@@ -46,38 +73,46 @@ public class System_AwayIncome : MonoBehaviour
                 }
             }
         }
+
+        UpdateLastSeen();
+    }
+
+    public void UpdateLastSeen()
+    {
+        PlayerPrefs.SetString("LastSeen", DateTime.Now.ToString());
+        PlayerPrefs.Save();
     }
 
     void DisplayNotification(double earned, TimeSpan time)
     {
-        if (awayIncomeNotificationText != null)
+        if (awayIncomeNotificationText != null && awayIncomeDisplayBox != null)
         {
-            awayIncomeNotificationText.gameObject.SetActive(true);
-
             string timeStr = string.Format("{0:D2}:{1:D2}:{2:D2}",
                 (int)time.TotalHours, time.Minutes, time.Seconds);
 
-            awayIncomeNotificationText.text = $"Recently Earned: <color=green>+{NumberFormatter.FormatWithDots(earned)}</color>\n<size=70%>Time Away: {timeStr}</size>";
+            awayIncomeNotificationText.text = $"Earned: <color=green>+{NumberFormatter.FormatWithDots(earned)}</color>\n<size=70%>Time Away: {timeStr}</size>";
 
+            awayIncomeDisplayBox.SetActive(true);
+
+            CancelInvoke(nameof(HideNotification));
             Invoke(nameof(HideNotification), 10f);
         }
     }
 
     void HideNotification()
     {
-        if (awayIncomeNotificationText != null)
-            awayIncomeNotificationText.gameObject.SetActive(false);
+        if (awayIncomeDisplayBox != null)
+            awayIncomeDisplayBox.SetActive(false);
     }
 
     void UpdateAllUI()
     {
         if (data == null) return;
 
-        double currentPoints = data.pointsCounterFloat;
+        double currentTotal = System.Math.Floor(data.pointsCounterFloat);
+        double activePPS = (data.basePPS + data.workersPPS) * data.currentDailyMultiplier;
 
-        int displayPPS = (int)System.Math.Floor(data.pointsPerSecond);
-
-        if (stats != null) stats.UpdateAllStats(currentPoints, displayPPS);
-        if (prefabs != null) prefabs.UpdateAllPrefabs(currentPoints, displayPPS);
+        if (stats != null) stats.UpdateAllStats(currentTotal, (float)activePPS);
+        if (prefabs != null) prefabs.UpdateAllPrefabs(currentTotal, activePPS);
     }
 }

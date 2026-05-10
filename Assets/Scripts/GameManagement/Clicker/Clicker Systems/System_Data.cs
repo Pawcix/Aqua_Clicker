@@ -8,6 +8,8 @@ public class System_Data : MonoBehaviour
     public int pointsPerClick = 1;
     public float pointsPerSecond = 0;
     public double totalAwayEarnings = 0;
+    public double basePPS = 0;
+    public double workersPPS = 0;
 
     [Header("Workers Progress:")]
     public List<int> workerLevels = new List<int>();
@@ -42,7 +44,22 @@ public class System_Data : MonoBehaviour
     public double xpToNextLevel = 0;
     public int skillPoints = 0;
 
-    [Header("Critical Click Settings:")]
+    [Header("Critical Click:")]
     public float critChance = 0.01f;
     public float critMultiplier = 5.0f;
+
+    [Header("Daily Bonus:")]
+    public int loginStreak = 0;
+    public string lastBonusDate = "";
+    public float currentDailyMultiplier = 1.0f;
+
+    [Header("Mastery Levels:")]
+    public int clickMasteryLvl = 0;
+    public int critMasteryLvl = 0;
+    public int comboMasteryLvl = 0;
+    public int awayMasteryLvl = 0;
+    public float clickMasteryXP = 0;
+    public float critMasteryXP = 0;
+    public float comboMasteryXP = 0;
+    public float awayMasteryXP = 0;
 }

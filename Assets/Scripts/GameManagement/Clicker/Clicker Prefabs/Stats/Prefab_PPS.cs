@@ -9,7 +9,23 @@ public class Prefab_PPS : MonoBehaviour
     {
         if (totalPSSText == null) return;
 
-        string formattedValue = NumberFormatter.FormatWithDots(amount);
-        totalPSSText.text = $"Per Second \n{formattedValue} /s";
+        string formattedValue;
+
+        if (amount < 10)
+        {
+
+            formattedValue = amount.ToString("F1");
+        }
+
+        else if (amount < 100)
+        {
+            formattedValue = amount.ToString("F0");
+        }
+        else
+        {
+            formattedValue = NumberFormatter.FormatWithDots(amount);
+        }
+
+        totalPSSText.text = $"PER SECOND\n{formattedValue} /S";
     }
 }
