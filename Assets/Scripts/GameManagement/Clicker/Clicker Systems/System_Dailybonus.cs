@@ -8,14 +8,25 @@ public class System_Dailybonus : MonoBehaviour
     [SerializeField] TextMeshProUGUI streakText;
     [SerializeField] TextMeshProUGUI bonusText;
     [SerializeField] TextMeshProUGUI nextMilestoneText;
+    [SerializeField] TextMeshProUGUI timerText;
+
+    void Start()
+    {
+        CheckDailyBonus();
+    }
+
+    void Update()
+    {
+        UpdateTimerUI();
+    }
 
     public void CheckDailyBonus()
     {
         if (string.IsNullOrEmpty(data.lastBonusDate))
         {
             data.lastBonusDate = DateTime.Today.ToString();
-            data.loginStreak = 0;
-            data.currentDailyMultiplier = 1.0f;
+            data.loginStreak = 1;
+            data.currentDailyMultiplier = 1.1f;
             UpdateUI();
             return;
         }
@@ -25,12 +36,6 @@ public class System_Dailybonus : MonoBehaviour
         TimeSpan difference = today - lastDate;
 
         double totalDays = difference.TotalDays;
-
-        if (totalDays < 0)
-        {
-            UpdateUI();
-            return;
-        }
 
         if (totalDays >= 1 && totalDays < 2)
         {
@@ -43,6 +48,27 @@ public class System_Dailybonus : MonoBehaviour
         else
         {
             UpdateUI();
+        }
+    }
+
+    void UpdateTimerUI()
+    {
+        if (timerText == null) return;
+
+        DateTime nextDay = DateTime.Today.AddDays(1);
+        TimeSpan timeRemaining = nextDay - DateTime.Now;
+
+        if (timeRemaining.TotalSeconds > 0)
+        {
+            timerText.text = string.Format("NEXT BONUS IN: {0:D2}:{1:D2}:{2:D2}",
+                timeRemaining.Hours,
+                timeRemaining.Minutes,
+                timeRemaining.Seconds);
+        }
+        else
+        {
+            timerText.text = "BONUS READY!";
+            CheckDailyBonus();
         }
     }
 
@@ -71,14 +97,6 @@ public class System_Dailybonus : MonoBehaviour
 
     void UpdateUI()
     {
-        if (data.loginStreak == 0)
-        {
-            if (streakText != null) streakText.text = "WELCOME!";
-            if (bonusText != null) bonusText.text = "Daily Bonus starts tomorrow!";
-            if (nextMilestoneText != null) nextMilestoneText.text = "Come back in 24h!";
-            return;
-        }
-
         if (streakText != null)
             streakText.text = $"STREAK: {data.loginStreak} DAYS";
 

@@ -68,6 +68,8 @@ public class Data_SaveManager : MonoBehaviour
             comboMasteryXP = systemData.comboMasteryXP,
             awayMasteryLvl = systemData.awayMasteryLvl,
             awayMasteryXP = systemData.awayMasteryXP,
+            wheelMultiplier = systemData.wheelMultiplier,
+            wheelBonusTimer = systemData.wheelBonusTimer
         };
 
         string json = JsonUtility.ToJson(dataToSave, true);
@@ -137,6 +139,9 @@ public class Data_SaveManager : MonoBehaviour
             systemData.comboMasteryXP = loadedData.comboMasteryXP;
             systemData.awayMasteryLvl = loadedData.awayMasteryLvl;
             systemData.awayMasteryXP = loadedData.awayMasteryXP;
+
+            systemData.wheelMultiplier = loadedData.wheelMultiplier;
+            systemData.wheelBonusTimer = loadedData.wheelBonusTimer;
 
             if (loadedData.xpToNextLevel > 0)
                 systemData.xpToNextLevel = loadedData.xpToNextLevel;

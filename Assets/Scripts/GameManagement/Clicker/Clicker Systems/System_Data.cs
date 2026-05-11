@@ -62,4 +62,8 @@ public class System_Data : MonoBehaviour
     public float critMasteryXP = 0;
     public float comboMasteryXP = 0;
     public float awayMasteryXP = 0;
+
+    [Header("Wheel Fortune Stats")]
+    public float wheelMultiplier = 1.0f;
+    public float wheelBonusTimer = 0f;
 }

@@ -47,4 +47,7 @@ public class GameData
     public float critMasteryXP;
     public float comboMasteryXP;
     public float awayMasteryXP;
+
+    public float wheelMultiplier;
+    public float wheelBonusTimer;
 }

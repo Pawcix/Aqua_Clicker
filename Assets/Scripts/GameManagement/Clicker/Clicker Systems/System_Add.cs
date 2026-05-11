@@ -7,6 +7,7 @@ public class System_Add : MonoBehaviour
     public void AddPoints()
     {
         double pointsToAdd = (double)data.pointsPerClick * data.clickMultiplier;
+        pointsToAdd *= (double)data.wheelMultiplier;
 
         if (data.isGoldRushActive)
         {

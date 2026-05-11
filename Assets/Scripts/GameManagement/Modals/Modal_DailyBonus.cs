@@ -15,7 +15,7 @@ public class Modal_DailyBonus : MonoBehaviour
         }
     }
 
-    void Start()
+    void Update()
     {
         UpdateAvailableState();
     }
@@ -23,6 +23,7 @@ public class Modal_DailyBonus : MonoBehaviour
     public void UpdateAvailableState()
     {
         if (data == null || openButton == null) return;
+
         if (data.loginStreak > 0)
         {
             openButton.SetActive(true);
@@ -36,9 +37,8 @@ public class Modal_DailyBonus : MonoBehaviour
     public void ToggleSettings()
     {
         if (dailyBonusModal == null) return;
-        if (data != null && data.loginStreak <= 0) return;
 
-        bool wasActive = dailyBonusModal.activeInHierarchy;
+        bool wasActive = dailyBonusModal.activeSelf;
 
         if (keyShortsSource != null)
         {
