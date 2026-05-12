@@ -7,6 +7,7 @@ public class GoldenRush : MonoBehaviour
     [Header("References:")]
     [SerializeField] System_Data data;
     [SerializeField] TextMeshProUGUI statusText;
+    [SerializeField] TextMeshProUGUI bannerText;
 
     [Header("Event Settings:")]
     [SerializeField] float timeBetweenEvents = 450f;
@@ -14,6 +15,11 @@ public class GoldenRush : MonoBehaviour
 
     float currentEventTimer;
     bool isEventActive = false;
+
+    void Awake()
+    {
+        if (bannerText != null) bannerText.gameObject.SetActive(false);
+    }
 
     void Update()
     {
@@ -42,17 +48,20 @@ public class GoldenRush : MonoBehaviour
     void UpdateWaitingUI()
     {
         if (statusText == null) return;
+
         int minutes = Mathf.FloorToInt(data.goldRushTimer / 60);
         int seconds = Mathf.FloorToInt(data.goldRushTimer % 60);
+
         statusText.color = Color.white;
-        statusText.text = string.Format("Gold Rush in: \n {0:00}:{1:00}", minutes, seconds);
+        statusText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
     }
 
     void UpdateActiveEventUI()
     {
         if (statusText == null) return;
+
         statusText.color = new Color(1f, 0.84f, 0f);
-        statusText.text = string.Format("GOLD RUSH x2: \n {0:0.0}s", currentEventTimer);
+        statusText.text = string.Format("{0:0.0}s", currentEventTimer);
     }
 
     IEnumerator StartGoldRush()
@@ -61,9 +70,17 @@ public class GoldenRush : MonoBehaviour
         data.isGoldRushActive = true;
         currentEventTimer = eventDuration;
 
+        if (bannerText != null)
+        {
+            bannerText.text = "GOLD RUSH";
+            bannerText.gameObject.SetActive(true);
+        }
+
         if (AudioManager.Instance != null) AudioManager.Instance.PlaySFX("GoldRushStart");
 
         yield return new WaitForSeconds(eventDuration);
+
+        if (bannerText != null) bannerText.gameObject.SetActive(false);
 
         data.isGoldRushActive = false;
         data.goldRushTimer = timeBetweenEvents;

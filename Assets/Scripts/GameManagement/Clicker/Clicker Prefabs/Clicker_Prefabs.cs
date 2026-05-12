@@ -9,6 +9,7 @@ public class Clicker_Prefabs : MonoBehaviour
     [SerializeField] Prefab_Skins prefabSkinsCounter;
     [SerializeField] Prefab_LuckyBonus prefabLuckyBonus;
     [SerializeField] Prefab_ComboChain prefabComboChain;
+    [SerializeField] Prefab_ComboCrit prefabComboCrit;
     [SerializeField] Prefab_PPS prefabPPS;
     [SerializeField] Prefab_WorkerList prefabWorkerList;
     [SerializeField] Prefab_Achievement prefabAchievement;
@@ -59,6 +60,11 @@ public class Clicker_Prefabs : MonoBehaviour
         if (prefabComboChain != null)
         {
             prefabComboChain.UpdateMaxComboPrefab(data.highestComboMultiplier);
+        }
+
+        if (prefabComboCrit != null)
+        {
+            prefabComboCrit.UpdateMaxComboPrefab(data.highestCritMultiplier);
         }
 
         if (prefabPPS != null)

@@ -1,7 +1,7 @@
 using TMPro;
 using UnityEngine;
 
-public class Prefab_ComboChain : MonoBehaviour
+public class Prefab_ComboCrit : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI maxComboText;
 
@@ -9,6 +9,6 @@ public class Prefab_ComboChain : MonoBehaviour
     {
         if (maxComboText == null) return;
 
-        maxComboText.text = $"Combo Clicks Chain \nx{multiplier.ToString("F2")}";
+        maxComboText.text = $"Combo Crits Chain \nx{multiplier.ToString("F2")}";
     }
 }

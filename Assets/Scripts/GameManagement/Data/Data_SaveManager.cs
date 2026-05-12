@@ -45,6 +45,7 @@ public class Data_SaveManager : MonoBehaviour
             goldRushTimer = systemData.goldRushTimer,
             luckyBonus = systemData.luckyBonus,
             highestComboMultiplier = systemData.highestComboMultiplier,
+            highestCritMultiplier = systemData.highestCritMultiplier,
             autoCollectorActive = systemData.isAutoCollectorActive,
             LuckyCollectorActive = systemData.isLuckyCollectorActive,
             totalAwayEarnings = systemData.totalAwayEarnings,
@@ -106,6 +107,7 @@ public class Data_SaveManager : MonoBehaviour
             systemData.goldenRainTimer = loadedData.goldenRainTimer;
             systemData.goldRushTimer = loadedData.goldRushTimer;
             systemData.highestComboMultiplier = loadedData.highestComboMultiplier;
+            systemData.highestCritMultiplier = loadedData.highestCritMultiplier;
 
             systemData.isAntiCheatBypassActive = loadedData.antiCheatBypassActive;
             systemData.isAutoClickerActive = loadedData.autoClickActive;

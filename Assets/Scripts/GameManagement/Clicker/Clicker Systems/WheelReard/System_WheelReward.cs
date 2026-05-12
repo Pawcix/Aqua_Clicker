@@ -1,9 +1,9 @@
-using UnityEngine;
+using TMPro;
+using System;
 using System.Collections.Generic;
 using System.Collections;
-using TMPro;
+using UnityEngine;
 using UnityEngine.UI;
-using System;
 
 public class System_WheelFortune : MonoBehaviour
 {
@@ -173,6 +173,8 @@ public class System_WheelFortune : MonoBehaviour
     void EvaluateFinalReward()
     {
         float rot = wheelCircle.eulerAngles.z % 360;
+        if (rot < 0) rot += 360;
+
         int rewardIndex = 0;
         float snapAngle = 0;
 
@@ -185,7 +187,7 @@ public class System_WheelFortune : MonoBehaviour
         else if (rot > 292.5f && rot <= 337.5f) { rewardIndex = 7; snapAngle = 315f; }
         else { rewardIndex = 0; snapAngle = 0f; }
 
-        wheelCircle.eulerAngles = new Vector3(0, 0, snapAngle);
+        wheelCircle.eulerAngles = new Vector3(0, 0, snapAngle + 22.5f + angleOffset);
 
         if (rewardIndex < rewards.Count)
         {

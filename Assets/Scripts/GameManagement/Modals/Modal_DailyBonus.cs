@@ -24,30 +24,31 @@ public class Modal_DailyBonus : MonoBehaviour
     {
         if (data == null || openButton == null) return;
 
-        if (data.loginStreak > 0)
-        {
-            openButton.SetActive(true);
-        }
-        else
-        {
-            openButton.SetActive(false);
-        }
+        openButton.SetActive(data.loginStreak > 0);
     }
 
     public void ToggleSettings()
     {
         if (dailyBonusModal == null) return;
 
-        bool wasActive = dailyBonusModal.activeSelf;
+        bool wasActive = dailyBonusModal.activeInHierarchy;
 
-        if (keyShortsSource != null)
+        if (wasActive)
         {
-            keyShortsSource.CloseAllModals();
+            dailyBonusModal.SetActive(false);
         }
-
-        if (!wasActive)
+        else
         {
+            if (keyShortsSource != null) keyShortsSource.CloseAllModals();
+
             dailyBonusModal.SetActive(true);
+
+            if (System_NotificationDailyBonus.Instance != null)
+            {
+                System_NotificationDailyBonus.Instance.SetAlert(false);
+            }
+
+            if (AudioManager.Instance != null) AudioManager.Instance.PlaySFX("Open");
         }
     }
 }

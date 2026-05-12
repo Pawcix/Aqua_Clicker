@@ -24,10 +24,7 @@ public class System_Dailybonus : MonoBehaviour
     {
         if (string.IsNullOrEmpty(data.lastBonusDate))
         {
-            data.lastBonusDate = DateTime.Today.ToString();
-            data.loginStreak = 1;
-            data.currentDailyMultiplier = 1.1f;
-            UpdateUI();
+            ApplyBonus(1);
             return;
         }
 
@@ -35,13 +32,13 @@ public class System_Dailybonus : MonoBehaviour
         DateTime today = DateTime.Today;
         TimeSpan difference = today - lastDate;
 
-        double totalDays = difference.TotalDays;
+        int daysPassed = (int)difference.TotalDays;
 
-        if (totalDays >= 1 && totalDays < 2)
+        if (daysPassed == 1)
         {
             ApplyBonus(data.loginStreak + 1);
         }
-        else if (totalDays >= 2)
+        else if (daysPassed > 1)
         {
             ApplyBonus(1);
         }
@@ -68,7 +65,6 @@ public class System_Dailybonus : MonoBehaviour
         else
         {
             timerText.text = "BONUS READY!";
-            CheckDailyBonus();
         }
     }
 
@@ -77,22 +73,22 @@ public class System_Dailybonus : MonoBehaviour
         data.loginStreak = newStreak;
         data.lastBonusDate = DateTime.Today.ToString();
 
-        float baseMultiplier = 1.0f + (newStreak * 0.1f);
+        float baseMultiplier = 1.0f + (newStreak - 1) * 0.1f;
         float milestoneBonus = 0f;
 
-        if (newStreak >= 7) milestoneBonus += 0.5f;
-        if (newStreak >= 14) milestoneBonus += 0.5f;
-        if (newStreak >= 21) milestoneBonus += 1.0f;
-        if (newStreak >= 30) milestoneBonus += 2.0f;
-        if (newStreak >= 60) milestoneBonus += 3.0f;
-        if (newStreak >= 90) milestoneBonus += 5.0f;
-        if (newStreak >= 180) milestoneBonus += 10.0f;
-        if (newStreak >= 365) milestoneBonus += 25.0f;
+        if (newStreak >= 365) milestoneBonus = 25.0f;
+        else if (newStreak >= 180) milestoneBonus = 10.0f;
+        else if (newStreak >= 90) milestoneBonus = 5.0f;
+        else if (newStreak >= 60) milestoneBonus = 3.0f;
+        else if (newStreak >= 30) milestoneBonus = 2.0f;
+        else if (newStreak >= 21) milestoneBonus = 1.0f;
+        else if (newStreak >= 14) milestoneBonus = 0.5f;
+        else if (newStreak >= 7) milestoneBonus = 0.2f;
 
         data.currentDailyMultiplier = baseMultiplier + milestoneBonus;
 
         UpdateUI();
-        Debug.Log($"Daily Bonus przyznany! Dzień: {newStreak}");
+        Debug.Log($"Daily Bonus: Dzień {newStreak}. Mnożnik: {data.currentDailyMultiplier:F1}x");
     }
 
     void UpdateUI()
@@ -115,14 +111,11 @@ public class System_Dailybonus : MonoBehaviour
 
     int GetNextMilestone(int currentStreak)
     {
-        if (currentStreak < 7) return 7;
-        if (currentStreak < 14) return 14;
-        if (currentStreak < 21) return 21;
-        if (currentStreak < 30) return 30;
-        if (currentStreak < 60) return 60;
-        if (currentStreak < 90) return 90;
-        if (currentStreak < 180) return 180;
-        if (currentStreak < 365) return 365;
+        int[] milestones = { 7, 14, 21, 30, 60, 90, 180, 365 };
+        foreach (int m in milestones)
+        {
+            if (currentStreak < m) return m;
+        }
         return 0;
     }
 }

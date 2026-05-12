@@ -20,16 +20,15 @@ public class Modal_WheelReward : MonoBehaviour
         {
             wheelRewardModal.SetActive(false);
         }
-
         else
         {
             if (keyShortsSource != null) keyShortsSource.CloseAllModals();
 
             wheelRewardModal.SetActive(true);
 
-            if (System_Notification.Instance != null)
+            if (System_NotificationWheelReward.Instance != null)
             {
-                System_Notification.Instance.SetAlert(false);
+                System_NotificationWheelReward.Instance.SetAlert(false);
             }
 
             if (AudioManager.Instance != null) AudioManager.Instance.PlaySFX("Open");

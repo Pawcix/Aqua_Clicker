@@ -11,6 +11,7 @@ public class GameData
     public int goldenDrops;
     public int luckyBonus;
     public double highestComboMultiplier;
+    public double highestCritMultiplier;
     public float goldenRainTimer;
     public float goldRushTimer;
     public float time;

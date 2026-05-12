@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class System_NotificationSkin : MonoBehaviour
 {
-    [SerializeField] private GameObject badgeObject;
+    [SerializeField] GameObject badgeObject;
 
     public void SetBadge(bool state)
     {

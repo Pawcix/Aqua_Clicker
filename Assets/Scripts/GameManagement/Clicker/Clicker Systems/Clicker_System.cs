@@ -124,18 +124,30 @@ public class Clicker_System : MonoBehaviour
 
         if (isCrit)
         {
+            if (CritComboChain.Instance != null)
+                CritComboChain.Instance.OnCritRegistered(finalPoints);
+
+            if (CritComboChain.Instance != null)
+                finalPoints *= CritComboChain.Instance.GetCurrentMultiplier();
+
             if (Mastery.Instance != null)
-            {
                 Mastery.Instance.AddMasteryXP(Mastery.MasteryType.Critical, 5f);
-            }
         }
         else
         {
+            if (CritComboChain.Instance != null)
+                CritComboChain.Instance.OnNormalClickRegistered();
+
             if (clickWords != null) clickWords.ShowRandomWord();
         }
 
+        System_Economy.Instance.AddPoints(finalPoints);
+
+        if (System_Leveling.Instance != null)
+            System_Leveling.Instance.RegisterPointGain(finalPoints);
+
         if (ComboChain.Instance != null) ComboChain.Instance.OnClickRegistered(finalPoints);
+
         if (PointsDisplay.Instance != null) PointsDisplay.Instance.Pulse();
-        if (System_Achievements.Instance != null) System_Achievements.Instance.CheckAchievements();
     }
 }
