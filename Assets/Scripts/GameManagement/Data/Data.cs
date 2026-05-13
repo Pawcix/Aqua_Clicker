@@ -51,4 +51,7 @@ public class GameData
 
     public float wheelMultiplier;
     public float wheelBonusTimer;
+
+    public float workerSaleTimer;
+    public bool isWorkerSaleActive;
 }

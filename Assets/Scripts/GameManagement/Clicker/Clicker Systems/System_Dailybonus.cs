@@ -73,19 +73,26 @@ public class System_Dailybonus : MonoBehaviour
         data.loginStreak = newStreak;
         data.lastBonusDate = DateTime.Today.ToString();
 
-        float baseMultiplier = 1.0f + (newStreak - 1) * 0.1f;
-        float milestoneBonus = 0f;
+        if (newStreak <= 1)
+        {
+            data.currentDailyMultiplier = 1.0f;
+        }
+        else
+        {
+            float baseMultiplier = 1.0f + (newStreak - 1) * 0.1f;
+            float milestoneBonus = 0f;
 
-        if (newStreak >= 365) milestoneBonus = 25.0f;
-        else if (newStreak >= 180) milestoneBonus = 10.0f;
-        else if (newStreak >= 90) milestoneBonus = 5.0f;
-        else if (newStreak >= 60) milestoneBonus = 3.0f;
-        else if (newStreak >= 30) milestoneBonus = 2.0f;
-        else if (newStreak >= 21) milestoneBonus = 1.0f;
-        else if (newStreak >= 14) milestoneBonus = 0.5f;
-        else if (newStreak >= 7) milestoneBonus = 0.2f;
+            if (newStreak >= 365) milestoneBonus = 25.0f;
+            else if (newStreak >= 180) milestoneBonus = 10.0f;
+            else if (newStreak >= 90) milestoneBonus = 5.0f;
+            else if (newStreak >= 60) milestoneBonus = 3.0f;
+            else if (newStreak >= 30) milestoneBonus = 2.0f;
+            else if (newStreak >= 21) milestoneBonus = 1.0f;
+            else if (newStreak >= 14) milestoneBonus = 0.5f;
+            else if (newStreak >= 7) milestoneBonus = 0.2f;
 
-        data.currentDailyMultiplier = baseMultiplier + milestoneBonus;
+            data.currentDailyMultiplier = baseMultiplier + milestoneBonus;
+        }
 
         UpdateUI();
         Debug.Log($"Daily Bonus: Dzień {newStreak}. Mnożnik: {data.currentDailyMultiplier:F1}x");
@@ -93,19 +100,39 @@ public class System_Dailybonus : MonoBehaviour
 
     void UpdateUI()
     {
+        bool isFirstDay = data.loginStreak <= 1;
+
         if (streakText != null)
-            streakText.text = $"STREAK: {data.loginStreak} DAYS";
+        {
+            streakText.text = isFirstDay ? "WELCOME!" : $"STREAK: {data.loginStreak} DAYS";
+        }
 
         if (bonusText != null)
-            bonusText.text = $"TOTAL MULTIPLIER: {data.currentDailyMultiplier:F1}x";
+        {
+            if (isFirstDay)
+            {
+                bonusText.text = "<color=#FFA500>STREAK STARTED!</color>\n<size=70%>Come back tomorrow for your first bonus!</size>";
+            }
+            else
+            {
+                bonusText.text = $"TOTAL MULTIPLIER: <color=#00FF00>{data.currentDailyMultiplier:F1}x</color>";
+            }
+        }
 
         if (nextMilestoneText != null)
         {
-            int nextGoal = GetNextMilestone(data.loginStreak);
-            if (nextGoal > 0)
-                nextMilestoneText.text = $"Next Milestone in: {nextGoal - data.loginStreak} days";
+            if (isFirstDay)
+            {
+                nextMilestoneText.text = "";
+            }
             else
-                nextMilestoneText.text = "YOU ARE A LEGEND!";
+            {
+                int nextGoal = GetNextMilestone(data.loginStreak);
+                if (nextGoal > 0)
+                    nextMilestoneText.text = $"Next Milestone in: {nextGoal - data.loginStreak} days";
+                else
+                    nextMilestoneText.text = "YOU ARE A LEGEND!";
+            }
         }
     }
 

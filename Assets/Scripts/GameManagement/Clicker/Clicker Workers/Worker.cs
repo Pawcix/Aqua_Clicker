@@ -18,22 +18,26 @@ public class Worker : ScriptableObject
         return (Worker)this.MemberwiseClone();
     }
 
-    public double GetPriceForLevel(int level)
+    public double GetPriceForLevel(int level, float priceMod = 1.0f)
     {
-        return basePrice * System.Math.Pow((double)priceMultiplier, level);
+        return (basePrice * priceMod) * System.Math.Pow((double)priceMultiplier, level);
     }
 
-    public double GetTotalCost(int currentLevel, int count)
+    public double GetTotalCost(int currentLevel, int count, float priceMod = 1.0f)
     {
         double r = priceMultiplier;
-        double a = basePrice * System.Math.Pow(r, currentLevel);
+        double a = (basePrice * priceMod) * System.Math.Pow(r, currentLevel);
+
         return a * (System.Math.Pow(r, count) - 1) / (r - 1);
     }
 
-    public int GetMaxAffordable(int currentLevel, double currentPoints)
+    public int GetMaxAffordable(int currentLevel, double currentPoints, float priceMod = 1.0f)
     {
         double r = priceMultiplier;
-        double a = basePrice * System.Math.Pow(r, currentLevel);
+        double a = (basePrice * priceMod) * System.Math.Pow(r, currentLevel);
+        
+        if (currentPoints <= 0 || a <= 0) return 0;
+
         return (int)System.Math.Floor(System.Math.Log((currentPoints * (r - 1) / a) + 1, r));
     }
 }

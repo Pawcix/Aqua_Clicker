@@ -117,11 +117,6 @@ public class Clicker_System : MonoBehaviour
         bool isCrit;
         double finalPoints = System_Critical.Instance.CalculateCriticalDamage(basePoints, out isCrit);
 
-        System_Economy.Instance.AddPoints(finalPoints);
-
-        if (System_Leveling.Instance != null)
-            System_Leveling.Instance.RegisterPointGain(finalPoints);
-
         if (isCrit)
         {
             if (CritComboChain.Instance != null)

@@ -10,6 +10,7 @@ public class Worker_Element : MonoBehaviour
     [SerializeField] TextMeshProUGUI levelText;
     [SerializeField] TextMeshProUGUI totalBonusText;
     [SerializeField] TextMeshProUGUI descriptionText;
+    [SerializeField] TextMeshProUGUI saleLabelText;
     [SerializeField] Button buyButton;
     [SerializeField] Image workerImage;
 
@@ -18,15 +19,21 @@ public class Worker_Element : MonoBehaviour
     int workerID;
     int cachedAmount;
     double cachedTotalPrice;
+    bool lastKnownSaleState;
 
     void Update()
     {
         if (buyButton != null && data != null && workerTemplate != null)
         {
+            if (lastKnownSaleState != data.isWorkerSaleActive)
+            {
+                lastKnownSaleState = data.isWorkerSaleActive;
+                UpdatePriceText();
+            }
+
             CalculateCurrentBulkStats();
 
             bool canAfford = data.pointsCounterFloat >= cachedTotalPrice && cachedAmount > 0;
-
             if (buyButton.interactable != canAfford)
             {
                 buyButton.interactable = canAfford;
@@ -44,6 +51,7 @@ public class Worker_Element : MonoBehaviour
         workerTemplate = worker;
         workerID = id;
         data = dataRef;
+        lastKnownSaleState = data.isWorkerSaleActive;
 
         UpdateUI();
 
@@ -54,6 +62,7 @@ public class Worker_Element : MonoBehaviour
     void CalculateCurrentBulkStats()
     {
         int currentLevel = data.workerLevels[workerID];
+        float priceMod = data.isWorkerSaleActive ? 0.75f : 1.0f;
 
         switch (Worker_PurchaseSettings.CurrentMode)
         {
@@ -64,12 +73,12 @@ public class Worker_Element : MonoBehaviour
                 cachedAmount = 5;
                 break;
             case Worker_PurchaseSettings.PurchaseMode.Max:
-                cachedAmount = workerTemplate.GetMaxAffordable(currentLevel, data.pointsCounterFloat);
+                cachedAmount = workerTemplate.GetMaxAffordable(currentLevel, data.pointsCounterFloat, priceMod);
                 if (cachedAmount <= 0) cachedAmount = 1;
                 break;
         }
 
-        cachedTotalPrice = workerTemplate.GetTotalCost(currentLevel, cachedAmount);
+        cachedTotalPrice = workerTemplate.GetTotalCost(currentLevel, cachedAmount, priceMod);
     }
 
     void BuyWorker()
@@ -79,11 +88,9 @@ public class Worker_Element : MonoBehaviour
         if (data.pointsCounterFloat >= cachedTotalPrice && cachedAmount > 0)
         {
             data.pointsCounterFloat -= cachedTotalPrice;
-
             float totalPowerGained = workerTemplate.basePower * cachedAmount;
 
             Clicker_System.OnItemBought.Invoke(cachedTotalPrice, totalPowerGained);
-
             data.workerLevels[workerID] += cachedAmount;
 
             UpdateUI();
@@ -111,11 +118,14 @@ public class Worker_Element : MonoBehaviour
     void UpdatePriceText()
     {
         CalculateCurrentBulkStats();
-
         if (priceBuyText == null) return;
 
-        string finalButtonText = "";
+        if (saleLabelText != null)
+            saleLabelText.gameObject.SetActive(data.isWorkerSaleActive);
 
+        priceBuyText.color = data.isWorkerSaleActive ? Color.green : Color.white;
+
+        string finalButtonText = "";
         if (Worker_PurchaseSettings.CurrentMode == Worker_PurchaseSettings.PurchaseMode.Max)
         {
             finalButtonText = $"MAX ({cachedAmount})\n{NumberFormatter.FormatWithDots(cachedTotalPrice)}";

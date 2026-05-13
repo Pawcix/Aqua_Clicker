@@ -35,6 +35,8 @@ public class System_Data : MonoBehaviour
     public int luckyBonus = 0;
     public double highestComboMultiplier = 1.0;
     public double highestCritMultiplier = 1.0;
+    public float workerSaleTimer;
+    public bool isWorkerSaleActive;
 
     [Header("Achievements:")]
     public List<string> unlockedAchievementIDs = new List<string>();

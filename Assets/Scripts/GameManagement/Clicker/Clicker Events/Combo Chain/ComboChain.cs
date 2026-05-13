@@ -188,4 +188,9 @@ public class ComboChain : MonoBehaviour
             }
         }
     }
+
+    public double GetCurrentMultiplier()
+    {
+        return isComboActive ? currentMultiplier : 1.0;
+    }
 }

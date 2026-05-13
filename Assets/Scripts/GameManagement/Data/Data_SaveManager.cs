@@ -70,7 +70,9 @@ public class Data_SaveManager : MonoBehaviour
             awayMasteryLvl = systemData.awayMasteryLvl,
             awayMasteryXP = systemData.awayMasteryXP,
             wheelMultiplier = systemData.wheelMultiplier,
-            wheelBonusTimer = systemData.wheelBonusTimer
+            wheelBonusTimer = systemData.wheelBonusTimer,
+            workerSaleTimer = systemData.workerSaleTimer,
+            isWorkerSaleActive = systemData.isWorkerSaleActive
         };
 
         string json = JsonUtility.ToJson(dataToSave, true);
@@ -144,6 +146,9 @@ public class Data_SaveManager : MonoBehaviour
 
             systemData.wheelMultiplier = loadedData.wheelMultiplier;
             systemData.wheelBonusTimer = loadedData.wheelBonusTimer;
+
+            systemData.workerSaleTimer = loadedData.workerSaleTimer;
+            systemData.isWorkerSaleActive = loadedData.isWorkerSaleActive;
 
             if (loadedData.xpToNextLevel > 0)
                 systemData.xpToNextLevel = loadedData.xpToNextLevel;
