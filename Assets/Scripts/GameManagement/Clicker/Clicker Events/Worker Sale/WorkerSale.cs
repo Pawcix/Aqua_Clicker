@@ -6,23 +6,18 @@ public class WorkerSale : MonoBehaviour
 {
     [Header("References:")]
     [SerializeField] System_Data data;
-    [SerializeField] TextMeshProUGUI statusText;
-    [SerializeField] TextMeshProUGUI bannerText;
-    [SerializeField] GameObject eventUIBox;
+    [SerializeField] GameObject saleIconPrefab;
 
     [Header("Event Settings:")]
     [SerializeField] float minTimeBetweenEvents = 400f;
-    [SerializeField] float maxTimeBetweenEvents = 900f;
-    [SerializeField] float eventDuration = 30f;
-    [SerializeField] float visibilityThreshold = 10f;
+    [SerializeField] float maxTimeBetweenEvents = 800f;
+    [SerializeField] float eventDuration = 10f;
+    [SerializeField] float visibilityThreshold = 15f;
 
+    GameObject activeIconInstance;
+    TextMeshProUGUI timerTextInIcon;
     float currentEventTimer;
     bool isEventActive = false;
-
-    void Awake()
-    {
-        if (bannerText != null) bannerText.gameObject.SetActive(false);
-    }
 
     void Start()
     {
@@ -37,7 +32,7 @@ public class WorkerSale : MonoBehaviour
             if (data.workerSaleTimer > 0)
             {
                 data.workerSaleTimer -= Time.deltaTime;
-                UpdateWaitingUI();
+                HandleWaitingStatus();
             }
             else
             {
@@ -49,7 +44,7 @@ public class WorkerSale : MonoBehaviour
             if (currentEventTimer > 0)
             {
                 currentEventTimer -= Time.deltaTime;
-                UpdateActiveEventUI();
+                UpdateIconTimerUI(currentEventTimer);
             }
             else
             {
@@ -58,39 +53,38 @@ public class WorkerSale : MonoBehaviour
         }
     }
 
-    void UpdateWaitingUI()
+    void HandleWaitingStatus()
     {
-        if (eventUIBox == null) return;
-
-        if (data.workerSaleTimer > visibilityThreshold)
+        if (data.workerSaleTimer <= visibilityThreshold)
         {
-            if (eventUIBox.activeSelf) eventUIBox.SetActive(false);
-        }
-        else
-        {
-            if (!eventUIBox.activeSelf)
+            if (activeIconInstance == null)
             {
-                eventUIBox.SetActive(true);
+                SpawnEventIcon();
                 if (AudioManager.Instance != null) AudioManager.Instance.PlaySFX("Countdown_Alert");
             }
 
-            if (statusText != null)
-            {
-                statusText.color = Color.white;
-                int minutes = Mathf.FloorToInt(data.workerSaleTimer / 60);
-                int seconds = Mathf.FloorToInt(data.workerSaleTimer % 60);
-                statusText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
-            }
+            UpdateIconTimerUI(data.workerSaleTimer);
         }
     }
 
-    void UpdateActiveEventUI()
+    void SpawnEventIcon()
     {
-        if (statusText == null) return;
+        activeIconInstance = Event_Manager.Instance.AddEventIcon(saleIconPrefab);
+        if (activeIconInstance != null)
+        {
+            timerTextInIcon = activeIconInstance.GetComponentInChildren<TextMeshProUGUI>();
+        }
+    }
 
-        int minutes = Mathf.FloorToInt(currentEventTimer / 60);
-        int seconds = Mathf.FloorToInt(currentEventTimer % 60);
-        statusText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
+    void UpdateIconTimerUI(float timeToShow)
+    {
+        if (timerTextInIcon == null) return;
+
+        int minutes = Mathf.FloorToInt(timeToShow / 60);
+        int seconds = Mathf.FloorToInt(timeToShow % 60);
+        timerTextInIcon.text = string.Format("{0:00}:{1:00}", minutes, seconds);
+
+        timerTextInIcon.color = isEventActive ? Color.yellow : Color.white;
     }
 
     IEnumerator StartSaleRoutine()
@@ -99,13 +93,7 @@ public class WorkerSale : MonoBehaviour
         data.isWorkerSaleActive = true;
         currentEventTimer = eventDuration;
 
-        if (eventUIBox != null) eventUIBox.SetActive(true);
-
-        if (bannerText != null)
-        {
-            bannerText.text = "WORKER SALE -25%";
-            bannerText.gameObject.SetActive(true);
-        }
+        if (activeIconInstance == null) SpawnEventIcon();
 
         RefreshAllWorkerUI();
         yield return null;
@@ -116,8 +104,12 @@ public class WorkerSale : MonoBehaviour
         isEventActive = false;
         data.isWorkerSaleActive = false;
 
-        if (bannerText != null) bannerText.gameObject.SetActive(false);
-        if (eventUIBox != null) eventUIBox.SetActive(false);
+        if (activeIconInstance != null)
+        {
+            Event_Manager.Instance.RemoveEventIcon(activeIconInstance);
+            activeIconInstance = null;
+            timerTextInIcon = null;
+        }
 
         RefreshAllWorkerUI();
         SetRandomTimer();

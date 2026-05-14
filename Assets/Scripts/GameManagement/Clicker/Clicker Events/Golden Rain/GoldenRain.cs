@@ -7,19 +7,22 @@ public class GoldenRain : MonoBehaviour
     [Header("References:")]
     [SerializeField] System_Data data;
     [SerializeField] GoldenDrop_Spawner spawner;
-    [SerializeField] TextMeshProUGUI statusText;
-    [SerializeField] TextMeshProUGUI bannerText;
+    [SerializeField] GameObject goldenRainIconPrefab;
 
     [Header("Event Settings:")]
     [SerializeField] float timeBetweenEvents = 300f;
     [SerializeField] float eventDuration = 10f;
+    [SerializeField] float visibilityThreshold = 15f;
 
+    GameObject activeIconInstance;
+    TextMeshProUGUI timerTextInIcon;
     float currentEventTimer;
     bool isEventActive = false;
 
-    void Awake()
+    void Start()
     {
-        if (bannerText != null) bannerText.gameObject.SetActive(false);
+        if (data.goldenRainTimer <= 0 && !isEventActive)
+            data.goldenRainTimer = timeBetweenEvents;
     }
 
     void Update()
@@ -29,7 +32,7 @@ public class GoldenRain : MonoBehaviour
             if (data.goldenRainTimer > 0)
             {
                 data.goldenRainTimer -= Time.deltaTime;
-                UpdateWaitingUI();
+                HandleWaitingStatus();
             }
             else
             {
@@ -41,28 +44,45 @@ public class GoldenRain : MonoBehaviour
             if (currentEventTimer > 0)
             {
                 currentEventTimer -= Time.deltaTime;
-                UpdateActiveEventUI();
+                UpdateIconTimerUI(currentEventTimer);
+            }
+            else
+            {
+                EndGoldenRain();
             }
         }
     }
 
-    void UpdateWaitingUI()
+    void HandleWaitingStatus()
     {
-        if (statusText == null) return;
-
-        int minutes = Mathf.FloorToInt(data.goldenRainTimer / 60);
-        int seconds = Mathf.FloorToInt(data.goldenRainTimer % 60);
-
-        statusText.color = Color.white;
-        statusText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
+        if (data.goldenRainTimer <= visibilityThreshold)
+        {
+            if (activeIconInstance == null)
+            {
+                SpawnEventIcon();
+            }
+            UpdateIconTimerUI(data.goldenRainTimer);
+        }
     }
 
-    void UpdateActiveEventUI()
+    void SpawnEventIcon()
     {
-        if (statusText == null) return;
+        activeIconInstance = Event_Manager.Instance.AddEventIcon(goldenRainIconPrefab);
+        if (activeIconInstance != null)
+        {
+            timerTextInIcon = activeIconInstance.GetComponentInChildren<TextMeshProUGUI>();
+        }
+    }
 
-        statusText.color = Color.yellow;
-        statusText.text = string.Format("{0:0.0}s", currentEventTimer);
+    void UpdateIconTimerUI(float timeToShow)
+    {
+        if (timerTextInIcon == null) return;
+
+        int minutes = Mathf.FloorToInt(timeToShow / 60);
+        int seconds = Mathf.FloorToInt(timeToShow % 60);
+
+        timerTextInIcon.text = string.Format("{0:00}:{1:00}", minutes, seconds);
+        timerTextInIcon.color = isEventActive ? Color.cyan : Color.white;
     }
 
     IEnumerator StartGoldenRain()
@@ -70,20 +90,24 @@ public class GoldenRain : MonoBehaviour
         isEventActive = true;
         currentEventTimer = eventDuration;
 
-        if (bannerText != null)
-        {
-            bannerText.text = "GOLDEN RAIN";
-            bannerText.gameObject.SetActive(true);
-        }
+        if (activeIconInstance == null) SpawnEventIcon();
 
         spawner.SetRainMode(true);
 
-        yield return new WaitForSeconds(eventDuration);
+        yield return null;
+    }
 
-        if (bannerText != null) bannerText.gameObject.SetActive(false);
-
+    void EndGoldenRain()
+    {
+        isEventActive = false;
         spawner.SetRainMode(false);
         data.goldenRainTimer = timeBetweenEvents;
-        isEventActive = false;
+
+        if (activeIconInstance != null)
+        {
+            Event_Manager.Instance.RemoveEventIcon(activeIconInstance);
+            activeIconInstance = null;
+            timerTextInIcon = null;
+        }
     }
 }

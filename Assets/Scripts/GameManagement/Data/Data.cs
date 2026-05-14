@@ -1,3 +1,4 @@
+using UnityEngine;
 using System.Collections.Generic;
 
 [System.Serializable]
@@ -54,4 +55,5 @@ public class GameData
 
     public float workerSaleTimer;
     public bool isWorkerSaleActive;
+    public Sprite currentWheelRewardIcon;
 }

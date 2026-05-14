@@ -30,12 +30,12 @@ public class System_Data : MonoBehaviour
 
     [Header("Events:")]
     public int goldenDrops = 0;
-    public float goldenRainTimer = 300f;
-    public float goldRushTimer = 300f;
     public int luckyBonus = 0;
+    public float goldenRainTimer;
+    public float goldRushTimer;
+    public float workerSaleTimer;
     public double highestComboMultiplier = 1.0;
     public double highestCritMultiplier = 1.0;
-    public float workerSaleTimer;
     public bool isWorkerSaleActive;
 
     [Header("Achievements:")]
@@ -69,4 +69,5 @@ public class System_Data : MonoBehaviour
     [Header("Wheel Fortune Stats")]
     public float wheelMultiplier = 1.0f;
     public float wheelBonusTimer = 0f;
+    public Sprite currentWheelRewardIcon;
 }

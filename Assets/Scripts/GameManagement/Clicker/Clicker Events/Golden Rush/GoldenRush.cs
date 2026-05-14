@@ -6,19 +6,22 @@ public class GoldenRush : MonoBehaviour
 {
     [Header("References:")]
     [SerializeField] System_Data data;
-    [SerializeField] TextMeshProUGUI statusText;
-    [SerializeField] TextMeshProUGUI bannerText;
+    [SerializeField] GameObject goldRushIconPrefab;
 
     [Header("Event Settings:")]
     [SerializeField] float timeBetweenEvents = 450f;
-    [SerializeField] float eventDuration = 15f;
+    [SerializeField] float eventDuration = 30f;
+    [SerializeField] float visibilityThreshold = 15f;
 
+    GameObject activeIconInstance;
+    TextMeshProUGUI timerTextInIcon;
     float currentEventTimer;
     bool isEventActive = false;
 
-    void Awake()
+    void Start()
     {
-        if (bannerText != null) bannerText.gameObject.SetActive(false);
+        if (data.goldRushTimer <= 0 && !data.isGoldRushActive)
+            data.goldRushTimer = timeBetweenEvents;
     }
 
     void Update()
@@ -28,7 +31,7 @@ public class GoldenRush : MonoBehaviour
             if (data.goldRushTimer > 0)
             {
                 data.goldRushTimer -= Time.deltaTime;
-                UpdateWaitingUI();
+                HandleWaitingStatus();
             }
             else
             {
@@ -40,28 +43,45 @@ public class GoldenRush : MonoBehaviour
             if (currentEventTimer > 0)
             {
                 currentEventTimer -= Time.deltaTime;
-                UpdateActiveEventUI();
+                UpdateIconTimerUI(currentEventTimer);
+            }
+            else
+            {
+                EndGoldRush();
             }
         }
     }
 
-    void UpdateWaitingUI()
+    void HandleWaitingStatus()
     {
-        if (statusText == null) return;
-
-        int minutes = Mathf.FloorToInt(data.goldRushTimer / 60);
-        int seconds = Mathf.FloorToInt(data.goldRushTimer % 60);
-
-        statusText.color = Color.white;
-        statusText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
+        if (data.goldRushTimer <= visibilityThreshold)
+        {
+            if (activeIconInstance == null)
+            {
+                SpawnEventIcon();
+            }
+            UpdateIconTimerUI(data.goldRushTimer);
+        }
     }
 
-    void UpdateActiveEventUI()
+    void SpawnEventIcon()
     {
-        if (statusText == null) return;
+        activeIconInstance = Event_Manager.Instance.AddEventIcon(goldRushIconPrefab);
+        if (activeIconInstance != null)
+        {
+            timerTextInIcon = activeIconInstance.GetComponentInChildren<TextMeshProUGUI>();
+        }
+    }
 
-        statusText.color = new Color(1f, 0.84f, 0f);
-        statusText.text = string.Format("{0:0.0}s", currentEventTimer);
+    void UpdateIconTimerUI(float timeToShow)
+    {
+        if (timerTextInIcon == null) return;
+
+        int minutes = Mathf.FloorToInt(timeToShow / 60);
+        int seconds = Mathf.FloorToInt(timeToShow % 60);
+
+        timerTextInIcon.text = string.Format("{0:00}:{1:00}", minutes, seconds);
+        timerTextInIcon.color = isEventActive ? new Color(1f, 0.84f, 0f) : Color.white;
     }
 
     IEnumerator StartGoldRush()
@@ -70,20 +90,26 @@ public class GoldenRush : MonoBehaviour
         data.isGoldRushActive = true;
         currentEventTimer = eventDuration;
 
-        if (bannerText != null)
-        {
-            bannerText.text = "GOLD RUSH";
-            bannerText.gameObject.SetActive(true);
-        }
+        if (activeIconInstance == null) SpawnEventIcon();
 
         if (AudioManager.Instance != null) AudioManager.Instance.PlaySFX("GoldRushStart");
 
-        yield return new WaitForSeconds(eventDuration);
+        yield return null;
+    }
 
-        if (bannerText != null) bannerText.gameObject.SetActive(false);
-
+    void EndGoldRush()
+    {
+        isEventActive = false;
         data.isGoldRushActive = false;
         data.goldRushTimer = timeBetweenEvents;
-        isEventActive = false;
+
+        if (activeIconInstance != null)
+        {
+            Event_Manager.Instance.RemoveEventIcon(activeIconInstance);
+            activeIconInstance = null;
+            timerTextInIcon = null;
+        }
+
+        if (AudioManager.Instance != null) AudioManager.Instance.PlaySFX("GoldRushEnd"); // Opcjonalnie dźwięk końca
     }
 }

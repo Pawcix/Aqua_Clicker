@@ -13,6 +13,7 @@ public class Clicker_Prefabs : MonoBehaviour
     [SerializeField] Prefab_PPS prefabPPS;
     [SerializeField] Prefab_WorkerList prefabWorkerList;
     [SerializeField] Prefab_Achievement prefabAchievement;
+    [SerializeField] Prefab_DailyStreak prefabDailyStreak;
 
     System_Data data;
 
@@ -79,6 +80,11 @@ public class Clicker_Prefabs : MonoBehaviour
         if (prefabWorkerList != null)
         {
             prefabWorkerList.UpdateWorkerList(data.workerLevels);
+        }
+
+        if (prefabDailyStreak != null)
+        {
+            prefabDailyStreak.UpdateDailyStreakPrefab(data.loginStreak);
         }
 
         if (prefabAchievement != null && System_Achievements.Instance != null)

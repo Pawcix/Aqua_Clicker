@@ -23,11 +23,6 @@ public class System_WheelFortune : MonoBehaviour
     [SerializeField] AnimationCurve spinCurve;
     [SerializeField] int minutesWait = 30;
 
-    [Header("Booster Display UI (Main Screen)")]
-    [SerializeField] GameObject boosterPanel;
-    [SerializeField] Image boosterIconDisplay;
-    [SerializeField] TextMeshProUGUI boosterTimerText;
-
     [Header("Calibration")]
     [Range(0, 360)]
     [SerializeField] float angleOffset = 0f;
@@ -51,25 +46,6 @@ public class System_WheelFortune : MonoBehaviour
         if (!isSpinning)
         {
             wheelCircle.Rotate(Vector3.forward, idleRotationSpeed * Time.deltaTime);
-        }
-
-        HandleBoosterTimer();
-    }
-
-    void HandleBoosterTimer()
-    {
-        if (data.wheelBonusTimer > 0)
-        {
-            if (boosterPanel != null && !boosterPanel.activeSelf) boosterPanel.SetActive(true);
-
-            int mins = Mathf.FloorToInt(data.wheelBonusTimer / 60f);
-            int secs = Mathf.FloorToInt(data.wheelBonusTimer % 60f);
-            if (boosterTimerText != null)
-                boosterTimerText.text = string.Format("{0:D2}:{1:D2}", mins, secs);
-        }
-        else
-        {
-            if (boosterPanel != null && boosterPanel.activeSelf) boosterPanel.SetActive(false);
         }
     }
 
@@ -205,11 +181,7 @@ public class System_WheelFortune : MonoBehaviour
 
             data.wheelMultiplier = 1.0f + bonusPercent;
             data.wheelBonusTimer = 600f;
-
-            if (boosterIconDisplay != null) boosterIconDisplay.sprite = reward.rewardIcon;
-            if (boosterPanel != null) boosterPanel.SetActive(true);
-
-            Debug.Log($"Aktywowano bonus: {bonusPercent * 100}% na 10 minut");
+            data.currentWheelRewardIcon = reward.rewardIcon;
         }
     }
 }

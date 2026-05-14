@@ -5,7 +5,6 @@ using UnityEngine;
 public class System_Dailybonus : MonoBehaviour
 {
     [SerializeField] System_Data data;
-    [SerializeField] TextMeshProUGUI streakText;
     [SerializeField] TextMeshProUGUI bonusText;
     [SerializeField] TextMeshProUGUI nextMilestoneText;
     [SerializeField] TextMeshProUGUI timerText;
@@ -73,39 +72,21 @@ public class System_Dailybonus : MonoBehaviour
         data.loginStreak = newStreak;
         data.lastBonusDate = DateTime.Today.ToString();
 
-        if (newStreak <= 1)
+        float baseMultiplier = 1.0f;
+        if (newStreak > 1)
         {
-            data.currentDailyMultiplier = 1.0f;
+            baseMultiplier += (newStreak - 1) * 0.1f;
         }
-        else
-        {
-            float baseMultiplier = 1.0f + (newStreak - 1) * 0.1f;
-            float milestoneBonus = 0f;
 
-            if (newStreak >= 365) milestoneBonus = 25.0f;
-            else if (newStreak >= 180) milestoneBonus = 10.0f;
-            else if (newStreak >= 90) milestoneBonus = 5.0f;
-            else if (newStreak >= 60) milestoneBonus = 3.0f;
-            else if (newStreak >= 30) milestoneBonus = 2.0f;
-            else if (newStreak >= 21) milestoneBonus = 1.0f;
-            else if (newStreak >= 14) milestoneBonus = 0.5f;
-            else if (newStreak >= 7) milestoneBonus = 0.2f;
-
-            data.currentDailyMultiplier = baseMultiplier + milestoneBonus;
-        }
+        float milestoneBonus = CalculateMilestone(newStreak);
+        data.currentDailyMultiplier = baseMultiplier + milestoneBonus;
 
         UpdateUI();
-        Debug.Log($"Daily Bonus: Dzień {newStreak}. Mnożnik: {data.currentDailyMultiplier:F1}x");
     }
 
     void UpdateUI()
     {
         bool isFirstDay = data.loginStreak <= 1;
-
-        if (streakText != null)
-        {
-            streakText.text = isFirstDay ? "WELCOME!" : $"STREAK: {data.loginStreak} DAYS";
-        }
 
         if (bonusText != null)
         {
@@ -134,6 +115,19 @@ public class System_Dailybonus : MonoBehaviour
                     nextMilestoneText.text = "YOU ARE A LEGEND!";
             }
         }
+    }
+
+    float CalculateMilestone(int streak)
+    {
+        if (streak >= 365) return 25.0f;
+        if (streak >= 180) return 10.0f;
+        if (streak >= 90) return 5.0f;
+        if (streak >= 60) return 3.0f;
+        if (streak >= 30) return 2.0f;
+        if (streak >= 21) return 1.0f;
+        if (streak >= 14) return 0.5f;
+        if (streak >= 7) return 0.2f;
+        return 0f;
     }
 
     int GetNextMilestone(int currentStreak)
