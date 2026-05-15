@@ -56,4 +56,7 @@ public class GameData
     public float workerSaleTimer;
     public bool isWorkerSaleActive;
     public Sprite currentWheelRewardIcon;
+
+    public float riskMultiplier;
+    public float riskBonusTimer;
 }

@@ -73,7 +73,9 @@ public class Data_SaveManager : MonoBehaviour
             wheelBonusTimer = systemData.wheelBonusTimer,
             workerSaleTimer = systemData.workerSaleTimer,
             isWorkerSaleActive = systemData.isWorkerSaleActive,
-            currentWheelRewardIcon = systemData.currentWheelRewardIcon
+            currentWheelRewardIcon = systemData.currentWheelRewardIcon,
+            riskMultiplier = systemData.riskMultiplier,
+            riskBonusTimer = systemData.riskBonusTimer
         };
 
         string json = JsonUtility.ToJson(dataToSave, true);
@@ -151,6 +153,8 @@ public class Data_SaveManager : MonoBehaviour
             systemData.workerSaleTimer = loadedData.workerSaleTimer;
             systemData.isWorkerSaleActive = loadedData.isWorkerSaleActive;
             systemData.currentWheelRewardIcon = loadedData.currentWheelRewardIcon;
+            systemData.riskMultiplier = loadedData.riskMultiplier;
+            systemData.riskBonusTimer = loadedData.riskBonusTimer;
 
             if (loadedData.xpToNextLevel > 0)
                 systemData.xpToNextLevel = loadedData.xpToNextLevel;

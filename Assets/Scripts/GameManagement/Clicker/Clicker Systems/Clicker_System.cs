@@ -47,7 +47,7 @@ public class Clicker_System : MonoBehaviour
             }
 
             double totalBasePPS = data.basePPS + data.workersPPS;
-            double finalPPS = totalBasePPS * data.currentDailyMultiplier * data.wheelMultiplier;
+            double finalPPS = totalBasePPS * data.currentDailyMultiplier * data.wheelMultiplier * data.riskMultiplier;
 
             if (data.isGoldRushActive) finalPPS *= 2.0;
 
@@ -79,7 +79,7 @@ public class Clicker_System : MonoBehaviour
         if (data == null) return;
 
         double currentTotal = System.Math.Floor(data.pointsCounterFloat);
-        double realPPS = (data.basePPS + data.workersPPS) * data.currentDailyMultiplier * data.wheelMultiplier;
+        double realPPS = (data.basePPS + data.workersPPS) * data.currentDailyMultiplier * data.wheelMultiplier * data.riskMultiplier;
 
         if (data.isGoldRushActive) realPPS *= 2.0;
 
@@ -112,6 +112,8 @@ public class Clicker_System : MonoBehaviour
         }
 
         basePoints *= data.currentDailyMultiplier;
+        basePoints *= data.riskMultiplier;
+
         if (data.isGoldRushActive) basePoints *= 2.0;
 
         bool isCrit;

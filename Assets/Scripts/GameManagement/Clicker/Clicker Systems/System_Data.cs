@@ -70,4 +70,8 @@ public class System_Data : MonoBehaviour
     public float wheelMultiplier = 1.0f;
     public float wheelBonusTimer = 0f;
     public Sprite currentWheelRewardIcon;
+
+    [Header("Risk & Reward Stats")]
+    public float riskMultiplier = 1.0f;
+    public float riskBonusTimer = 0f;
 }

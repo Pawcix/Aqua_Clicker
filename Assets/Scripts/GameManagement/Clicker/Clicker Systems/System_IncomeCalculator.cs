@@ -13,6 +13,7 @@ public class System_IncomeCalculator : MonoBehaviour
     string colWheel = "#00FFFF";
     string colGold = "#FFD700";
     string colCombo = "#FF4500";
+    string colRisk = "#FF7F50";
 
     void Update()
     {
@@ -30,17 +31,18 @@ public class System_IncomeCalculator : MonoBehaviour
         double finalPPS;
         if (workersTotalPPS < 0.01)
         {
-            finalPPS = 1.0 * data.currentDailyMultiplier * data.wheelMultiplier * goldRushMult * comboMult;
+            finalPPS = 1.0 * data.currentDailyMultiplier * data.wheelMultiplier * goldRushMult * comboMult * data.riskMultiplier;
         }
         else
         {
-            finalPPS = workersTotalPPS * data.currentDailyMultiplier * data.wheelMultiplier * goldRushMult * comboMult;
+            finalPPS = workersTotalPPS * data.currentDailyMultiplier * data.wheelMultiplier * goldRushMult * comboMult * data.riskMultiplier;
         }
 
         bool hasAnyModifier = data.currentDailyMultiplier > 1.0f ||
                               data.wheelMultiplier > 1.0f ||
                               data.isGoldRushActive ||
-                              comboMult > 1.0;
+                              comboMult > 1.0 ||
+                              data.riskMultiplier != 1.0f; ;
 
         if (workersTotalPPS < 0.01 && !hasAnyModifier)
         {
@@ -68,7 +70,7 @@ public class System_IncomeCalculator : MonoBehaviour
 
         void AddMultiplier(double val, string color, string label)
         {
-            if (val > 1.0)
+            if (val != 1.0)
             {
                 string valStr = val.ToString("F1");
                 if (firstElementAdded) formula.Append(" * ");
@@ -83,6 +85,7 @@ public class System_IncomeCalculator : MonoBehaviour
         AddMultiplier(data.wheelMultiplier, colWheel, "WHEEL BOOST");
         AddMultiplier(goldRushMult, colGold, "GOLD RUSH");
         AddMultiplier(comboMult, colCombo, "COMBO CHAIN");
+        AddMultiplier(data.riskMultiplier, colRisk, "RISK REWARD");
 
         formulaText.text = formula.ToString();
         breakdownText.text = breakdown.ToString();
