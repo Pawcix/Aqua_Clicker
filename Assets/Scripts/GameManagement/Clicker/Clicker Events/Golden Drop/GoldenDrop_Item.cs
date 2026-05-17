@@ -52,6 +52,11 @@ public class GoldenDrop_Item : MonoBehaviour
         data.pointsCounterFloat += bonus;
         data.goldenDrops++;
 
+        if (ScreenFlash.Instance != null)
+        {
+            ScreenFlash.Instance.TriggerGoldFlash();
+        }
+
         if (PointsDisplay.Instance != null)
         {
             PointsDisplay.Instance.Pulse();

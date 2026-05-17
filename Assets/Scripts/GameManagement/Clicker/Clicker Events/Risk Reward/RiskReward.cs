@@ -1,4 +1,5 @@
 using TMPro;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,30 +17,74 @@ public class RiskReward : MonoBehaviour
     TextMeshProUGUI timerTextInIcon;
     Image iconDisplayInIcon;
 
+    private const string RiskEndTimeKey = "RiskBonusEndTime";
+
+    void Start()
+    {
+        ValidateBonusOnLines();
+    }
+
     void Update()
     {
-        if (data.riskBonusTimer > 0 && data.riskMultiplier == 1.0f)
+        if (data.riskMultiplier != 1.0f)
         {
-            RemoveBoosterIcon();
-            return;
-        }
-
-        if (data.riskBonusTimer > 0)
-        {
-            data.riskBonusTimer -= Time.deltaTime;
-
-            if (activeIconInstance == null)
+            if (!PlayerPrefs.HasKey(RiskEndTimeKey))
             {
-                SpawnBoosterIcon();
+                DateTime endTime = DateTime.Now.AddSeconds(data.riskBonusTimer);
+                PlayerPrefs.SetString(RiskEndTimeKey, endTime.ToString());
+                PlayerPrefs.Save();
             }
 
-            UpdateIconUI();
+            DateTime bonusEndTime = DateTime.Parse(PlayerPrefs.GetString(RiskEndTimeKey));
+            TimeSpan timeRemaining = bonusEndTime - DateTime.Now;
+
+            if (timeRemaining.TotalSeconds > 0)
+            {
+                data.riskBonusTimer = (float)timeRemaining.TotalSeconds;
+
+                if (activeIconInstance == null)
+                {
+                    SpawnBoosterIcon();
+                }
+
+                UpdateIconUI(timeRemaining);
+            }
+            else
+            {
+                RemoveBoosterIcon();
+            }
         }
         else
         {
             if (activeIconInstance != null)
             {
                 RemoveBoosterIcon();
+            }
+        }
+    }
+
+    void ValidateBonusOnLines()
+    {
+        if (PlayerPrefs.HasKey(RiskEndTimeKey))
+        {
+            DateTime bonusEndTime = DateTime.Parse(PlayerPrefs.GetString(RiskEndTimeKey));
+
+            if (DateTime.Now >= bonusEndTime)
+            {
+                PlayerPrefs.DeleteKey(RiskEndTimeKey);
+                PlayerPrefs.Save();
+                if (data != null)
+                {
+                    data.riskMultiplier = 1.0f;
+                    data.riskBonusTimer = 0;
+                }
+            }
+            else
+            {
+                if (data != null)
+                {
+                    data.riskBonusTimer = (float)(bonusEndTime - DateTime.Now).TotalSeconds;
+                }
             }
         }
     }
@@ -73,14 +118,16 @@ public class RiskReward : MonoBehaviour
         }
     }
 
-    void UpdateIconUI()
+    void UpdateIconUI(TimeSpan timeRemaining)
     {
         if (timerTextInIcon == null) return;
 
-        int mins = Mathf.FloorToInt(data.riskBonusTimer / 60f);
-        int secs = Mathf.FloorToInt(data.riskBonusTimer % 60f);
+        int totalSeconds = Mathf.CeilToInt((float)timeRemaining.TotalSeconds);
 
-        if (data.riskBonusTimer < 0) { mins = 0; secs = 0; }
+        int mins = timeRemaining.Minutes;
+        int secs = timeRemaining.Seconds;
+
+        if (timeRemaining.TotalSeconds < 0) { mins = 0; secs = 0; }
 
         timerTextInIcon.text = string.Format("{0:D2}:{1:D2}", mins, secs);
     }
@@ -95,6 +142,12 @@ public class RiskReward : MonoBehaviour
         activeIconInstance = null;
         timerTextInIcon = null;
         iconDisplayInIcon = null;
+
+        if (PlayerPrefs.HasKey(RiskEndTimeKey))
+        {
+            PlayerPrefs.DeleteKey(RiskEndTimeKey);
+            PlayerPrefs.Save();
+        }
 
         if (data != null)
         {

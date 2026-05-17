@@ -10,9 +10,9 @@ public class GoldenRain : MonoBehaviour
     [SerializeField] GameObject goldenRainIconPrefab;
 
     [Header("Event Settings:")]
-    [SerializeField] float timeBetweenEvents = 300f;
+    [SerializeField] float timeBetweenEvents = 1200f;
     [SerializeField] float eventDuration = 10f;
-    [SerializeField] float visibilityThreshold = 15f;
+    [SerializeField] float visibilityThreshold = 300f;
 
     GameObject activeIconInstance;
     TextMeshProUGUI timerTextInIcon;
@@ -82,7 +82,6 @@ public class GoldenRain : MonoBehaviour
         int seconds = Mathf.FloorToInt(timeToShow % 60);
 
         timerTextInIcon.text = string.Format("{0:00}:{1:00}", minutes, seconds);
-        timerTextInIcon.color = isEventActive ? Color.cyan : Color.white;
     }
 
     IEnumerator StartGoldenRain()

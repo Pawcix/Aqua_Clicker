@@ -9,9 +9,9 @@ public class GoldenRush : MonoBehaviour
     [SerializeField] GameObject goldRushIconPrefab;
 
     [Header("Event Settings:")]
-    [SerializeField] float timeBetweenEvents = 450f;
+    [SerializeField] float timeBetweenEvents = 400f;
     [SerializeField] float eventDuration = 30f;
-    [SerializeField] float visibilityThreshold = 15f;
+    [SerializeField] float visibilityThreshold = 300f;
 
     GameObject activeIconInstance;
     TextMeshProUGUI timerTextInIcon;
@@ -81,7 +81,6 @@ public class GoldenRush : MonoBehaviour
         int seconds = Mathf.FloorToInt(timeToShow % 60);
 
         timerTextInIcon.text = string.Format("{0:00}:{1:00}", minutes, seconds);
-        timerTextInIcon.color = isEventActive ? new Color(1f, 0.84f, 0f) : Color.white;
     }
 
     IEnumerator StartGoldRush()
@@ -110,6 +109,6 @@ public class GoldenRush : MonoBehaviour
             timerTextInIcon = null;
         }
 
-        if (AudioManager.Instance != null) AudioManager.Instance.PlaySFX("GoldRushEnd"); // Opcjonalnie dźwięk końca
+        if (AudioManager.Instance != null) AudioManager.Instance.PlaySFX("GoldRushEnd");
     }
 }

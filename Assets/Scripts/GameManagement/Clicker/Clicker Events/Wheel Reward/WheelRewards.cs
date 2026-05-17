@@ -1,4 +1,5 @@
 using TMPro;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,30 +13,75 @@ public class WheelRewards : MonoBehaviour
     TextMeshProUGUI timerTextInIcon;
     Image iconDisplayInIcon;
 
+    private const string WheelEndTimeKey = "WheelBonusEndTime";
+
+    void Start()
+    {
+        ValidateBonusOnStart();
+    }
+
     void Update()
     {
-        if (data.wheelBonusTimer > 0 && data.currentWheelRewardIcon == null)
+        if (data.wheelMultiplier != 1.0f)
         {
-            RemoveBoosterIcon();
-            return;
-        }
-
-        if (data.wheelBonusTimer > 0)
-        {
-            data.wheelBonusTimer -= Time.deltaTime;
-
-            if (activeIconInstance == null)
+            if (!PlayerPrefs.HasKey(WheelEndTimeKey))
             {
-                SpawnBoosterIcon();
+                DateTime endTime = DateTime.Now.AddSeconds(data.wheelBonusTimer);
+                PlayerPrefs.SetString(WheelEndTimeKey, endTime.ToString());
+                PlayerPrefs.Save();
             }
 
-            UpdateIconUI();
+            DateTime bonusEndTime = DateTime.Parse(PlayerPrefs.GetString(WheelEndTimeKey));
+            TimeSpan timeRemaining = bonusEndTime - DateTime.Now;
+
+            if (timeRemaining.TotalSeconds > 0)
+            {
+                data.wheelBonusTimer = (float)timeRemaining.TotalSeconds;
+
+                if (activeIconInstance == null)
+                {
+                    SpawnBoosterIcon();
+                }
+
+                UpdateIconUI(timeRemaining);
+            }
+            else
+            {
+                RemoveBoosterIcon();
+            }
         }
         else
         {
             if (activeIconInstance != null)
             {
                 RemoveBoosterIcon();
+            }
+        }
+    }
+
+    void ValidateBonusOnStart()
+    {
+        if (PlayerPrefs.HasKey(WheelEndTimeKey))
+        {
+            DateTime bonusEndTime = DateTime.Parse(PlayerPrefs.GetString(WheelEndTimeKey));
+
+            if (DateTime.Now >= bonusEndTime)
+            {
+                PlayerPrefs.DeleteKey(WheelEndTimeKey);
+                PlayerPrefs.Save();
+                if (data != null)
+                {
+                    data.wheelMultiplier = 1.0f;
+                    data.wheelBonusTimer = 0;
+                    data.currentWheelRewardIcon = null;
+                }
+            }
+            else
+            {
+                if (data != null)
+                {
+                    data.wheelBonusTimer = (float)(bonusEndTime - DateTime.Now).TotalSeconds;
+                }
             }
         }
     }
@@ -62,14 +108,14 @@ public class WheelRewards : MonoBehaviour
         }
     }
 
-    void UpdateIconUI()
+    void UpdateIconUI(TimeSpan timeRemaining)
     {
         if (timerTextInIcon == null) return;
 
-        int mins = Mathf.FloorToInt(data.wheelBonusTimer / 60f);
-        int secs = Mathf.FloorToInt(data.wheelBonusTimer % 60f);
+        int mins = timeRemaining.Minutes;
+        int secs = timeRemaining.Seconds;
 
-        if (data.wheelBonusTimer < 0) { mins = 0; secs = 0; }
+        if (timeRemaining.TotalSeconds < 0) { mins = 0; secs = 0; }
 
         timerTextInIcon.text = string.Format("{0:D2}:{1:D2}", mins, secs);
     }
@@ -84,6 +130,12 @@ public class WheelRewards : MonoBehaviour
         activeIconInstance = null;
         timerTextInIcon = null;
         iconDisplayInIcon = null;
+
+        if (PlayerPrefs.HasKey(WheelEndTimeKey))
+        {
+            PlayerPrefs.DeleteKey(WheelEndTimeKey);
+            PlayerPrefs.Save();
+        }
 
         if (data != null)
         {
