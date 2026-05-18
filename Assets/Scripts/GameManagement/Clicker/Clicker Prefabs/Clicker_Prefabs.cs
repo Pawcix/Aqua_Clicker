@@ -14,6 +14,7 @@ public class Clicker_Prefabs : MonoBehaviour
     [SerializeField] Prefab_WorkerList prefabWorkerList;
     [SerializeField] Prefab_Achievement prefabAchievement;
     [SerializeField] Prefab_DailyStreak prefabDailyStreak;
+    [SerializeField] Prefab_Rebirth prefabRebirthsCounter;
 
     System_Data data;
 
@@ -56,6 +57,11 @@ public class Clicker_Prefabs : MonoBehaviour
         if (prefabLuckyBonus != null)
         {
             prefabLuckyBonus.UpdateTotalLuckyBonusesPrefab(data.luckyBonus);
+        }
+
+        if (prefabRebirthsCounter != null)
+        {
+            prefabRebirthsCounter.UpdateTotalRebirthsPrefab(data.rebirthCount);
         }
 
         if (prefabComboChain != null)

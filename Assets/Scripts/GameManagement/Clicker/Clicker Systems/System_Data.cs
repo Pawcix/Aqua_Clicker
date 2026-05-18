@@ -45,7 +45,7 @@ public class System_Data : MonoBehaviour
     public int currentLevel = 1;
     public double currentXP = 0;
     public double xpToNextLevel = 0;
-    public int skillPoints = 0;
+    public int rebirthPoints = 0;
 
     [Header("Critical Click:")]
     public float critChance = 0.01f;
@@ -66,12 +66,16 @@ public class System_Data : MonoBehaviour
     public float comboMasteryXP = 0;
     public float awayMasteryXP = 0;
 
-    [Header("Wheel Fortune Stats")]
+    [Header("Wheel Fortune Stats:")]
     public float wheelMultiplier = 1.0f;
     public float wheelBonusTimer = 0f;
     public Sprite currentWheelRewardIcon;
 
-    [Header("Risk & Reward Stats")]
+    [Header("Risk & Reward Stats:")]
     public float riskMultiplier = 1.0f;
     public float riskBonusTimer = 0f;
+
+    [Header("Rebirth Stats:")]
+    public int rebirthCount = 0;
+    public float rebirthMultiplier = 1.0f;
 }

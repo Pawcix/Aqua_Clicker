@@ -14,6 +14,7 @@ public class System_IncomeCalculator : MonoBehaviour
     string colGold = "#FFD700";
     string colCombo = "#FF4500";
     string colRisk = "#FF7F50";
+    string colRebirth = "#BA55D3";
 
     void Update()
     {
@@ -27,22 +28,24 @@ public class System_IncomeCalculator : MonoBehaviour
         double workersTotalPPS = data.basePPS + data.workersPPS;
         double comboMult = ComboChain.Instance != null ? ComboChain.Instance.GetCurrentMultiplier() : 1.0;
         double goldRushMult = data.isGoldRushActive ? 2.0 : 1.0;
+        double rebirthMult = data.rebirthMultiplier > 0 ? data.rebirthMultiplier : 1.0;
 
         double finalPPS;
         if (workersTotalPPS < 0.01)
         {
-            finalPPS = 1.0 * data.currentDailyMultiplier * data.wheelMultiplier * goldRushMult * comboMult * data.riskMultiplier;
+            finalPPS = 1.0 * data.currentDailyMultiplier * data.wheelMultiplier * goldRushMult * comboMult * data.riskMultiplier * rebirthMult;
         }
         else
         {
-            finalPPS = workersTotalPPS * data.currentDailyMultiplier * data.wheelMultiplier * goldRushMult * comboMult * data.riskMultiplier;
+            finalPPS = workersTotalPPS * data.currentDailyMultiplier * data.wheelMultiplier * goldRushMult * comboMult * data.riskMultiplier * rebirthMult;
         }
 
         bool hasAnyModifier = data.currentDailyMultiplier > 1.0f ||
-                              data.wheelMultiplier > 1.0f ||
-                              data.isGoldRushActive ||
-                              comboMult > 1.0 ||
-                              data.riskMultiplier != 1.0f; ;
+                           data.wheelMultiplier > 1.0f ||
+                           data.isGoldRushActive ||
+                           comboMult > 1.0 ||
+                           data.riskMultiplier != 1.0f ||
+                           rebirthMult > 1.0;
 
         if (workersTotalPPS < 0.01 && !hasAnyModifier)
         {
@@ -86,6 +89,7 @@ public class System_IncomeCalculator : MonoBehaviour
         AddMultiplier(goldRushMult, colGold, "GOLD RUSH");
         AddMultiplier(comboMult, colCombo, "COMBO CHAIN");
         AddMultiplier(data.riskMultiplier, colRisk, "RISK REWARD");
+        AddMultiplier(rebirthMult, colRebirth, "REBIRTH BONUS");
 
         formulaText.text = formula.ToString();
         breakdownText.text = breakdown.ToString();

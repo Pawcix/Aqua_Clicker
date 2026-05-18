@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 public class Data_Reset : MonoBehaviour
 {
     [SerializeField] System_Data systemData;
-    [SerializeField] string fileName = "savegame.json";
+    [SerializeField] string fileName = "savegame.dat";
 
     public void ResetGame()
     {

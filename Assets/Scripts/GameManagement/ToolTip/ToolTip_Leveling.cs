@@ -51,7 +51,7 @@ public class ToolTip_Leveling : MonoBehaviour, IPointerEnterHandler, IPointerExi
         info += $"XP: {NumberFormatter.FormatWithDots(data.currentXP)} / {NumberFormatter.FormatWithDots(data.xpToNextLevel)}\n";
         info += $"Progress: {progressPercent:F1}%\n";
         info += $"\n";
-        info += $"<color=#FFD700>Skill Points: {data.skillPoints}</color>";
+        info += $"<color=#FFD700>Rebirth Points: {data.rebirthPoints}</color>";
 
         return info;
     }

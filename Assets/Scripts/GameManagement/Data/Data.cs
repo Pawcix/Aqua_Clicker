@@ -27,7 +27,7 @@ public class GameData
     public List<string> unlockedAchievementIDs = new List<string>();
 
     public int currentLevel;
-    public int skillPoints;
+    public int rebirthPoints;
     public double currentXP;
     public double xpToNextLevel;
 
@@ -59,4 +59,7 @@ public class GameData
 
     public float riskMultiplier;
     public float riskBonusTimer;
+
+    public int rebirthCount;
+    public float rebirthMultiplier;
 }

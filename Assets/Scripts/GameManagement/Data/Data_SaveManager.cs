@@ -53,7 +53,7 @@ public class Data_SaveManager : MonoBehaviour
             currentLevel = systemData.currentLevel,
             currentXP = systemData.currentXP,
             xpToNextLevel = systemData.xpToNextLevel,
-            skillPoints = systemData.skillPoints,
+            rebirthPoints = systemData.rebirthPoints,
             critChance = systemData.critChance,
             critMultiplier = systemData.critMultiplier,
             loginStreak = systemData.loginStreak,
@@ -75,7 +75,9 @@ public class Data_SaveManager : MonoBehaviour
             isWorkerSaleActive = systemData.isWorkerSaleActive,
             currentWheelRewardIcon = systemData.currentWheelRewardIcon,
             riskMultiplier = systemData.riskMultiplier,
-            riskBonusTimer = systemData.riskBonusTimer
+            riskBonusTimer = systemData.riskBonusTimer,
+            rebirthCount = systemData.rebirthCount,
+            rebirthMultiplier = systemData.rebirthMultiplier
         };
 
         string json = JsonUtility.ToJson(dataToSave, true);
@@ -126,7 +128,7 @@ public class Data_SaveManager : MonoBehaviour
 
             systemData.currentLevel = loadedData.currentLevel;
             systemData.currentXP = loadedData.currentXP;
-            systemData.skillPoints = loadedData.skillPoints;
+            systemData.rebirthPoints = loadedData.rebirthPoints;
 
             systemData.critChance = loadedData.critChance;
             systemData.critMultiplier = loadedData.critMultiplier;
@@ -155,6 +157,9 @@ public class Data_SaveManager : MonoBehaviour
             systemData.currentWheelRewardIcon = loadedData.currentWheelRewardIcon;
             systemData.riskMultiplier = loadedData.riskMultiplier;
             systemData.riskBonusTimer = loadedData.riskBonusTimer;
+
+            systemData.rebirthCount = loadedData.rebirthCount;
+            systemData.rebirthMultiplier = loadedData.rebirthMultiplier;
 
             if (loadedData.xpToNextLevel > 0)
                 systemData.xpToNextLevel = loadedData.xpToNextLevel;

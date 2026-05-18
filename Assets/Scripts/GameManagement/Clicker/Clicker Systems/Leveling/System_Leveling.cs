@@ -14,7 +14,7 @@ public class System_Leveling : MonoBehaviour
     [SerializeField] Slider xpSlider;
     [SerializeField] TextMeshProUGUI levelText;
     [SerializeField] TextMeshProUGUI percentText;
-    [SerializeField] TextMeshProUGUI skillPointsText;
+    [SerializeField] TextMeshProUGUI rebirthPointsText;
 
     [Header("Level Up Notification:")]
     [SerializeField] TextMeshProUGUI levelUpText;
@@ -82,7 +82,7 @@ public class System_Leveling : MonoBehaviour
         {
             data.currentXP -= data.xpToNextLevel;
             data.currentLevel++;
-            data.skillPoints++;
+            data.rebirthPoints++;
             data.xpToNextLevel *= xpDifficultyMultiplier;
 
             leveledUp = true;
@@ -104,8 +104,8 @@ public class System_Leveling : MonoBehaviour
         if (levelText != null)
             levelText.text = "LVL: " + data.currentLevel;
 
-        if (skillPointsText != null)
-            skillPointsText.text = "SKILL POINTS: " + data.skillPoints;
+        if (rebirthPointsText != null)
+            rebirthPointsText.text = "REBIRTH POINTS: " + data.rebirthPoints;
     }
 
     void ShowLevelUpNotification()
