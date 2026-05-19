@@ -126,9 +126,16 @@ public class System_Rebirth : MonoBehaviour
         if (statusText != null) statusText.text = "<color=#00FF00>REBIRTH</color>";
 
         float potentialBonus = CalculatePotentialBonus();
+        int levelSquared = data.currentLevel * data.currentLevel;
+
         if (cooldownTimerText != null)
         {
-            cooldownTimerText.text = $"CURRENT REWARD:\n<color=#FFD700>+{potentialBonus:F2}x MULTIPLIER</color>";
+            cooldownTimerText.text = $"<color=#888888>Every level upgrades your next run!\n" +
+                                    $"\n" +
+                                    $"CURRENT REWARD:\n" +
+                                    $"<color=#FFD700>+{potentialBonus:F3}x GLOBAL MULTIPLIER</color>\n" +
+                                    $"Progression: (Lvl {data.currentLevel})² × 0.001\n" +
+                                    $"Calculation: {levelSquared} × 0.001 = {potentialBonus:F3}x</color>";
         }
     }
 

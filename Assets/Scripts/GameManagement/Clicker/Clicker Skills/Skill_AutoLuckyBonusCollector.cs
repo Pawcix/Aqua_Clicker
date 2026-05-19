@@ -4,7 +4,7 @@ using UnityEngine.UI;
 public class Skill_AutoLuckyBonusCollector : MonoBehaviour
 {
     [SerializeField] Clicker_Skills masterSkills;
-    [SerializeField] Button collectorButton;
+    [SerializeField] public Button collectorButton;
     [SerializeField] Image collectorButtonImage;
     [SerializeField] Sprite neutralIcon;
     [SerializeField] Sprite activeIcon;

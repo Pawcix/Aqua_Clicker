@@ -4,7 +4,7 @@ using UnityEngine.UI;
 public class Skill_AntiCheat : MonoBehaviour
 {
     [SerializeField] Clicker_Skills masterSkills;
-    [SerializeField] Button bypassButton;
+    [SerializeField] public Button bypassButton;
     [SerializeField] Image bypassButtonImage;
     [SerializeField] Sprite neutralIcon;
     [SerializeField] Sprite activeIcon;

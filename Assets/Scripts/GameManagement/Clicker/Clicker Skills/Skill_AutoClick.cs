@@ -5,7 +5,7 @@ public class Skill_AutoClick : MonoBehaviour
 {
     [SerializeField] System_Data data;
     [SerializeField] Clicker_Skills masterSkills;
-    [SerializeField] Button autoClickButton;
+    [SerializeField] public Button autoClickButton;
     [SerializeField] Image autoClickButtonImage;
     [SerializeField] Sprite neutralIcon;
     [SerializeField] Sprite activeIcon;

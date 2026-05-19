@@ -1,16 +1,18 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class Skill_Multiplier : MonoBehaviour
 {
     [SerializeField] Clicker_Skills masterSkills;
-    [SerializeField] Button multiplierButton;
-    [SerializeField] int multiplierValue = 2;
+    [SerializeField] public Button multiplierButton;
+    [SerializeField] public int multiplierValue = 2;
 
     [Header("Visuals:")]
     [SerializeField] Image buttonImage;
     [SerializeField] Sprite neutralSprite;
     [SerializeField] Sprite activeSprite;
+    [SerializeField] public TextMeshProUGUI reqText;
 
     void Start()
     {
