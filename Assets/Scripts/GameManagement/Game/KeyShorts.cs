@@ -20,9 +20,18 @@ public class KeyShorts : MonoBehaviour
     {
         foreach (GameObject modal in allModals)
         {
-            if (modal != null)
+            if (modal != null && modal.activeInHierarchy)
             {
-                modal.SetActive(false);
+                UI_JuicyModal juicyAnim = modal.GetComponent<UI_JuicyModal>();
+
+                if (juicyAnim != null)
+                {
+                    juicyAnim.CloseModal();
+                }
+                else
+                {
+                    modal.SetActive(false);
+                }
             }
         }
     }

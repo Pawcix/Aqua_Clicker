@@ -8,9 +8,15 @@ public class Modal : MonoBehaviour
     {
         if (modalPanel != null)
         {
-            bool newState = !modalPanel.activeSelf;
-            modalPanel.SetActive(newState);
-            if (newState) AudioManager.Instance.PlaySFX("Open");
+            if (!modalPanel.activeInHierarchy)
+            {
+                modalPanel.SetActive(true);
+                if (AudioManager.Instance != null) AudioManager.Instance.PlaySFX("Open");
+            }
+            else
+            {
+                CloseModal(modalPanel);
+            }
         }
     }
 
@@ -34,9 +40,19 @@ public class Modal : MonoBehaviour
 
     public void CloseModal(GameObject targetModal)
     {
-        if (targetModal != null)
+        if (targetModal == null) return;
+
+        if (targetModal.activeInHierarchy)
         {
-            targetModal.SetActive(false);
+            UI_JuicyModal juicyAnim = targetModal.GetComponent<UI_JuicyModal>();
+
+            if (juicyAnim != null)
+            {
+                juicyAnim.CloseModal();
+                return;
+            }
         }
+
+        targetModal.SetActive(false);
     }
 }
