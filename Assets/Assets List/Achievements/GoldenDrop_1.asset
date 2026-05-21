@@ -15,5 +15,7 @@ MonoBehaviour:
   id: GoldenDrop_1
   title: GoldenDrop 1
   icon: {fileID: -366053529876322106, guid: 5697e03901c31af4a8e97c84d554d0d8, type: 3}
+  description: XDDDDDDDDDDDDDD
   type: 1
   requiredValue: 1
+  rewardSkinID: -1

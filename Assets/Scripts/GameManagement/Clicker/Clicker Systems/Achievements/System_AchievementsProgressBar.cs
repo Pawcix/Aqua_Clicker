@@ -1,6 +1,5 @@
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class System_AchievementsProgressBar : MonoBehaviour
 {
@@ -9,12 +8,11 @@ public class System_AchievementsProgressBar : MonoBehaviour
     [SerializeField] System_Achievements achievementManager;
 
     [Header("UI Elements:")]
-    [SerializeField] Slider progressSlider;
     [SerializeField] TextMeshProUGUI progressText;
 
     public void UpdateProgressBar()
     {
-        if (data == null || achievementManager == null || progressSlider == null) return;
+        if (data == null || achievementManager == null) return;
 
         var allAchievements = achievementManager.GetAllAchievements();
         if (allAchievements == null || allAchievements.Count == 0) return;
@@ -25,11 +23,9 @@ public class System_AchievementsProgressBar : MonoBehaviour
         float progress01 = (float)unlockedCount / totalCount;
         float percentage = progress01 * 100f;
 
-        progressSlider.value = progress01;
-
         if (progressText != null)
         {
-            progressText.text = $"Achievements Progress: {unlockedCount} / {totalCount} ({percentage:F0}%)";
+            progressText.text = $"Achievements:\n{unlockedCount} / {totalCount} ({percentage:F0}%)";
         }
     }
 }

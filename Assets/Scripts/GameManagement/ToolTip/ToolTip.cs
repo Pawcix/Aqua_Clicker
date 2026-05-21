@@ -39,7 +39,7 @@ public class ToolTip : MonoBehaviour
         Vector2 mousePos = Input.mousePosition;
 
         if (mousePos.y > Screen.height / 2f)
-            windowRect.pivot = new Vector2(0.5f, 1.1f);
+            windowRect.pivot = new Vector2(0.5f, 1.5f);
         else
             windowRect.pivot = new Vector2(0.5f, -0.1f);
 
