@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: aebcf0e4ca8dc704cb6edf6db2f8728d
+guid: 7f9f1c621becb564daf44bf22e4f0046
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 5248415023898783801
-    second: Close_0
+      213: 1911132907354890755
+    second: Background Purple_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -48,7 +48,7 @@ TextureImporter:
   compressionQuality: 50
   spriteMode: 2
   spriteExtrude: 1
-  spriteMeshType: 1
+  spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
@@ -96,24 +96,11 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
-    buildTarget: WebGL
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Close_0
+      name: Background Purple_0
       rect:
         serializedVersion: 2
         x: 0
@@ -121,15 +108,15 @@ TextureImporter:
         width: 160
         height: 160
       alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 20, y: 20, z: 20, w: 20}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 9307f4d28ad16d840800000000000000
-      internalID: 5248415023898783801
+      spriteID: 302a27de045b58a10800000000000000
+      internalID: 1911132907354890755
       vertices: []
       indices: 
       edges: []
@@ -138,7 +125,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: a43cb1037cd00994f81622d2fa288d2e
     internalID: 0
     vertices: []
     indices: 
@@ -148,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Close_0: 5248415023898783801
+      Background Purple_0: 1911132907354890755
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

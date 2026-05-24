@@ -2,6 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using System.Collections;
 
 public class System_Achievements : MonoBehaviour
 {
@@ -16,16 +17,36 @@ public class System_Achievements : MonoBehaviour
     [SerializeField] TextMeshProUGUI notificationText;
     [SerializeField] Image notificationIcon;
 
+    [Header("Animation Settings:")]
+    [SerializeField] private float animationSpeed = 4f;
+    [SerializeField] private float displayDuration = 5f;
+
+    private RectTransform notificationRect;
     private bool isSystemReady = false;
 
     void Awake()
     {
         if (Instance == null) Instance = this;
+
+        if (notificationPanel != null)
+        {
+            notificationRect = notificationPanel.GetComponent<RectTransform>();
+        }
     }
 
     void Start()
     {
-        if (notificationPanel != null) notificationPanel.SetActive(false);
+        if (notificationPanel != null && notificationRect != null)
+        {
+            notificationPanel.SetActive(true);
+
+            LayoutRebuilder.ForceRebuildLayoutImmediate(notificationRect);
+
+            float startHiddenX = -(notificationRect.sizeDelta.x + 50f);
+
+            notificationRect.anchoredPosition = new Vector2(startHiddenX, notificationRect.anchoredPosition.y);
+        }
+
         Invoke(nameof(EnableChecking), 1.0f);
     }
 
@@ -77,11 +98,17 @@ public class System_Achievements : MonoBehaviour
             System_WardrobeUnlockSkin.Instance.GrantReward(ach);
         }
 
-        if (notificationPanel != null)
+        if (notificationPanel != null && notificationRect != null)
         {
             StopAllCoroutines();
-            if (notificationText != null) notificationText.text = ach.title;
+
+            if (notificationText != null)
+            {
+                notificationText.text = "<color=#FFD700>ACHIEVEMENT UNLOCKED:</color>\n" + ach.title;
+            }
+
             if (notificationIcon != null) notificationIcon.sprite = ach.icon;
+
             StartCoroutine(ShowNotificationRoutine());
         }
 
@@ -91,11 +118,40 @@ public class System_Achievements : MonoBehaviour
         if (Data_SaveManager.instance != null) Data_SaveManager.instance.SaveGame();
     }
 
-    System.Collections.IEnumerator ShowNotificationRoutine()
+    IEnumerator ShowNotificationRoutine()
     {
-        notificationPanel.SetActive(true);
-        yield return new WaitForSeconds(3f);
-        notificationPanel.SetActive(false);
+        float timer = 0f;
+        float currentY = notificationRect.anchoredPosition.y;
+
+        LayoutRebuilder.ForceRebuildLayoutImmediate(notificationRect);
+
+        float width = notificationRect.sizeDelta.x;
+        float dynamicHiddenX = -(width + 50f);
+
+        while (timer < 1f)
+        {
+            timer += Time.unscaledDeltaTime * animationSpeed;
+            float smoothStep = Mathf.SmoothStep(0f, 1f, timer);
+            float newX = Mathf.Lerp(dynamicHiddenX, 0f, smoothStep); 
+
+            notificationRect.anchoredPosition = new Vector2(newX, currentY);
+            yield return null;
+        }
+        notificationRect.anchoredPosition = new Vector2(0f, currentY);
+
+        yield return new WaitForSecondsRealtime(displayDuration);
+
+        timer = 0f;
+        while (timer < 1f)
+        {
+            timer += Time.unscaledDeltaTime * animationSpeed;
+            float smoothStep = Mathf.SmoothStep(0f, 1f, timer);
+            float newX = Mathf.Lerp(0f, dynamicHiddenX, smoothStep);
+
+            notificationRect.anchoredPosition = new Vector2(newX, currentY);
+            yield return null;
+        }
+        notificationRect.anchoredPosition = new Vector2(dynamicHiddenX, currentY);
     }
 
     public List<Achievement> GetAllAchievements() => allAchievements;

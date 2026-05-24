@@ -14,6 +14,9 @@ public class Achievement : ScriptableObject
     public string title;
     public Sprite icon;
 
+    [TextArea(3, 5)]
+    public string description;
+
     [Header("Requirements")]
     public AchievementType type;
     public double requiredValue;

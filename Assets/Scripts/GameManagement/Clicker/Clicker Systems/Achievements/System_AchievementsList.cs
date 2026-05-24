@@ -38,11 +38,15 @@ public class System_AchievementsList : MonoBehaviour
             GameObject go = Instantiate(achievementPrefab, container);
             go.transform.localScale = Vector3.one;
 
+            bool isUnlocked = data.unlockedAchievementIDs.Contains(ach.id);
+
             Prefab_Achievements prefabScript = go.GetComponent<Prefab_Achievements>();
-            if (prefabScript != null)
+            if (prefabScript != null) prefabScript.Setup(ach, isUnlocked);
+
+            ToolTip_Achievement tooltipScript = go.GetComponent<ToolTip_Achievement>();
+            if (tooltipScript != null)
             {
-                bool isUnlocked = data.unlockedAchievementIDs.Contains(ach.id);
-                prefabScript.Setup(ach, isUnlocked);
+                tooltipScript.SetupTooltip(ach, isUnlocked);
             }
         }
 
