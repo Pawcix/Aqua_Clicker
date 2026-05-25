@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using System.Collections;
 
 public class PointsDisplay : MonoBehaviour
 {
@@ -11,14 +12,35 @@ public class PointsDisplay : MonoBehaviour
     [SerializeField] float speedMultiplier = 15f;
     [SerializeField] float pulseSpeed = 10f;
 
+    [Header("Color Flash Settings:")]
+    [SerializeField] float flashDuration = 0.6f;
+
     double lastDisplayedValue = -1.0;
     double displayedPoints;
+
+    Coroutine colorCoroutine;
+
+    bool isLuckyBonusFlashing = false;
+    Color currentNumberColor;
+    Color originalColor;
+    Color bonusColor;
 
     public static PointsDisplay Instance;
 
     void Awake()
     {
         Instance = this;
+
+        if (pointsText != null)
+        {
+            originalColor = pointsText.color;
+            currentNumberColor = originalColor;
+        }
+
+        if (ColorUtility.TryParseHtmlString("#E84E40", out Color parsedColor))
+        {
+            bonusColor = parsedColor;
+        }
     }
 
     void Start()
@@ -48,7 +70,7 @@ public class PointsDisplay : MonoBehaviour
 
         double currentFloorValue = System.Math.Floor(displayedPoints);
 
-        if (System.Math.Abs(currentFloorValue - lastDisplayedValue) > 0.9)
+        if (System.Math.Abs(currentFloorValue - lastDisplayedValue) > 0.9 || isLuckyBonusFlashing)
         {
             lastDisplayedValue = currentFloorValue;
             UpdateText(lastDisplayedValue);
@@ -69,6 +91,8 @@ public class PointsDisplay : MonoBehaviour
 
     void UpdateText(double value)
     {
+        if (pointsText == null) return;
+
         if (value < 0.1)
         {
             pointsText.text = prefix.TrimEnd();
@@ -76,12 +100,52 @@ public class PointsDisplay : MonoBehaviour
         else
         {
             string formattedValue = NumberFormatter.FormatWithDots(value);
-            pointsText.text = prefix + formattedValue;
+
+            if (isLuckyBonusFlashing)
+            {
+                string hexColor = ColorUtility.ToHtmlStringRGBA(currentNumberColor);
+                pointsText.text = $"{prefix}<color=#{hexColor}>{formattedValue}</color>";
+            }
+            else
+            {
+                pointsText.text = prefix + formattedValue;
+            }
         }
     }
 
     public void Pulse()
     {
         transform.localScale = Vector3.one * 1.15f;
+    }
+
+    public void PulseLuckyBonus()
+    {
+        transform.localScale = Vector3.one * 1.2f;
+
+        if (pointsText != null)
+        {
+            if (colorCoroutine != null) StopCoroutine(colorCoroutine);
+            colorCoroutine = StartCoroutine(FlashColorRoutine());
+        }
+    }
+
+    IEnumerator FlashColorRoutine()
+    {
+        isLuckyBonusFlashing = true;
+        currentNumberColor = bonusColor;
+
+        float elapsed = 0f;
+        while (elapsed < flashDuration)
+        {
+            elapsed += Time.deltaTime;
+            float t = elapsed / flashDuration;
+
+            currentNumberColor = Color.Lerp(bonusColor, originalColor, t);
+            yield return null;
+        }
+
+        currentNumberColor = originalColor;
+        isLuckyBonusFlashing = false;
+        UpdateText(lastDisplayedValue);
     }
 }

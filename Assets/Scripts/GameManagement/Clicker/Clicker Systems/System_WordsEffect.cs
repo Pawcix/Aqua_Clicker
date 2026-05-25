@@ -1,31 +1,63 @@
 using TMPro;
 using UnityEngine;
-using System.Collections;
 
 public class System_WordsEffect : MonoBehaviour
 {
     [SerializeField] GameObject textPrefab;
     [SerializeField] Transform container;
-    [SerializeField] string[] waterWords = { "Plunk", "Bloop", "Splish", "Blop", "Plip-plop" };
+    [SerializeField] string[] waterWords = { "Plunk", "Bloop", "Splish", "Blop", "Plip-plop", "Splash!", "Gush!", "Drip" };
     [SerializeField] Color normalColor = Color.white;
+
+    [Header("Dynamic Color Variations:")]
+    [SerializeField]
+    Color[] waterColorPalette = new Color[]
+    {
+        new Color(0.0f, 0.75f, 1.0f, 1.0f),
+        new Color(0.0f, 1.0f, 1.0f, 1.0f),
+        new Color(0.4f, 0.8f, 1.0f, 1.0f),
+        new Color(0.1f, 0.95f, 0.7f, 1.0f)
+    };
+
+    RectTransform containerRect;
+
+    void Awake()
+    {
+        if (container != null)
+        {
+            containerRect = container.GetComponent<RectTransform>();
+        }
+    }
 
     public void ShowRandomWord()
     {
         string word = waterWords[Random.Range(0, waterWords.Length)];
-        SpawnText(word, normalColor, 0.5f);
+        Color randomWaterColor = waterColorPalette[Random.Range(0, waterColorPalette.Length)];
+
+        SpawnText(word, randomWaterColor, 1.2f);
     }
 
     public void SpawnText(string text, Color color, float duration)
     {
-        if (textPrefab == null || container == null) return;
+        if (textPrefab == null || container == null || containerRect == null) return;
 
         GameObject newText = Instantiate(textPrefab, container);
         RectTransform rect = newText.GetComponent<RectTransform>();
 
         if (rect != null)
         {
-            rect.anchoredPosition = new Vector2(Random.Range(-120, 120), Random.Range(-100, 100));
-            rect.localRotation = Quaternion.Euler(0, 0, Random.Range(-15f, 15f));
+            rect.anchorMin = new Vector2(0.5f, 0.5f);
+            rect.anchorMax = new Vector2(0.5f, 0.5f);
+            rect.pivot = new Vector2(0.5f, 0.5f);
+
+            float widthLimit = (containerRect.rect.width - 150f) / 2f;
+            float heightLimit = (containerRect.rect.height - 150f) / 2f;
+
+            float randomX = Random.Range(-widthLimit, widthLimit);
+            float randomY = Random.Range(-heightLimit, heightLimit);
+
+            rect.anchoredPosition = new Vector2(randomX, randomY);
+            rect.transform.localScale = Vector3.one;
+            rect.transform.localPosition = new Vector3(randomX, randomY, 0f);
         }
 
         var anim = newText.GetComponent<Animation_WordEffect>();

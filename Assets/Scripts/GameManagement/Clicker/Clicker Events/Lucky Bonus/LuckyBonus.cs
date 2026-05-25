@@ -164,7 +164,7 @@ public class LuckyBonus : MonoBehaviour
         SpawnBonusText(NumberFormatter.FormatWithDots(bonusAmount));
 
         if (UnityEngine.Object.FindFirstObjectByType<PointsDisplay>() != null)
-            UnityEngine.Object.FindFirstObjectByType<PointsDisplay>().Pulse();
+            UnityEngine.Object.FindFirstObjectByType<PointsDisplay>().PulseLuckyBonus();
 
         if (AudioManager.Instance != null)
             AudioManager.Instance.PlaySFX("Buy Sound");
@@ -214,11 +214,27 @@ public class LuckyBonus : MonoBehaviour
 
     void SpawnBonusText(string amountText)
     {
-        if (bonusTextPrefab == null || bonusButtonObject == null) return;
-        GameObject textObj = Instantiate(bonusTextPrefab, bonusButtonObject.transform.position, Quaternion.identity, bonusButtonObject.transform.parent);
-        TextMeshProUGUI textComp = textObj.GetComponentInChildren<TextMeshProUGUI>();
-        if (textComp != null) textComp.text = $"+{amountText}";
-        Destroy(textObj, 2f);
+        if (bonusTextPrefab == null || bonusButtonObject == null || spawnAreaRect == null) return;
+
+        GameObject textObj = Instantiate(bonusTextPrefab, spawnAreaRect);
+
+        RectTransform textRect = textObj.GetComponent<RectTransform>();
+        if (textRect != null && buttonRect != null)
+        {
+            textRect.anchoredPosition = buttonRect.anchoredPosition;
+        }
+
+        FloatingBonusText floatingScript = textObj.GetComponent<FloatingBonusText>();
+        if (floatingScript != null)
+        {
+            floatingScript.Initialize(amountText);
+        }
+        else
+        {
+            TextMeshProUGUI textComp = textObj.GetComponentInChildren<TextMeshProUGUI>();
+            if (textComp != null) textComp.text = $"+{amountText}";
+            Destroy(textObj, 2f);
+        }
     }
 
     public bool IsBonusVisible()
