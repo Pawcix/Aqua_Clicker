@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Modal_DailyBonus : MonoBehaviour
 {
-    [SerializeField] System_Data data;
+    [SerializeField] private System_Data data;
     public GameObject dailyBonusModal;
     public GameObject openButton;
     public KeyShorts keyShortsSource;
@@ -31,24 +31,20 @@ public class Modal_DailyBonus : MonoBehaviour
     {
         if (dailyBonusModal == null) return;
 
-        bool wasActive = dailyBonusModal.activeInHierarchy;
+        bool wasActive = dailyBonusModal.activeSelf;
 
-        if (wasActive)
+        if (keyShortsSource != null)
         {
-            dailyBonusModal.SetActive(false);
+            keyShortsSource.CloseAllModals();
+        }
+
+        if (!wasActive)
+        {
+            dailyBonusModal.SetActive(true);
         }
         else
         {
-            if (keyShortsSource != null) keyShortsSource.CloseAllModals();
-
-            dailyBonusModal.SetActive(true);
-
-            if (System_NotificationDailyBonus.Instance != null)
-            {
-                System_NotificationDailyBonus.Instance.SetAlert(false);
-            }
-
-            if (AudioManager.Instance != null) AudioManager.Instance.PlaySFX("Open");
+            dailyBonusModal.SetActive(false);
         }
     }
 }

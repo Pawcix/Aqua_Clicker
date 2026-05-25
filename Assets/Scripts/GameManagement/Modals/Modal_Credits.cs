@@ -3,6 +3,7 @@ using UnityEngine;
 public class Modal_Credits : MonoBehaviour
 {
     public GameObject creditsModal;
+    [SerializeField] private Credits creditsScript;
 
     void Awake()
     {
@@ -14,10 +15,21 @@ public class Modal_Credits : MonoBehaviour
 
     public void ToggleSettings()
     {
-        if (creditsModal != null)
+        if (creditsModal == null) return;
+
+        bool newState = !creditsModal.activeSelf;
+        creditsModal.SetActive(newState);
+
+        if (creditsScript != null)
         {
-            bool newState = !creditsModal.activeSelf;
-            creditsModal.SetActive(newState);
+            if (newState)
+            {
+                creditsScript.ResetAndStartScroll();
+            }
+            else
+            {
+                creditsScript.StopScroll();
+            }
         }
     }
 }

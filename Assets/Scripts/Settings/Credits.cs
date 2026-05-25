@@ -11,6 +11,7 @@ public class Credits : MonoBehaviour
     [SerializeField] float endYPosition = 1200f;
 
     Vector2 initialPosition;
+    bool isScrolling = false;
 
     void Awake()
     {
@@ -20,24 +21,30 @@ public class Credits : MonoBehaviour
         }
     }
 
-    void OnEnable()
-    {
-        ResetCreditsPosition();
-    }
-
     void Update()
     {
-        if (creditsBox == null) return;
+        if (creditsBox == null || !isScrolling) return;
 
         creditsBox.anchoredPosition += Vector2.up * scrollSpeed * Time.deltaTime;
 
         if (creditsBox.anchoredPosition.y >= endYPosition)
         {
-            ResetCreditsPosition();
+            ResetToStart();
         }
     }
 
-    public void ResetCreditsPosition()
+    public void ResetAndStartScroll()
+    {
+        ResetToStart();
+        isScrolling = true;
+    }
+
+    public void StopScroll()
+    {
+        isScrolling = false;
+    }
+
+    void ResetToStart()
     {
         if (creditsBox != null)
         {

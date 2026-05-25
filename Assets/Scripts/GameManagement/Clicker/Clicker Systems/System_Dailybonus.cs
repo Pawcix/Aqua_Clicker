@@ -27,23 +27,28 @@ public class System_Dailybonus : MonoBehaviour
             return;
         }
 
-        DateTime lastDate = DateTime.Parse(data.lastBonusDate);
-        DateTime today = DateTime.Today;
-        TimeSpan difference = today - lastDate;
-
-        int daysPassed = (int)difference.TotalDays;
-
-        if (daysPassed == 1)
+        if (DateTime.TryParse(data.lastBonusDate, out DateTime lastDate))
         {
-            ApplyBonus(data.loginStreak + 1);
-        }
-        else if (daysPassed > 1)
-        {
-            ApplyBonus(1);
+            DateTime today = DateTime.Today;
+            TimeSpan difference = today - lastDate;
+            int daysPassed = (int)difference.TotalDays;
+
+            if (daysPassed == 1)
+            {
+                ApplyBonus(data.loginStreak + 1);
+            }
+            else if (daysPassed > 1)
+            {
+                ApplyBonus(1);
+            }
+            else
+            {
+                UpdateUI();
+            }
         }
         else
         {
-            UpdateUI();
+            ApplyBonus(1);
         }
     }
 
@@ -70,7 +75,7 @@ public class System_Dailybonus : MonoBehaviour
     void ApplyBonus(int newStreak)
     {
         data.loginStreak = newStreak;
-        data.lastBonusDate = DateTime.Today.ToString();
+        data.lastBonusDate = DateTime.Today.ToString("yyyy-MM-dd");
 
         float baseMultiplier = 1.0f;
         if (newStreak > 1)
@@ -78,9 +83,7 @@ public class System_Dailybonus : MonoBehaviour
             baseMultiplier += (newStreak - 1) * 0.1f;
         }
 
-        float milestoneBonus = CalculateMilestone(newStreak);
-        data.currentDailyMultiplier = baseMultiplier + milestoneBonus;
-
+        data.currentDailyMultiplier = baseMultiplier;
         UpdateUI();
     }
 
@@ -92,11 +95,11 @@ public class System_Dailybonus : MonoBehaviour
         {
             if (isFirstDay)
             {
-                bonusText.text = "<color=#FFA500>STREAK STARTED!</color>\n<size=70%>Come back tomorrow for your first bonus!</size>";
+                bonusText.text = "<color=#FFA500>STREAK STARTED!</color>\n<size=75%>Come back tomorrow for your first bonus!</size>";
             }
             else
             {
-                bonusText.text = $"TOTAL MULTIPLIER: <color=#00FF00>{data.currentDailyMultiplier:F1}x</color>";
+                bonusText.text = $"TOTAL MULTIPLIER:\n<size=160%><color=#00FF00><b>{data.currentDailyMultiplier:F1}x</b></color></size>";
             }
         }
 
@@ -104,39 +107,15 @@ public class System_Dailybonus : MonoBehaviour
         {
             if (isFirstDay)
             {
-                nextMilestoneText.text = "";
+                nextMilestoneText.gameObject.SetActive(false);
             }
             else
             {
-                int nextGoal = GetNextMilestone(data.loginStreak);
-                if (nextGoal > 0)
-                    nextMilestoneText.text = $"Next Milestone in: {nextGoal - data.loginStreak} days";
-                else
-                    nextMilestoneText.text = "YOU ARE A LEGEND!";
+                nextMilestoneText.gameObject.SetActive(true);
+
+                string dayWord = data.loginStreak == 1 ? "DAY" : "DAYS";
+                nextMilestoneText.text = $"CURRENT STREAK:\n<size=160%><color=#FFD700><b>{data.loginStreak} {dayWord} STREAK</b></color></size>";
             }
         }
-    }
-
-    float CalculateMilestone(int streak)
-    {
-        if (streak >= 365) return 25.0f;
-        if (streak >= 180) return 10.0f;
-        if (streak >= 90) return 5.0f;
-        if (streak >= 60) return 3.0f;
-        if (streak >= 30) return 2.0f;
-        if (streak >= 21) return 1.0f;
-        if (streak >= 14) return 0.5f;
-        if (streak >= 7) return 0.2f;
-        return 0f;
-    }
-
-    int GetNextMilestone(int currentStreak)
-    {
-        int[] milestones = { 7, 14, 21, 30, 60, 90, 180, 365 };
-        foreach (int m in milestones)
-        {
-            if (currentStreak < m) return m;
-        }
-        return 0;
     }
 }

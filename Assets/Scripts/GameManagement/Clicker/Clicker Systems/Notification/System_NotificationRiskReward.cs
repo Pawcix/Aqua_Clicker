@@ -6,7 +6,7 @@ public class System_NotificationRiskReward : MonoBehaviour
     public static System_NotificationRiskReward Instance;
 
     [Header("UI Reference:")]
-    [SerializeField] private GameObject badgeObject;
+    [SerializeField] GameObject badgeObject;
 
     void Awake()
     {
