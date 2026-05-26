@@ -1,7 +1,5 @@
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
-using System.Collections;
 
 public class CritComboChain : MonoBehaviour
 {
@@ -9,10 +7,24 @@ public class CritComboChain : MonoBehaviour
 
     [Header("References:")]
     [SerializeField] System_Data data;
-    [SerializeField] Slider comboSlider;
     [SerializeField] TextMeshProUGUI comboMultiplierText;
-    [SerializeField] TextMeshProUGUI lastRewardText;
+    [SerializeField] TextMeshProUGUI comboSubText;
     [SerializeField] GameObject comboUIContainer;
+
+    [Header("Prefab Score Spawn Settings:")]
+    [SerializeField] GameObject comboScorePrefab;
+    [SerializeField] Transform spawnContainer;
+
+    [Header("Visual & Scaling Settings:")]
+    [SerializeField] float pulseReturnSpeed = 10f;
+    [SerializeField] float scaleIncreasePerHit = 0.02f;
+    [SerializeField] float maxPermanentScale = 1.6f;
+    float currentBaseScale = 1.0f;
+
+    [Header("Text Timer Gradient Settings:")]
+    [SerializeField] Color activeTimeColor = new Color(0.91f, 0.31f, 0.25f, 1f);
+    [SerializeField] Color drainedTimeColor = new Color(0.15f, 0.15f, 0.15f, 1f);
+    [SerializeField][Range(0.01f, 0.5f)] float gradientSharpness = 0.1f;
 
     [Header("Settings:")]
     [SerializeField] double multiplierStep = 0.05;
@@ -29,18 +41,59 @@ public class CritComboChain : MonoBehaviour
     void Start()
     {
         if (comboUIContainer != null) comboUIContainer.SetActive(false);
-        if (lastRewardText != null) lastRewardText.text = "";
+
+        if (comboMultiplierText != null)
+        {
+            comboMultiplierText.enableVertexGradient = true;
+        }
+
+        if (comboSubText != null) comboSubText.text = "CRIT COMBO";
+
         UpdateUI();
     }
 
     void Update()
     {
+        if (comboUIContainer == null || !comboUIContainer.activeSelf) return;
+
+        if (comboUIContainer.transform.localScale.x > currentBaseScale || comboUIContainer.transform.localScale.x < currentBaseScale)
+        {
+            comboUIContainer.transform.localScale = Vector3.Lerp(
+                comboUIContainer.transform.localScale,
+                Vector3.one * currentBaseScale,
+                Time.deltaTime * pulseReturnSpeed
+            );
+        }
+
         if (!isComboActive) return;
 
         currentTimer -= Time.deltaTime;
-        comboSlider.value = currentTimer / baseDuration;
+
+        float timeRatio = Mathf.Clamp01(currentTimer / baseDuration);
+        ApplyTextTimeEffect(timeRatio);
 
         if (currentTimer <= 0) EndCombo();
+    }
+
+    void ApplyTextTimeEffect(float timeRatio)
+    {
+        if (comboMultiplierText == null) return;
+
+        VertexGradient gradient = new VertexGradient();
+        float topT = Mathf.Clamp01((timeRatio - gradientSharpness) / (1f - gradientSharpness));
+        gradient.topLeft = Color.Lerp(drainedTimeColor, activeTimeColor, topT);
+        gradient.topRight = Color.Lerp(drainedTimeColor, activeTimeColor, topT);
+
+        float bottomT = Mathf.Clamp01(timeRatio / (1f - gradientSharpness));
+        gradient.bottomLeft = Color.Lerp(drainedTimeColor, activeTimeColor, bottomT);
+        gradient.bottomRight = Color.Lerp(drainedTimeColor, activeTimeColor, bottomT);
+        comboMultiplierText.colorGradient = gradient;
+
+        if (comboSubText != null)
+        {
+            Color subColor = comboSubText.color;
+            comboSubText.color = new Color(subColor.r, subColor.g, subColor.b, timeRatio);
+        }
     }
 
     public void OnCritRegistered(double pointsGained)
@@ -54,16 +107,35 @@ public class CritComboChain : MonoBehaviour
         accumulatedPointsInCritCombo += pointsGained;
         currentTimer = Mathf.Min(baseDuration, currentTimer + 0.4f);
 
-        comboUIContainer.transform.localScale = Vector3.one * 1.25f;
+        if (currentBaseScale < maxPermanentScale)
+        {
+            currentBaseScale += scaleIncreasePerHit;
+        }
+
         UpdateUI();
+
+        if (comboUIContainer != null)
+        {
+            float punchFactor = 1.2f + (scaleIncreasePerHit * 3f);
+            comboUIContainer.transform.localScale = Vector3.one * (currentBaseScale * punchFactor);
+        }
     }
 
     public void OnNormalClickRegistered()
     {
-        if (!isComboActive) return;
+        if (!isComboActive || comboUIContainer == null || !comboUIContainer.activeSelf) return;
 
         currentTimer -= penaltyOnNormalClick;
-        comboUIContainer.transform.localScale = Vector3.one * 0.85f;
+
+        if (currentTimer <= 0f)
+        {
+            EndCombo();
+            return;
+        }
+
+        comboUIContainer.transform.localScale = Vector3.one * (currentBaseScale * 0.85f);
+        float timeRatio = Mathf.Clamp01(currentTimer / baseDuration);
+        ApplyTextTimeEffect(timeRatio);
     }
 
     void StartCombo()
@@ -72,13 +144,21 @@ public class CritComboChain : MonoBehaviour
         currentMultiplier = 1.0;
         accumulatedPointsInCritCombo = 0;
         currentTimer = baseDuration;
-        if (comboUIContainer != null) comboUIContainer.SetActive(true);
-        if (lastRewardText != null) lastRewardText.text = "";
+        currentBaseScale = 1.0f;
+
+        if (comboUIContainer != null)
+        {
+            comboUIContainer.SetActive(true);
+            comboUIContainer.transform.localScale = Vector3.one;
+        }
+
+        ApplyTextTimeEffect(1f);
     }
 
     void EndCombo()
     {
         isComboActive = false;
+        currentBaseScale = 1.0f;
 
         double bonusReward = accumulatedPointsInCritCombo * (currentMultiplier - 1.0);
 
@@ -86,31 +166,22 @@ public class CritComboChain : MonoBehaviour
         {
             data.pointsCounterFloat += bonusReward;
 
-            if (lastRewardText != null)
+            if (comboScorePrefab != null && spawnContainer != null)
             {
-                StopAllCoroutines();
-                string formatted = NumberFormatter.FormatWithDots(bonusReward);
-                lastRewardText.text = $"CRIT BONUS: <color=yellow>+{formatted}</color>";
-                StartCoroutine(FadeOutReward(3.5f));
+                GameObject scoreClone = Instantiate(comboScorePrefab, spawnContainer);
+                var anim = scoreClone.GetComponent<FloatingComboRewardText>();
+
+                if (anim != null)
+                {
+                    string formatted = NumberFormatter.FormatWithDots(bonusReward);
+                    anim.Setup(formatted);
+                }
             }
+
+            if (PointsDisplay.Instance != null) PointsDisplay.Instance.PulseCritComboEnd();
         }
 
         if (comboUIContainer != null) comboUIContainer.SetActive(false);
-    }
-
-    IEnumerator FadeOutReward(float duration)
-    {
-        lastRewardText.alpha = 1f;
-        yield return new WaitForSeconds(duration);
-
-        float fade = 1f;
-        while (fade > 0)
-        {
-            fade -= Time.deltaTime;
-            lastRewardText.alpha = fade;
-            yield return null;
-        }
-        lastRewardText.text = "";
     }
 
     public double GetCurrentMultiplier() => isComboActive ? currentMultiplier : 1.0;
@@ -118,7 +189,7 @@ public class CritComboChain : MonoBehaviour
     void UpdateUI()
     {
         if (comboMultiplierText != null)
-            comboMultiplierText.text = "CRIT X " + currentMultiplier.ToString("F2");
+            comboMultiplierText.text = "X" + currentMultiplier.ToString("F2");
 
         if (currentMultiplier > data.highestCritMultiplier)
         {
@@ -127,7 +198,5 @@ public class CritComboChain : MonoBehaviour
             Clicker_Prefabs cp = Object.FindFirstObjectByType<Clicker_Prefabs>();
             if (cp != null) cp.UpdateAllPrefabs(data.pointsCounterFloat, data.pointsPerSecond);
         }
-
-        comboUIContainer.transform.localScale = Vector3.one * 1.25f;
     }
 }

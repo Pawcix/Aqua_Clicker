@@ -20,10 +20,13 @@ public class PointsDisplay : MonoBehaviour
 
     Coroutine colorCoroutine;
 
-    bool isLuckyBonusFlashing = false;
+    bool isColorFlashing = false;
     Color currentNumberColor;
     Color originalColor;
     Color bonusColor;
+    Color comboColor;
+    Color critComboColor;
+    Color targetFlashColor;
 
     public static PointsDisplay Instance;
 
@@ -37,9 +40,19 @@ public class PointsDisplay : MonoBehaviour
             currentNumberColor = originalColor;
         }
 
-        if (ColorUtility.TryParseHtmlString("#E84E40", out Color parsedColor))
+        if (ColorUtility.TryParseHtmlString("#E84E40", out Color parsedBonusColor))
         {
-            bonusColor = parsedColor;
+            bonusColor = parsedBonusColor;
+        }
+
+        if (ColorUtility.TryParseHtmlString("#FFBF00", out Color parsedComboColor))
+        {
+            comboColor = parsedComboColor;
+        }
+
+        if (ColorUtility.TryParseHtmlString("#E800FF", out Color parsedCritComboColor))
+        {
+            critComboColor = parsedCritComboColor;
         }
     }
 
@@ -70,7 +83,7 @@ public class PointsDisplay : MonoBehaviour
 
         double currentFloorValue = System.Math.Floor(displayedPoints);
 
-        if (System.Math.Abs(currentFloorValue - lastDisplayedValue) > 0.9 || isLuckyBonusFlashing)
+        if (System.Math.Abs(currentFloorValue - lastDisplayedValue) > 0.9 || isColorFlashing)
         {
             lastDisplayedValue = currentFloorValue;
             UpdateText(lastDisplayedValue);
@@ -101,7 +114,7 @@ public class PointsDisplay : MonoBehaviour
         {
             string formattedValue = NumberFormatter.FormatWithDots(value);
 
-            if (isLuckyBonusFlashing)
+            if (isColorFlashing)
             {
                 string hexColor = ColorUtility.ToHtmlStringRGBA(currentNumberColor);
                 pointsText.text = $"{prefix}<color=#{hexColor}>{formattedValue}</color>";
@@ -125,14 +138,37 @@ public class PointsDisplay : MonoBehaviour
         if (pointsText != null)
         {
             if (colorCoroutine != null) StopCoroutine(colorCoroutine);
-            colorCoroutine = StartCoroutine(FlashColorRoutine());
+            colorCoroutine = StartCoroutine(FlashColorRoutine(bonusColor));
         }
     }
 
-    IEnumerator FlashColorRoutine()
+    public void PulseComboEnd()
     {
-        isLuckyBonusFlashing = true;
-        currentNumberColor = bonusColor;
+        transform.localScale = Vector3.one * 1.25f;
+
+        if (pointsText != null)
+        {
+            if (colorCoroutine != null) StopCoroutine(colorCoroutine);
+            colorCoroutine = StartCoroutine(FlashColorRoutine(comboColor));
+        }
+    }
+
+    public void PulseCritComboEnd()
+    {
+        transform.localScale = Vector3.one * 1.35f;
+
+        if (pointsText != null)
+        {
+            if (colorCoroutine != null) StopCoroutine(colorCoroutine);
+            colorCoroutine = StartCoroutine(FlashColorRoutine(critComboColor));
+        }
+    }
+
+    IEnumerator FlashColorRoutine(Color flashColor)
+    {
+        isColorFlashing = true;
+        targetFlashColor = flashColor;
+        currentNumberColor = targetFlashColor;
 
         float elapsed = 0f;
         while (elapsed < flashDuration)
@@ -140,12 +176,12 @@ public class PointsDisplay : MonoBehaviour
             elapsed += Time.deltaTime;
             float t = elapsed / flashDuration;
 
-            currentNumberColor = Color.Lerp(bonusColor, originalColor, t);
+            currentNumberColor = Color.Lerp(targetFlashColor, originalColor, t);
             yield return null;
         }
 
         currentNumberColor = originalColor;
-        isLuckyBonusFlashing = false;
+        isColorFlashing = false;
         UpdateText(lastDisplayedValue);
     }
 }

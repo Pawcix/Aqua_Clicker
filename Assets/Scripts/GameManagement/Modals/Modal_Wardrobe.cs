@@ -16,9 +16,9 @@ public class Modal_Wardrobe : MonoBehaviour
 
         bool wasActive = wardrobeModal.activeInHierarchy;
 
-        if (wasActive)
+        if (!wasActive)
         {
-            wardrobeModal.SetActive(false);
+            wardrobeModal.SetActive(true);
         }
 
         else

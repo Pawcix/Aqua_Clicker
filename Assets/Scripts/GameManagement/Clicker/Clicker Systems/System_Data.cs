@@ -48,7 +48,7 @@ public class System_Data : MonoBehaviour
     public int rebirthPoints = 0;
 
     [Header("Critical Click:")]
-    public float critChance = 0.01f;
+    public float critChance = 0.10f;
     public float critMultiplier = 5.0f;
 
     [Header("Daily Bonus:")]

@@ -8,13 +8,10 @@ public class System_WardrobeProgressBar : MonoBehaviour
     [SerializeField] System_Wardrobe wardrobeManager;
 
     [Header("UI Elements:")]
-    [SerializeField] Slider progressSlider;
     [SerializeField] TextMeshProUGUI progressText;
 
     public void UpdateProgressBar()
     {
-        if (wardrobeManager == null || progressSlider == null) return;
-
         int totalSkins = wardrobeManager.GetAllSkins().Count;
         int unlockedSkins = wardrobeManager.GetUnlockedSkinsCount();
 
@@ -23,11 +20,9 @@ public class System_WardrobeProgressBar : MonoBehaviour
         float progress01 = (float)unlockedSkins / totalSkins;
         float percentage = progress01 * 100f;
 
-        progressSlider.value = progress01;
-
         if (progressText != null)
         {
-            progressText.text = $"Skins Collected: {unlockedSkins} / {totalSkins} ({percentage:F0}%)";
+            progressText.text = $"Skins Collected:\n{unlockedSkins} / {totalSkins} ({percentage:F0}%)";
         }
     }
 }

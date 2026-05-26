@@ -1,6 +1,5 @@
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 using System.Collections;
 
 public class ComboChain : MonoBehaviour
@@ -9,16 +8,24 @@ public class ComboChain : MonoBehaviour
 
     [Header("References:")]
     [SerializeField] System_Data data;
-    [SerializeField] Slider comboSlider;
     [SerializeField] TextMeshProUGUI comboMultiplierText;
-    [SerializeField] TextMeshProUGUI lastRewardText;
+    [SerializeField] TextMeshProUGUI comboSubText;
     [SerializeField] GameObject comboUIContainer;
+
+    [Header("Prefab Score Spawn Settings:")]
+    [SerializeField] private GameObject comboScorePrefab;
+    [SerializeField] private Transform spawnContainer;
 
     [Header("Visual Settings:")]
     [SerializeField] float pulseAmount = 1.05f;
     [SerializeField] float pulseReturnSpeed = 10f;
     [SerializeField] float scaleIncreasePerHit = 0.01f;
     [SerializeField] float maxPermanentScale = 1.5f;
+
+    [Header("Text Timer Gradient Settings:")]
+    [SerializeField] private Color activeTimeColor = new Color(1f, 0.07f, 0.57f, 1f);
+    [SerializeField] private Color drainedTimeColor = new Color(0.15f, 0.15f, 0.15f, 1f);
+    [SerializeField][Range(0.01f, 0.5f)] private float gradientSharpness = 0.1f;
 
     [Header("Combo Settings:")]
     [SerializeField] double multiplierStep = 0.01;
@@ -32,7 +39,6 @@ public class ComboChain : MonoBehaviour
     double currentMultiplier = 1.0;
     double accumulatedPointsInCombo = 0;
     bool isComboActive = false;
-
     float currentBaseScale = 1.0f;
 
     void Awake()
@@ -43,7 +49,9 @@ public class ComboChain : MonoBehaviour
     void Start()
     {
         if (comboUIContainer != null) comboUIContainer.SetActive(false);
-        if (lastRewardText != null) lastRewardText.text = "";
+        if (comboMultiplierText != null) comboMultiplierText.enableVertexGradient = true;
+        if (comboSubText != null) comboSubText.text = "COMBO";
+
         UpdateUI();
     }
 
@@ -65,11 +73,34 @@ public class ComboChain : MonoBehaviour
 
         currentTimer -= Time.deltaTime;
         float maxTime = CalculateMaxTime();
-        comboSlider.value = currentTimer / maxTime;
+
+        float timeRatio = Mathf.Clamp01(currentTimer / maxTime);
+        ApplyTextTimeEffect(timeRatio);
 
         if (currentTimer <= 0)
         {
             EndCombo();
+        }
+    }
+
+    void ApplyTextTimeEffect(float timeRatio)
+    {
+        if (comboMultiplierText == null) return;
+
+        VertexGradient gradient = new VertexGradient();
+        float topT = Mathf.Clamp01((timeRatio - gradientSharpness) / (1f - gradientSharpness));
+        gradient.topLeft = Color.Lerp(drainedTimeColor, activeTimeColor, topT);
+        gradient.topRight = Color.Lerp(drainedTimeColor, activeTimeColor, topT);
+
+        float bottomT = Mathf.Clamp01(timeRatio / (1f - gradientSharpness));
+        gradient.bottomLeft = Color.Lerp(drainedTimeColor, activeTimeColor, bottomT);
+        gradient.bottomRight = Color.Lerp(drainedTimeColor, activeTimeColor, bottomT);
+        comboMultiplierText.colorGradient = gradient;
+
+        if (comboSubText != null)
+        {
+            Color subColor = comboSubText.color;
+            comboSubText.color = new Color(subColor.r, subColor.g, subColor.b, timeRatio);
         }
     }
 
@@ -98,7 +129,8 @@ public class ComboChain : MonoBehaviour
 
         if (comboUIContainer != null)
         {
-            comboUIContainer.transform.localScale = Vector3.one * (currentBaseScale * pulseAmount);
+            float punchFactor = pulseAmount + (scaleIncreasePerHit * 5f);
+            comboUIContainer.transform.localScale = Vector3.one * (currentBaseScale * punchFactor);
         }
 
         if (Mastery.Instance != null)
@@ -120,7 +152,6 @@ public class ComboChain : MonoBehaviour
             comboUIContainer.SetActive(true);
             comboUIContainer.transform.localScale = Vector3.one;
         }
-        if (lastRewardText != null) lastRewardText.text = "";
     }
 
     void EndCombo()
@@ -135,35 +166,22 @@ public class ComboChain : MonoBehaviour
         {
             data.pointsCounterFloat += bonusReward;
 
-            if (lastRewardText != null)
+            if (comboScorePrefab != null && spawnContainer != null)
             {
-                StopAllCoroutines();
-                string formattedReward = NumberFormatter.FormatWithDots(bonusReward);
-                lastRewardText.text = "BONUS: +" + formattedReward;
-                StartCoroutine(ShowRewardRoutine(3.0f));
+                GameObject scoreClone = Instantiate(comboScorePrefab, spawnContainer);
+
+                var anim = scoreClone.GetComponent<FloatingComboRewardText>();
+                if (anim != null)
+                {
+                    string formattedReward = NumberFormatter.FormatWithDots(bonusReward);
+                    anim.Setup(formattedReward);
+                }
             }
 
-            if (PointsDisplay.Instance != null) PointsDisplay.Instance.Pulse();
+            if (PointsDisplay.Instance != null) PointsDisplay.Instance.PulseComboEnd();
         }
 
         if (comboUIContainer != null) comboUIContainer.SetActive(false);
-    }
-
-    IEnumerator ShowRewardRoutine(float duration)
-    {
-        lastRewardText.alpha = 1.0f;
-        yield return new WaitForSeconds(duration);
-
-        float fadeTimer = 0.5f;
-        while (fadeTimer > 0)
-        {
-            fadeTimer -= Time.deltaTime;
-            lastRewardText.alpha = fadeTimer / 0.5f;
-            yield return null;
-        }
-
-        lastRewardText.text = "";
-        lastRewardText.alpha = 1.0f;
     }
 
     float CalculateMaxTime()
@@ -174,19 +192,7 @@ public class ComboChain : MonoBehaviour
     void UpdateUI()
     {
         if (comboMultiplierText != null)
-            comboMultiplierText.text = "COMBO X" + currentMultiplier.ToString("F2");
-
-        if (currentMultiplier > data.highestComboMultiplier)
-        {
-            data.highestComboMultiplier = currentMultiplier;
-
-            Clicker_Prefabs cp = Object.FindFirstObjectByType<Clicker_Prefabs>();
-            if (cp != null)
-            {
-                int displayPPS = (int)System.Math.Floor(data.pointsPerSecond);
-                cp.UpdateAllPrefabs(data.pointsCounterFloat, displayPPS);
-            }
-        }
+            comboMultiplierText.text = "x" + currentMultiplier.ToString("F2");
     }
 
     public double GetCurrentMultiplier()
