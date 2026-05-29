@@ -21664,7 +21664,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -25}
+  m_AnchoredPosition: {x: 0, y: -25.000061}
   m_SizeDelta: {x: -480, y: -249.99995}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &752169233
@@ -32102,53 +32102,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a5d6b6df5a8a6d7488d992d859563b4d, type: 3}
---- !u!1 &1141309200
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1141309202}
-  - component: {fileID: 1141309203}
-  m_Layer: 0
-  m_Name: 'Manager: Animation'
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &1141309202
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1141309200}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1141309203
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1141309200}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2485ad25f83f0034a83bb3ee7d9f0d03, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  counterText: {fileID: 0}
-  counterPointsPerSecond: {fileID: 0}
-  clickerButton: {fileID: 0}
 --- !u!1 &1143539003
 GameObject:
   m_ObjectHideFlags: 0
@@ -35704,7 +35657,7 @@ MonoBehaviour:
   maxPermanentScale: 1.5
   activeTimeColor: {r: 1, g: 0.7490196, b: 0, a: 1}
   drainedTimeColor: {r: 1, g: 0.7490196, b: 0, a: 0}
-  gradientSharpness: 0.25
+  gradientSharpness: 0.1
   multiplierStep: 0.01
   clicksToActivate: 15
   baseDuration: 2
@@ -40721,15 +40674,14 @@ MonoBehaviour:
   comboUIContainer: {fileID: 1804112573}
   comboScorePrefab: {fileID: 2586717125880716530, guid: cc7ca003015e6554e8da4fee50d53183, type: 3}
   spawnContainer: {fileID: 818511002}
+  pulseAmount: 1.05
   pulseReturnSpeed: 10
-  scaleIncreasePerHit: 0.005
-  maxPermanentScale: 1.5
-  activeTimeColor: {r: 0.91039276, g: 0, b: 1, a: 1}
-  drainedTimeColor: {r: 0.9137255, g: 0, b: 1, a: 0}
-  gradientSharpness: 0.5
-  multiplierStep: 0.05
-  baseDuration: 3
-  penaltyOnNormalClick: 0.5
+  scaleIncreasePerHit: 0.02
+  maxPermanentScale: 1.6
+  activeTimeColor: {r: 0.91, g: 0, b: 1, a: 1}
+  drainedTimeColor: {r: 0.9098039, g: 0, b: 1, a: 0}
+  gradientSharpness: 0.01
+  comboDuration: 15
 --- !u!1 &1385543603
 GameObject:
   m_ObjectHideFlags: 0
@@ -41487,15 +41439,17 @@ MonoBehaviour:
   musicSource: {fileID: 1749775129}
   sfxSource: {fileID: 1525694296}
   musicSounds:
-  - name: Theme
+  - name: Main Theme
     clip: {fileID: 8300000, guid: 9ee4296928b526c418cec4014aa219f3, type: 3}
   sfxSounds:
-  - name: Water Click
-    clip: {fileID: 8300000, guid: a4058cba15cbc124e96c1032e32be925, type: 3}
-  - name: Open
-    clip: {fileID: 8300000, guid: e18cab20821bd054db12a60759563cf3, type: 3}
-  - name: Buy Sound
-    clip: {fileID: 8300000, guid: 88c54fc7c70768f44968b7f1507a0588, type: 3}
+  - name: Modal - Open and Close
+    clip: {fileID: 8300000, guid: dde3f81cf2e65174592146e2d4938ef9, type: 3}
+  - name: Lucky Bonus
+    clip: {fileID: 8300000, guid: 653de675e914b2b499e343a2f90836b6, type: 3}
+  - name: Main Button
+    clip: {fileID: 8300000, guid: 59d140619d53fa74297bbf99a44a48d5, type: 3}
+  - name: Combo Click
+    clip: {fileID: 8300000, guid: 5b1afb61f6cd4e749b6043b460ec1a0e, type: 3}
 --- !u!1 &1411508376
 GameObject:
   m_ObjectHideFlags: 0
@@ -45060,7 +45014,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.5
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -52142,7 +52096,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 0.193
+  m_Volume: 0.3
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -66315,7 +66269,6 @@ SceneRoots:
   - {fileID: 2084712704}
   - {fileID: 540772285}
   - {fileID: 1406151079}
-  - {fileID: 1141309202}
   - {fileID: 62274549}
   - {fileID: 12129079}
   - {fileID: 948792955}

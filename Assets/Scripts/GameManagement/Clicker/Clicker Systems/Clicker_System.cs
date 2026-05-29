@@ -98,6 +98,8 @@ public class Clicker_System : MonoBehaviour
 
     public void Click()
     {
+        if (AudioManager.Instance != null) AudioManager.Instance.PlaySFX("Main Button");
+
         if (data == null) return;
         if (antiClick != null && !antiClick.CheckClickLegal()) return;
         if (cpsSystem != null) cpsSystem.OnClickRegistered();
@@ -122,10 +124,12 @@ public class Clicker_System : MonoBehaviour
         if (isCrit)
         {
             if (CritComboChain.Instance != null)
-                CritComboChain.Instance.OnCritRegistered(finalPoints);
+            {
+                double currentCritMtp = CritComboChain.Instance.GetCurrentMultiplier();
 
-            if (CritComboChain.Instance != null)
-                finalPoints *= CritComboChain.Instance.GetCurrentMultiplier();
+                finalPoints *= currentCritMtp;
+                CritComboChain.Instance.OnCritRegistered(finalPoints);
+            }
 
             if (Mastery.Instance != null)
                 Mastery.Instance.AddMasteryXP(Mastery.MasteryType.Critical, 5f);
@@ -133,7 +137,9 @@ public class Clicker_System : MonoBehaviour
         else
         {
             if (CritComboChain.Instance != null)
+            {
                 CritComboChain.Instance.OnNormalClickRegistered();
+            }
 
             if (clickWords != null) clickWords.ShowRandomWord();
         }

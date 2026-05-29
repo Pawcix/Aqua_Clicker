@@ -10,7 +10,7 @@ public class AudioManager : MonoBehaviour
 
     void Start()
     {
-        PlayMusic("Theme");
+        PlayMusic("Main Theme");
     }
 
     void Awake()

@@ -6,6 +6,6 @@ public class RestartGame : MonoBehaviour
     public void RestartGameOnButton()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-        AudioManager.Instance.PlayMusic("Theme");
+        AudioManager.Instance.PlayMusic("Main Theme");
     }
 }

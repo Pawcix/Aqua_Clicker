@@ -167,7 +167,7 @@ public class LuckyBonus : MonoBehaviour
             UnityEngine.Object.FindFirstObjectByType<PointsDisplay>().PulseLuckyBonus();
 
         if (AudioManager.Instance != null)
-            AudioManager.Instance.PlaySFX("Buy Sound");
+            AudioManager.Instance.PlaySFX("Lucky Bonus");
 
         StartCoroutine(CollectParticleRoutine());
     }

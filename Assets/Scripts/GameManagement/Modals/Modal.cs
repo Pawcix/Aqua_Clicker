@@ -11,7 +11,7 @@ public class Modal : MonoBehaviour
             if (!modalPanel.activeInHierarchy)
             {
                 modalPanel.SetActive(true);
-                if (AudioManager.Instance != null) AudioManager.Instance.PlaySFX("Open");
+                if (AudioManager.Instance != null) AudioManager.Instance.PlaySFX("Modal - Open and Close");
             }
             else
             {
@@ -34,14 +34,14 @@ public class Modal : MonoBehaviour
             }
 
             if (AudioManager.Instance != null)
-                AudioManager.Instance.PlaySFX("Open");
+                AudioManager.Instance.PlaySFX("Modal - Open and Close");
         }
     }
 
     public void CloseModal(GameObject targetModal)
     {
+        if (AudioManager.Instance != null) AudioManager.Instance.PlaySFX("Modal - Open and Close");
         if (targetModal == null) return;
-
         if (targetModal.activeInHierarchy)
         {
             UI_JuicyModal juicyAnim = targetModal.GetComponent<UI_JuicyModal>();
@@ -54,5 +54,6 @@ public class Modal : MonoBehaviour
         }
 
         targetModal.SetActive(false);
+
     }
 }
