@@ -18,11 +18,11 @@ public class System_Achievements : MonoBehaviour
     [SerializeField] Image notificationIcon;
 
     [Header("Animation Settings:")]
-    [SerializeField] private float animationSpeed = 4f;
-    [SerializeField] private float displayDuration = 5f;
+    [SerializeField] float animationSpeed = 4f;
+    [SerializeField] float displayDuration = 5f;
 
-    private RectTransform notificationRect;
-    private bool isSystemReady = false;
+    RectTransform notificationRect;
+    bool isSystemReady = false;
 
     void Awake()
     {
@@ -42,9 +42,9 @@ public class System_Achievements : MonoBehaviour
 
             LayoutRebuilder.ForceRebuildLayoutImmediate(notificationRect);
 
-            float startHiddenX = -(notificationRect.sizeDelta.x + 50f);
+            float startHiddenY = -(notificationRect.sizeDelta.y + 100f);
 
-            notificationRect.anchoredPosition = new Vector2(startHiddenX, notificationRect.anchoredPosition.y);
+            notificationRect.anchoredPosition = new Vector2(0f, startHiddenY);
         }
 
         Invoke(nameof(EnableChecking), 1.0f);
@@ -120,24 +120,27 @@ public class System_Achievements : MonoBehaviour
 
     IEnumerator ShowNotificationRoutine()
     {
-        float timer = 0f;
-        float currentY = notificationRect.anchoredPosition.y;
 
+        if (AudioManager.Instance != null)
+            AudioManager.Instance.PlaySFX("Achievement");
+
+        float timer = 0f;
         LayoutRebuilder.ForceRebuildLayoutImmediate(notificationRect);
 
-        float width = notificationRect.sizeDelta.x;
-        float dynamicHiddenX = -(width + 50f);
+        float height = notificationRect.sizeDelta.y;
+        float dynamicHiddenY = -(height + 100f);
+        float targetVisibleY = 25f;
 
         while (timer < 1f)
         {
             timer += Time.unscaledDeltaTime * animationSpeed;
             float smoothStep = Mathf.SmoothStep(0f, 1f, timer);
-            float newX = Mathf.Lerp(dynamicHiddenX, 0f, smoothStep); 
+            float newY = Mathf.Lerp(dynamicHiddenY, targetVisibleY, smoothStep);
 
-            notificationRect.anchoredPosition = new Vector2(newX, currentY);
+            notificationRect.anchoredPosition = new Vector2(0f, newY);
             yield return null;
         }
-        notificationRect.anchoredPosition = new Vector2(0f, currentY);
+        notificationRect.anchoredPosition = new Vector2(0f, targetVisibleY);
 
         yield return new WaitForSecondsRealtime(displayDuration);
 
@@ -146,12 +149,12 @@ public class System_Achievements : MonoBehaviour
         {
             timer += Time.unscaledDeltaTime * animationSpeed;
             float smoothStep = Mathf.SmoothStep(0f, 1f, timer);
-            float newX = Mathf.Lerp(0f, dynamicHiddenX, smoothStep);
+            float newY = Mathf.Lerp(targetVisibleY, dynamicHiddenY, smoothStep);
 
-            notificationRect.anchoredPosition = new Vector2(newX, currentY);
+            notificationRect.anchoredPosition = new Vector2(0f, newY);
             yield return null;
         }
-        notificationRect.anchoredPosition = new Vector2(dynamicHiddenX, currentY);
+        notificationRect.anchoredPosition = new Vector2(0f, dynamicHiddenY);
     }
 
     public List<Achievement> GetAllAchievements() => allAchievements;

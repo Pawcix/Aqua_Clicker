@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: b50e1ffc9563a98479f72b48b51c2fa6
+guid: e93a6b84535a5dc4793b80809657e0b0
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 9105515171396933569
-    second: SFX Deactivate_0
+      213: -2559380019993416735
+    second: Sound - Mute_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -96,24 +96,11 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
-    buildTarget: WebGL
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: SFX Deactivate_0
+      name: Sound - Mute_0
       rect:
         serializedVersion: 2
         x: 0
@@ -128,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 1c75b082ec94d5e70800000000000000
-      internalID: 9105515171396933569
+      spriteID: 1eb6f079e614b7cd0800000000000000
+      internalID: -2559380019993416735
       vertices: []
       indices: 
       edges: []
@@ -148,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      SFX Deactivate_0: 9105515171396933569
+      Sound - Mute_0: -2559380019993416735
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

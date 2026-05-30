@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: c9791e0aef021464ca6ec92709cca9c5
+guid: 38d7da4667f387848a2acfb7db5f02a2
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -3930186375920009627
-    second: Music - Hover_0
+      213: 2596694653843572790
+    second: Slider Background - Blue_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -48,7 +48,7 @@ TextureImporter:
   compressionQuality: 50
   spriteMode: 2
   spriteExtrude: 1
-  spriteMeshType: 1
+  spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
@@ -75,7 +75,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 2
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -100,23 +100,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Music - Hover_0
+      name: Slider Background - Blue_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 16
-        height: 16
+        width: 160
+        height: 160
       alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 40, y: 40, z: 40, w: 40}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 56e353a605c2579c0800000000000000
-      internalID: -3930186375920009627
+      spriteID: 6388080a700590420800000000000000
+      internalID: 2596694653843572790
       vertices: []
       indices: 
       edges: []
@@ -125,7 +125,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 86e70549bf2ff3e428eb0dfe32151623
     internalID: 0
     vertices: []
     indices: 
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Music - Hover_0: -3930186375920009627
+      Slider Background - Blue_0: 2596694653843572790
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

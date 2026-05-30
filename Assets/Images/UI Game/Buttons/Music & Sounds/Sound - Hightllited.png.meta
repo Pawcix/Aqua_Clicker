@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: eeb0d341fc583b64ea23a8bce3e0bc06
+guid: 424b1f1c2e6a6b743b0ab878257d6ba6
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 5377254056961564869
-    second: Music Deactive_0
+      213: -7462875364999486219
+    second: Sound - Hightllited_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -96,24 +96,11 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
-    buildTarget: WebGL
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Music Deactive_0
+      name: Sound - Hightllited_0
       rect:
         serializedVersion: 2
         x: 0
@@ -128,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 5c0e83c2318df9a40800000000000000
-      internalID: 5377254056961564869
+      spriteID: 5f42132456a8e6890800000000000000
+      internalID: -7462875364999486219
       vertices: []
       indices: 
       edges: []
@@ -148,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Music Deactive_0: 5377254056961564869
+      Sound - Hightllited_0: -7462875364999486219
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
