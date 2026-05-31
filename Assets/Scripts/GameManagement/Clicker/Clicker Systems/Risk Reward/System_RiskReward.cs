@@ -1,6 +1,6 @@
 using TMPro;
 using System;
-using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,20 +9,23 @@ public class System_RiskReward : MonoBehaviour
     [Header("Data Source")]
     [SerializeField] System_Data data;
 
-    [Header("UI References")]
+    [Header("UI References (Parents/Boxes)")]
     [SerializeField] GameObject riskWindowPanel;
     [SerializeField] GameObject openButton;
+    [SerializeField] GameObject timerBox;
+    [SerializeField] GameObject resultBox;
+
+    [Header("UI Text References")]
     [SerializeField] TextMeshProUGUI timerText;
     [SerializeField] TextMeshProUGUI resultText;
-    [SerializeField] TextMeshProUGUI fortuneText;
 
-    [Header("Buttons Troll References:")]
+    [Header("Animation Reference")]
+    [SerializeField] UI_CardFlipAnimation cardFlipAnimation;
+    [SerializeField] RiskReward riskRewardVisuals;
+
+    [Header("Buttons Game References")]
     [SerializeField] Button buttonA;
     [SerializeField] Button buttonB;
-    [SerializeField] TextMeshProUGUI buttonAText;
-    [SerializeField] TextMeshProUGUI buttonBText;
-    [SerializeField] Image buttonAImage;
-    [SerializeField] Image buttonBImage;
 
     [Header("Settings")]
     [SerializeField] int minutesWait = 60;
@@ -30,34 +33,10 @@ public class System_RiskReward : MonoBehaviour
 
     bool canPlay = false;
 
-    List<string> buttonLabels = new List<string>()
-    {
-        "CLICK ME", "NOT THIS ONE", "THIS ONE", "MAYBE?", "YES!", "NO?", "50/50", "SAFE", "RISK", "LOSE?", "WIN?"
-    };
-
-    List<Color> trollColors = new List<Color>()
-    {
-        Color.green, Color.red, Color.yellow, Color.cyan, new Color(1f, 0.5f, 0f), Color.magenta
-    };
-
-    List<string> funnyFortunes = new List<string>()
-    {
-        "The stars alignment predicts a 100% chance of... something happening.",
-        "Your financial horoscope today: High risk of losing points, but the text is green, so it's fine.",
-        "A wise programmer once said: 'Clicking this button won't crash the engine. Probably.'",
-        "Your luck level today: Equivalent to a wet cardboard box. Good luck!",
-        "My calculations show that if you don't click, you won't win. Trust me, I'm an AI.",
-        "Warning: This button has been blessed by the Spoon God. Proceed with chaotic energy.",
-        "An old legend says that the left button is always luckier. Or was it the right one? I forgot.",
-        "Don't worry, the developer simulated this 10,000 times and you won every time. (Lie)",
-        "The universe whispers: 'Just do it, bro. What's the worst that could happen?'"
-    };
-
     void Start()
     {
-        if (resultText != null) resultText.text = "";
-        if (riskWindowPanel != null) riskWindowPanel.SetActive(false);
         CheckTimer();
+        UpdateUIState();
     }
 
     void Update()
@@ -73,69 +52,39 @@ public class System_RiskReward : MonoBehaviour
 
     public bool CanPlayerPlay()
     {
-        return true;
+        return canPlay;
     }
 
     public void OpenRiskWindow()
     {
         if (riskWindowPanel != null) riskWindowPanel.SetActive(true);
 
-        bool componentsActive = canPlay;
-        if (buttonA != null) buttonA.gameObject.SetActive(componentsActive);
-        if (buttonB != null) buttonB.gameObject.SetActive(componentsActive);
-
-        if (canPlay && fortuneText != null && funnyFortunes.Count > 0)
-        {
-            if (resultText != null) resultText.text = "";
-            int randomIndex = UnityEngine.Random.Range(0, funnyFortunes.Count);
-            fortuneText.text = $"<color=#FFA500>FORTUNE COOKIE SAY:</color>\n<i>\"{funnyFortunes[randomIndex]}\"</i>";
-            ApplyButtonTrolling();
-        }
-        else if (!canPlay)
-        {
-            if (fortuneText != null) fortuneText.text = "<i>\"Come back later, the cosmic forces are resting.\"</i>";
-        }
+        CheckTimer();
+        UpdateUIState();
     }
 
-    void ApplyButtonTrolling()
+    void UpdateUIState()
     {
-        if (buttonA == null || buttonB == null) return;
+        if (buttonA != null) buttonA.interactable = canPlay;
+        if (buttonB != null) buttonB.interactable = canPlay;
 
-        buttonA.interactable = true;
-        buttonB.interactable = true;
-
-        if (buttonAText != null && buttonBText != null && buttonLabels.Count > 1)
+        if (canPlay)
         {
-            int idxA = UnityEngine.Random.Range(0, buttonLabels.Count);
-            int idxB = UnityEngine.Random.Range(0, buttonLabels.Count);
-            while (idxB == idxA) idxB = UnityEngine.Random.Range(0, buttonLabels.Count);
-
-            buttonAText.text = buttonLabels[idxA];
-            buttonBText.text = buttonLabels[idxB];
+            if (resultBox != null) resultBox.SetActive(false);
+            if (timerBox != null) timerBox.SetActive(false);
         }
-
-        if (buttonAImage != null && buttonBImage != null && trollColors.Count > 1)
+        else
         {
-            int colA = UnityEngine.Random.Range(0, trollColors.Count);
-            int colB = UnityEngine.Random.Range(0, trollColors.Count);
-            while (colB == colA) colB = UnityEngine.Random.Range(0, trollColors.Count);
+            if (timerBox != null) timerBox.SetActive(true);
 
-            buttonAImage.color = trollColors[colA];
-            buttonBImage.color = trollColors[colB];
-        }
-
-        RectTransform rectA = buttonA.GetComponent<RectTransform>();
-        RectTransform rectB = buttonB.GetComponent<RectTransform>();
-
-        if (rectA != null && rectB != null)
-        {
-            if (UnityEngine.Random.Range(0, 2) == 1)
+            if (!string.IsNullOrEmpty(data.lastRiskResultText))
             {
-                Vector3 posA = rectA.anchoredPosition;
-                Vector3 posB = rectB.anchoredPosition;
-
-                rectA.anchoredPosition = new Vector3(posB.x, posA.y, posA.z);
-                rectB.anchoredPosition = new Vector3(posA.x, posB.y, posB.z);
+                if (resultBox != null) resultBox.SetActive(true);
+                if (resultText != null) resultText.text = data.lastRiskResultText;
+            }
+            else
+            {
+                if (resultBox != null) resultBox.SetActive(false);
             }
         }
     }
@@ -144,49 +93,73 @@ public class System_RiskReward : MonoBehaviour
     {
         if (!canPlay) return;
 
-        buttonA.interactable = false;
-        buttonB.interactable = false;
+        if (riskRewardVisuals != null)
+        {
+            riskRewardVisuals.LockBoosterForAnimation();
+        }
 
         bool isWin = UnityEngine.Random.Range(0, 2) == 1;
+
+        string resultString = "";
+        string sfxName = "";
 
         if (isWin)
         {
             data.riskMultiplier = 2.0f;
-            if (resultText != null) resultText.text = "<color=#00FF00>SUCCESS! PPS x2.0</color>";
-            if (AudioManager.Instance != null) AudioManager.Instance.PlaySFX("Risk_Win");
+            resultString = "<color=#00FF00>SUCCESS!\nPPS x2.0</color>";
+            sfxName = "Risk - Success";
         }
         else
         {
             data.riskMultiplier = 0.5f;
-            if (resultText != null) resultText.text = "<color=#FF0000>FAILED! PPS x0.5</color>";
-            if (AudioManager.Instance != null) AudioManager.Instance.PlaySFX("Risk_Lose");
+            resultString = "<color=#FF0000>FAILED!\nPPS x0.5</color>";
+            sfxName = "Risk - Failed";
         }
 
-        data.riskBonusTimer = bonusDuration;
+        StartCoroutine(PlayDelayedSFX(sfxName, 5f));
 
+        data.lastRiskResultText = resultString;
+        PlayerPrefs.SetString("LastRiskResultText", data.lastRiskResultText);
+
+        data.riskBonusTimer = bonusDuration;
         canPlay = false;
+
         DateTime nextTime = DateTime.Now.AddMinutes(minutesWait);
         PlayerPrefs.SetString("NextRiskRewardPlay", nextTime.ToString());
         PlayerPrefs.Save();
-
-        if (buttonA != null) buttonA.gameObject.SetActive(false);
-        if (buttonB != null) buttonB.gameObject.SetActive(false);
 
         if (System_NotificationRiskReward.Instance != null)
         {
             System_NotificationRiskReward.Instance.SetAlert(false);
         }
 
-        CheckTimer();
+        if (resultBox != null) resultBox.SetActive(true);
+
+        if (cardFlipAnimation != null)
+        {
+            cardFlipAnimation.StartFlipAnimation(resultString);
+        }
+        else if (resultText != null)
+        {
+            resultText.text = resultString;
+        }
+
+        if (buttonA != null) buttonA.interactable = false;
+        if (buttonB != null) buttonB.interactable = false;
+        if (timerBox != null) timerBox.SetActive(true);
     }
 
     void CheckTimer()
     {
+        if (PlayerPrefs.HasKey("LastRiskResultText"))
+        {
+            data.lastRiskResultText = PlayerPrefs.GetString("LastRiskResultText");
+        }
+
         if (!PlayerPrefs.HasKey("NextRiskRewardPlay")) canPlay = true;
         else canPlay = DateTime.Now >= DateTime.Parse(PlayerPrefs.GetString("NextRiskRewardPlay"));
 
         if (openButton != null) openButton.SetActive(true);
-        if (timerText != null) timerText.gameObject.SetActive(true);
     }
 
     void UpdateTimerUI()
@@ -199,12 +172,11 @@ public class System_RiskReward : MonoBehaviour
         if (timeRemaining.TotalSeconds <= 0)
         {
             canPlay = true;
-            if (timerText != null) timerText.text = "RISK READY!";
+            data.lastRiskResultText = "";
+            PlayerPrefs.DeleteKey("LastRiskResultText");
+            PlayerPrefs.Save();
 
-            if (riskWindowPanel != null && riskWindowPanel.activeInHierarchy)
-            {
-                OpenRiskWindow();
-            }
+            UpdateUIState();
         }
         else
         {
@@ -213,12 +185,12 @@ public class System_RiskReward : MonoBehaviour
             {
                 if (timeRemaining.TotalHours >= 1)
                 {
-                    timerText.text = string.Format("{0:D2}:{1:D2}:{2:D2}",
+                    timerText.text = string.Format("Next Play: {0:D2}:{1:D2}:{2:D2}",
                         (int)timeRemaining.TotalHours, timeRemaining.Minutes, timeRemaining.Seconds);
                 }
                 else
                 {
-                    timerText.text = string.Format("{0:D2}:{1:D2}",
+                    timerText.text = string.Format("Next Play: {0:D2}:{1:D2}",
                         timeRemaining.Minutes, timeRemaining.Seconds);
                 }
             }
@@ -229,7 +201,24 @@ public class System_RiskReward : MonoBehaviour
     {
         data.riskMultiplier = 1.0f;
         data.riskBonusTimer = 0;
-        if (resultText != null && riskWindowPanel.activeInHierarchy)
-            resultText.text = "<color=#FFFFFF>EFFECT ENDED</color>";
+
+        data.lastRiskResultText = "<color=#FFFFFF>EFFECT ENDED</color>";
+        PlayerPrefs.SetString("LastRiskResultText", data.lastRiskResultText);
+        PlayerPrefs.Save();
+
+        if (riskWindowPanel != null && riskWindowPanel.activeInHierarchy)
+        {
+            UpdateUIState();
+        }
+    }
+
+    IEnumerator PlayDelayedSFX(string sfxName, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        if (AudioManager.Instance != null && !string.IsNullOrEmpty(sfxName))
+        {
+            AudioManager.Instance.PlaySFX(sfxName);
+        }
     }
 }

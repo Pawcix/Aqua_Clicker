@@ -1,4 +1,5 @@
 using TMPro;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,6 +9,17 @@ public class GoldenDrop_Item : MonoBehaviour
     [SerializeField] float fallSpeed = 300f;
     [SerializeField] GameObject bonusTextPrefab;
 
+    [Header("Organic Movement (Water Drop Physics):")]
+    [SerializeField] float sideSwayAmplitude = 40f;
+    [SerializeField] float sideSwayFrequency = 3f;
+    [SerializeField] float speedFluctuation = 100f;
+
+    [Header("Juicy Click Animation Settings:")]
+    [SerializeField] Image dropImage;
+    [SerializeField] Sprite shockwaveSprite;
+    [SerializeField] Color shockwaveColor = new Color(1f, 0.85f, 0f, 0.6f);
+    [SerializeField] float animationDuration = 0.2f;
+
     System_Data data;
     RectTransform rectTransform;
 
@@ -15,28 +27,49 @@ public class GoldenDrop_Item : MonoBehaviour
     public float ExistenceTime => existenceTime;
     bool wasCollected = false;
 
+    float randomOffset;
+    float customSwayAmp;
+    float customSwayFreq;
+
     void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
+        if (dropImage == null) dropImage = GetComponent<Image>();
+
+        randomOffset = Random.Range(0f, 100f);
+        customSwayAmp = Random.Range(sideSwayAmplitude * 0.5f, sideSwayAmplitude * 1.5f);
+        customSwayFreq = Random.Range(sideSwayFrequency * 0.7f, sideSwayFrequency * 1.3f);
     }
 
     void Start()
     {
         data = Object.FindFirstObjectByType<System_Data>();
+
         Button btn = GetComponent<Button>();
         if (btn != null) btn.onClick.AddListener(OnGoldenDropClicked);
 
-        Destroy(gameObject, 10f);
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlaySFX("Golden Drop - Fall");
+        }
+
+        Destroy(gameObject, 12f);
     }
 
     void Update()
     {
-        if (wasCollected) return;
+        if (wasCollected || rectTransform == null) return;
 
         existenceTime += Time.deltaTime;
+        float timeCombined = existenceTime * customSwayFreq + randomOffset;
 
-        if (rectTransform != null)
-            rectTransform.anchoredPosition += Vector2.down * fallSpeed * Time.deltaTime;
+        float currentSpeed = fallSpeed + (Mathf.Cos(timeCombined * 1.5f) * speedFluctuation);
+        float deltaY = -currentSpeed * Time.deltaTime;
+
+        float currentSwaySpeed = Mathf.Sin(timeCombined) * customSwayAmp * customSwayFreq;
+        float deltaX = currentSwaySpeed * Time.deltaTime;
+
+        rectTransform.anchoredPosition += new Vector2(deltaX, deltaY);
     }
 
     public void OnGoldenDropClicked()
@@ -52,19 +85,16 @@ public class GoldenDrop_Item : MonoBehaviour
         data.pointsCounterFloat += bonus;
         data.goldenDrops++;
 
-        if (ScreenFlash.Instance != null)
-        {
-            ScreenFlash.Instance.TriggerGoldFlash();
-        }
+        if (ScreenFlash.Instance != null) ScreenFlash.Instance.TriggerGoldFlash();
 
         if (PointsDisplay.Instance != null)
         {
-            PointsDisplay.Instance.Pulse();
+            PointsDisplay.Instance.PulseGoldenDrop();
         }
         else
         {
             PointsDisplay display = Object.FindFirstObjectByType<PointsDisplay>();
-            if (display != null) display.Pulse();
+            if (display != null) display.PulseGoldenDrop();
         }
 
         Clicker_Prefabs prefabsManager = Object.FindFirstObjectByType<Clicker_Prefabs>();
@@ -74,10 +104,69 @@ public class GoldenDrop_Item : MonoBehaviour
             prefabsManager.UpdateAllPrefabs(data.pointsCounterFloat, displayPPS);
         }
 
-        SpawnBonusText(NumberFormatter.FormatWithDots(bonus));
+        Vector2 collectPosition = rectTransform.anchoredPosition;
+        SpawnBonusText(NumberFormatter.FormatWithDots(bonus), collectPosition);
 
-        if (AudioManager.Instance != null) AudioManager.Instance.PlaySFX("GoldenCollect");
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlaySFX("Golden Drop - Collect");
+        }
 
+        StartCoroutine(ClickAnimationRoutine());
+    }
+
+    IEnumerator ClickAnimationRoutine()
+    {
+        Button btn = GetComponent<Button>();
+        if (btn != null) btn.interactable = false;
+
+        GameObject shockwaveObj = null;
+        RectTransform shockwaveRect = null;
+        Image shockwaveImage = null;
+
+        if (shockwaveSprite != null)
+        {
+            shockwaveObj = new GameObject("Shockwave_Effect", typeof(RectTransform), typeof(Image));
+            shockwaveObj.transform.SetParent(transform.parent, false);
+
+            shockwaveRect = shockwaveObj.GetComponent<RectTransform>();
+            shockwaveRect.anchoredPosition = rectTransform.anchoredPosition;
+            shockwaveRect.sizeDelta = rectTransform.sizeDelta;
+
+            shockwaveImage = shockwaveObj.GetComponent<Image>();
+            shockwaveImage.sprite = shockwaveSprite;
+            shockwaveImage.color = shockwaveColor;
+        }
+
+        float elapsed = 0f;
+        Vector3 initialScale = rectTransform.localScale;
+
+        while (elapsed < animationDuration)
+        {
+            elapsed += Time.deltaTime;
+            float t = elapsed / animationDuration;
+
+            float dropScaleMod = Mathf.Lerp(1f, 1.4f, t);
+            if (t > 0.4f)
+            {
+                dropScaleMod = Mathf.Lerp(1.4f, 0f, (t - 0.4f) / 0.6f);
+            }
+            rectTransform.localScale = initialScale * dropScaleMod;
+
+            if (shockwaveObj != null)
+            {
+                float waveScale = Mathf.Lerp(1f, 3.5f, t);
+                shockwaveRect.localScale = new Vector3(waveScale, waveScale, 1f);
+
+                Color c = shockwaveImage.color;
+                c.a = Mathf.Lerp(shockwaveColor.a, 0f, t);
+                shockwaveImage.color = c;
+            }
+
+            yield return null;
+        }
+
+        if (shockwaveObj != null) Destroy(shockwaveObj);
         Destroy(gameObject);
     }
 
@@ -86,15 +175,24 @@ public class GoldenDrop_Item : MonoBehaviour
         fallSpeed = newSpeed;
     }
 
-    void SpawnBonusText(string amountText)
+    void SpawnBonusText(string amountText, Vector2 spawnPos)
     {
         if (bonusTextPrefab == null) return;
 
-        GameObject textObj = Instantiate(bonusTextPrefab, transform.position, Quaternion.identity, transform.parent);
-        TextMeshProUGUI textComp = textObj.GetComponentInChildren<TextMeshProUGUI>();
-
-        if (textComp != null) textComp.text = $"+{amountText}";
-
-        Destroy(textObj, 2f);
+        GameObject textObj = Instantiate(bonusTextPrefab, transform.parent);
+        if (textObj != null)
+        {
+            GoldenDrop_FloatingText floatingTextScript = textObj.GetComponent<GoldenDrop_FloatingText>();
+            if (floatingTextScript != null)
+            {
+                floatingTextScript.Initialize(amountText, spawnPos);
+            }
+            else
+            {
+                RectTransform textRect = textObj.GetComponent<RectTransform>();
+                if (textRect != null) textRect.anchoredPosition = spawnPos;
+                Destroy(textObj, 2f);
+            }
+        }
     }
 }

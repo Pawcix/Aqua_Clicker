@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 121884a272d55e54b98fcebb795d0894
+guid: e2f95ac557c092e48a6eba20ec21f7c6
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 9038339540769835217
-    second: Background Restart Game_0
+      213: 5493350660250683530
+    second: Risk Button - Green - Preesed_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -46,7 +46,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -100,23 +100,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Background Restart Game_0
+      name: Risk Button - Green - Preesed_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 960
-        height: 960
+        width: 320
+        height: 270
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 1d804f6dce1ae6d70800000000000000
-      internalID: 9038339540769835217
+      spriteID: a8846ea025d4c3c40800000000000000
+      internalID: 5493350660250683530
       vertices: []
       indices: 
       edges: []
@@ -125,7 +125,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 5e97eb03825dee720800000000000000
+    spriteID: 570ec5ba2c2b6a9449345fe66e35d394
     internalID: 0
     vertices: []
     indices: 
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Background Restart Game_0: 9038339540769835217
+      Risk Button - Green - Preesed_0: 5493350660250683530
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

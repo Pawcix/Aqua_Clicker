@@ -17,7 +17,8 @@ public class RiskReward : MonoBehaviour
     TextMeshProUGUI timerTextInIcon;
     Image iconDisplayInIcon;
 
-    private const string RiskEndTimeKey = "RiskBonusEndTime";
+    const string RiskEndTimeKey = "RiskBonusEndTime";
+    bool isAnimationPlaying = false;
 
     void Start()
     {
@@ -28,6 +29,8 @@ public class RiskReward : MonoBehaviour
     {
         if (data.riskMultiplier != 1.0f)
         {
+            if (isAnimationPlaying) return;
+
             if (!PlayerPrefs.HasKey(RiskEndTimeKey))
             {
                 DateTime endTime = DateTime.Now.AddSeconds(data.riskBonusTimer);
@@ -47,7 +50,10 @@ public class RiskReward : MonoBehaviour
                     SpawnBoosterIcon();
                 }
 
-                UpdateIconUI(timeRemaining);
+                if (activeIconInstance != null)
+                {
+                    UpdateIconUI(timeRemaining);
+                }
             }
             else
             {
@@ -61,6 +67,16 @@ public class RiskReward : MonoBehaviour
                 RemoveBoosterIcon();
             }
         }
+    }
+
+    public void LockBoosterForAnimation()
+    {
+        isAnimationPlaying = true;
+    }
+
+    public void StartBoosterDisplay()
+    {
+        isAnimationPlaying = false;
     }
 
     void ValidateBonusOnLines()
@@ -122,8 +138,6 @@ public class RiskReward : MonoBehaviour
     {
         if (timerTextInIcon == null) return;
 
-        int totalSeconds = Mathf.CeilToInt((float)timeRemaining.TotalSeconds);
-
         int mins = timeRemaining.Minutes;
         int secs = timeRemaining.Seconds;
 
@@ -154,5 +168,7 @@ public class RiskReward : MonoBehaviour
             data.riskMultiplier = 1.0f;
             data.riskBonusTimer = 0;
         }
+
+        isAnimationPlaying = false;
     }
 }

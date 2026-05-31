@@ -26,6 +26,7 @@ public class PointsDisplay : MonoBehaviour
     Color bonusColor;
     Color comboColor;
     Color critComboColor;
+    Color goldenDropColor; 
     Color targetFlashColor;
 
     public static PointsDisplay Instance;
@@ -53,6 +54,11 @@ public class PointsDisplay : MonoBehaviour
         if (ColorUtility.TryParseHtmlString("#E800FF", out Color parsedCritComboColor))
         {
             critComboColor = parsedCritComboColor;
+        }
+
+        if (ColorUtility.TryParseHtmlString("#FFCD00", out Color parsedGoldenColor))
+        {
+            goldenDropColor = parsedGoldenColor;
         }
     }
 
@@ -131,6 +137,17 @@ public class PointsDisplay : MonoBehaviour
         transform.localScale = Vector3.one * 1.15f;
     }
 
+    public void PulseGoldenDrop()
+    {
+        transform.localScale = Vector3.one * 1.25f;
+
+        if (pointsText != null)
+        {
+            if (colorCoroutine != null) StopCoroutine(colorCoroutine);
+            colorCoroutine = StartCoroutine(FlashColorRoutine(goldenDropColor));
+        }
+    }
+
     public void PulseLuckyBonus()
     {
         transform.localScale = Vector3.one * 1.2f;
@@ -160,7 +177,7 @@ public class PointsDisplay : MonoBehaviour
         if (pointsText != null)
         {
             if (colorCoroutine != null) StopCoroutine(colorCoroutine);
-            colorCoroutine = StartCoroutine(FlashColorRoutine(critComboColor));
+            colorCoroutine = StartCoroutine(FlashColorRoutine(critComboColor)); 
         }
     }
 

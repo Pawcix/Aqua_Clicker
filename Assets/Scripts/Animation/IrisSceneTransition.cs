@@ -6,9 +6,15 @@ using UnityEngine.SceneManagement;
 public class IrisMaskController : MonoBehaviour
 {
     public static IrisMaskController Instance;
+
     [Header("Settings:")]
     public string targetScene = "Scene_Loading";
     public float fadeDuration = 0.5f;
+
+    [Header("Animation Settings:")]
+    [SerializeField] RectTransform maskRect;
+    [SerializeField] float maxScale = 2f;
+    [SerializeField] float minScale = 0f;
 
     CanvasGroup canvasGroup;
     bool isFading = false;
@@ -17,6 +23,11 @@ public class IrisMaskController : MonoBehaviour
     {
         Instance = this;
         canvasGroup = GetComponent<CanvasGroup>();
+
+        if (maskRect == null)
+        {
+            maskRect = GetComponent<RectTransform>();
+        }
     }
 
     void Start()
@@ -37,12 +48,30 @@ public class IrisMaskController : MonoBehaviour
         while (elapsedTime < fadeDuration)
         {
             elapsedTime += Time.deltaTime;
-            canvasGroup.alpha = Mathf.Clamp01(1f - (elapsedTime / fadeDuration));
+            float t = elapsedTime / fadeDuration;
+
+            canvasGroup.alpha = Mathf.Clamp01(1f - t);
+
+            if (maskRect != null)
+            {
+                float currentScale = Mathf.Lerp(maxScale, 1f, t);
+                maskRect.localScale = new Vector3(currentScale, currentScale, 1f);
+
+                float currentAngle = Mathf.Lerp(360f, 0f, t);
+                maskRect.localRotation = Quaternion.Euler(0f, 0f, currentAngle);
+            }
+
             yield return null;
         }
 
         canvasGroup.alpha = 0f;
         canvasGroup.blocksRaycasts = false;
+
+        if (maskRect != null)
+        {
+            maskRect.localScale = Vector3.one;
+            maskRect.localRotation = Quaternion.identity;
+        }
     }
 
     public void StartFadeOut()
@@ -61,7 +90,19 @@ public class IrisMaskController : MonoBehaviour
         while (elapsedTime < fadeDuration)
         {
             elapsedTime += Time.deltaTime;
-            canvasGroup.alpha = Mathf.Clamp01(elapsedTime / fadeDuration);
+            float t = elapsedTime / fadeDuration;
+
+            canvasGroup.alpha = Mathf.Clamp01(t);
+
+            if (maskRect != null)
+            {
+                float currentScale = Mathf.Lerp(1f, minScale, t);
+                maskRect.localScale = new Vector3(currentScale, currentScale, 1f);
+
+                float currentAngle = Mathf.Lerp(0f, -360f, t);
+                maskRect.localRotation = Quaternion.Euler(0f, 0f, currentAngle);
+            }
+
             yield return null;
         }
 

@@ -59,6 +59,7 @@ public class GameData
 
     public float riskMultiplier;
     public float riskBonusTimer;
+    public string lastRiskResultText;
 
     public int rebirthCount;
     public float rebirthMultiplier;

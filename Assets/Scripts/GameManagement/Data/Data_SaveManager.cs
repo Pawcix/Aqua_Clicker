@@ -76,6 +76,7 @@ public class Data_SaveManager : MonoBehaviour
             currentWheelRewardIcon = systemData.currentWheelRewardIcon,
             riskMultiplier = systemData.riskMultiplier,
             riskBonusTimer = systemData.riskBonusTimer,
+            lastRiskResultText = systemData.lastRiskResultText,
             rebirthCount = systemData.rebirthCount,
             rebirthMultiplier = systemData.rebirthMultiplier
         };
@@ -155,8 +156,10 @@ public class Data_SaveManager : MonoBehaviour
             systemData.workerSaleTimer = loadedData.workerSaleTimer;
             systemData.isWorkerSaleActive = loadedData.isWorkerSaleActive;
             systemData.currentWheelRewardIcon = loadedData.currentWheelRewardIcon;
+            
             systemData.riskMultiplier = loadedData.riskMultiplier;
             systemData.riskBonusTimer = loadedData.riskBonusTimer;
+            systemData.lastRiskResultText = loadedData.lastRiskResultText;
 
             systemData.rebirthCount = loadedData.rebirthCount;
             systemData.rebirthMultiplier = loadedData.rebirthMultiplier;

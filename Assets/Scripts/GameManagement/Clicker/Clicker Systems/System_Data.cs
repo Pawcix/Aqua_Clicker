@@ -74,6 +74,7 @@ public class System_Data : MonoBehaviour
     [Header("Risk & Reward Stats:")]
     public float riskMultiplier = 1.0f;
     public float riskBonusTimer = 0f;
+    public string lastRiskResultText = "";
 
     [Header("Rebirth Stats:")]
     public int rebirthCount = 0;

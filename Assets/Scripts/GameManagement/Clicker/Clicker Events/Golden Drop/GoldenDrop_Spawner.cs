@@ -15,6 +15,10 @@ public class GoldenDrop_Spawner : MonoBehaviour
     [SerializeField] float minFallSpeed = 200f;
     [SerializeField] float maxFallSpeed = 450f;
 
+    [Header("Scale Settings:")]
+    [SerializeField] float minScale = 0.6f;
+    [SerializeField] float maxScale = 1.3f;
+
     bool isInRainMode = false;
     float originalMinTime;
     float originalMaxTime;
@@ -37,10 +41,16 @@ public class GoldenDrop_Spawner : MonoBehaviour
         GameObject drop = Instantiate(goldenDropPrefab, spawnArea);
         RectTransform dropRect = drop.GetComponent<RectTransform>();
 
-        float width = spawnArea.rect.width / 2;
-        float randomX = Random.Range(-width + 50f, width - 50f);
-        float startY = (spawnArea.rect.height / 2) + 100f;
-        dropRect.anchoredPosition = new Vector2(randomX, startY);
+        if (dropRect != null)
+        {
+            float width = spawnArea.rect.width / 2;
+            float randomX = Random.Range(-width + 50f, width - 50f);
+            float startY = (spawnArea.rect.height / 2) + 100f;
+            dropRect.anchoredPosition = new Vector2(randomX, startY);
+
+            float randomScale = Random.Range(minScale, maxScale);
+            dropRect.localScale = new Vector3(randomScale, randomScale, 1f);
+        }
 
         GoldenDrop_Item itemScript = drop.GetComponent<GoldenDrop_Item>();
         if (itemScript != null)

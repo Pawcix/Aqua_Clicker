@@ -5,11 +5,8 @@ public class Modal_RiskReward : MonoBehaviour
     public GameObject riskRewardModal;
     public KeyShorts keyShortsSource;
 
-    [SerializeField] private System_RiskReward systemRiskReward;
+    [SerializeField] System_RiskReward systemRiskReward;
 
-    [Header("DEBUGER:")]
-    [SerializeField] private bool forceOpenInEditor = true; 
-    
     void Awake()
     {
         if (riskRewardModal != null)
@@ -25,25 +22,31 @@ public class Modal_RiskReward : MonoBehaviour
 
     public void ToggleSettings()
     {
-        if (riskRewardModal == null || systemRiskReward == null) return;
+        if (riskRewardModal == null) return;
 
         bool wasActive = riskRewardModal.activeInHierarchy;
 
-        if (wasActive)
+        if (keyShortsSource != null)
         {
-            riskRewardModal.SetActive(false);
-            return;
+            keyShortsSource.CloseAllModals();
         }
 
-        if (forceOpenInEditor || systemRiskReward.CanPlayerPlay())
+        if (!wasActive)
         {
-            if (keyShortsSource != null)
-            {
-                keyShortsSource.CloseAllModals();
-            }
-
             riskRewardModal.SetActive(true);
+        }
+        else
+        {
+            if (System_Notification.Instance != null)
+            {
+                System_Notification.Instance.SetAlert(false);
+            }
+        }
 
+        if (AudioManager.Instance != null) AudioManager.Instance.PlaySFX("Modal - Open and Close");
+
+        if (systemRiskReward.CanPlayerPlay())
+        {
             systemRiskReward.OpenRiskWindow();
         }
     }

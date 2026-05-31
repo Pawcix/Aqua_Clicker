@@ -28,5 +28,7 @@ public class Modal_Settings : MonoBehaviour
         {
             settingsModal.SetActive(true);
         }
+
+        if (AudioManager.Instance != null) AudioManager.Instance.PlaySFX("Modal - Open and Close");
     }
 }
