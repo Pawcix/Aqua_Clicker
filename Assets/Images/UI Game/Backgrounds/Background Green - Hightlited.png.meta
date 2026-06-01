@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 955f578e8cff91b4caf7f85faeec0984
+guid: a6391cc4d5392764aa00c248303d741c
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 3956231269840786743
-    second: Skin - Base - Pressed_0
+      213: -7078868641415114560
+    second: Background Green - Hightlited_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,23 +100,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Skin - Base - Pressed_0
+      name: Background Green - Hightlited_0
       rect:
         serializedVersion: 2
-        x: 9
-        y: 9
-        width: 262
-        height: 302
+        x: 0
+        y: 0
+        width: 160
+        height: 160
       alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 20, y: 20, z: 20, w: 20}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 7351720016b57e630800000000000000
-      internalID: 3956231269840786743
+      spriteID: 0c0dcc0e97ec2cd90800000000000000
+      internalID: -7078868641415114560
       vertices: []
       indices: 
       edges: []
@@ -125,7 +125,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: cee584d19f870ab4187e53b6239dd85f
     internalID: 0
     vertices: []
     indices: 
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Skin - Base - Pressed_0: 3956231269840786743
+      Background Green - Hightlited_0: -7078868641415114560
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
