@@ -65,5 +65,7 @@ public class UI_CardFlipAnimation : MonoBehaviour
         {
             riskRewardVisuals.StartBoosterDisplay();
         }
+
+        Object.FindFirstObjectByType<System_RiskReward>().ApplyFinalRewardAndStartCooldown();
     }
 }

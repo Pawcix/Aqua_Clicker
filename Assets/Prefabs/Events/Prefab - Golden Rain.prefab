@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1887991427550017948}
   - component: {fileID: 4558418568088122865}
   - component: {fileID: 4696367282706451849}
+  - component: {fileID: 3616825403068354427}
   m_Layer: 5
   m_Name: Img - Golden Rain
   m_TagString: Untagged
@@ -75,6 +76,21 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 0.01
+--- !u!114 &3616825403068354427
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6310764951315016177}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28d5f562078ae2e468d80fbbf762e8c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UI_NotificationPulse
+  minScale: 1
+  maxScale: 1.025
+  pulseSpeed: 2.5
 --- !u!1 &7862090906921628201
 GameObject:
   m_ObjectHideFlags: 0

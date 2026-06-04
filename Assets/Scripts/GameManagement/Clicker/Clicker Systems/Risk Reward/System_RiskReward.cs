@@ -29,9 +29,11 @@ public class System_RiskReward : MonoBehaviour
 
     [Header("Settings")]
     [SerializeField] int minutesWait = 60;
-    [SerializeField] float bonusDuration = 900f;
 
     bool canPlay = false;
+    string pendingResultString = "";
+    string pendingSFXName = "";
+    float calculatedBonusDuration = 0f;
 
     void Start()
     {
@@ -100,33 +102,65 @@ public class System_RiskReward : MonoBehaviour
 
         bool isWin = UnityEngine.Random.Range(0, 2) == 1;
 
-        string resultString = "";
-        string sfxName = "";
-
         if (isWin)
         {
             data.riskMultiplier = 2.0f;
-            resultString = "<color=#00FF00>SUCCESS!\nPPS x2.0</color>";
-            sfxName = "Risk - Success";
+            pendingResultString = "<color=#00FF00>SUCCESS!\nPPS x2.0</color>";
+            pendingSFXName = "Risk - Success";
         }
         else
         {
             data.riskMultiplier = 0.5f;
-            resultString = "<color=#FF0000>FAILED!\nPPS x0.5</color>";
-            sfxName = "Risk - Failed";
+            pendingResultString = "<color=#FF0000>FAILED!\nPPS x0.5</color>";
+            pendingSFXName = "Risk - Failed";
         }
 
-        StartCoroutine(PlayDelayedSFX(sfxName, 5f));
+        if (buttonA != null) buttonA.interactable = false;
+        if (buttonB != null) buttonB.interactable = false;
 
-        data.lastRiskResultText = resultString;
+        calculatedBonusDuration = minutesWait * 60f;
+
+        if (resultBox != null) resultBox.SetActive(true);
+
+        if (cardFlipAnimation != null)
+        {
+            StartCoroutine(SafeStartAnimationRoutine());
+        }
+        else
+        {
+            ApplyFinalRewardAndStartCooldown();
+        }
+    }
+
+    IEnumerator SafeStartAnimationRoutine()
+    {
+        yield return new WaitForEndOfFrame();
+        if (cardFlipAnimation != null)
+        {
+            cardFlipAnimation.StartFlipAnimation(pendingResultString);
+        }
+    }
+
+    public void ApplyFinalRewardAndStartCooldown()
+    {
+        if (AudioManager.Instance != null && !string.IsNullOrEmpty(pendingSFXName))
+        {
+            AudioManager.Instance.PlaySFX(pendingSFXName);
+        }
+
+        data.riskBonusTimer = calculatedBonusDuration;
+        data.lastRiskResultText = pendingResultString;
         PlayerPrefs.SetString("LastRiskResultText", data.lastRiskResultText);
 
-        data.riskBonusTimer = bonusDuration;
         canPlay = false;
-
         DateTime nextTime = DateTime.Now.AddMinutes(minutesWait);
         PlayerPrefs.SetString("NextRiskRewardPlay", nextTime.ToString());
         PlayerPrefs.Save();
+
+        if (riskRewardVisuals != null)
+        {
+            riskRewardVisuals.StartBoosterDisplay();
+        }
 
         if (System_NotificationRiskReward.Instance != null)
         {
@@ -134,19 +168,10 @@ public class System_RiskReward : MonoBehaviour
         }
 
         if (resultBox != null) resultBox.SetActive(true);
-
-        if (cardFlipAnimation != null)
-        {
-            cardFlipAnimation.StartFlipAnimation(resultString);
-        }
-        else if (resultText != null)
-        {
-            resultText.text = resultString;
-        }
-
-        if (buttonA != null) buttonA.interactable = false;
-        if (buttonB != null) buttonB.interactable = false;
+        if (resultText != null) resultText.text = data.lastRiskResultText;
         if (timerBox != null) timerBox.SetActive(true);
+
+        UpdateUIState();
     }
 
     void CheckTimer()
@@ -209,16 +234,6 @@ public class System_RiskReward : MonoBehaviour
         if (riskWindowPanel != null && riskWindowPanel.activeInHierarchy)
         {
             UpdateUIState();
-        }
-    }
-
-    IEnumerator PlayDelayedSFX(string sfxName, float delay)
-    {
-        yield return new WaitForSeconds(delay);
-
-        if (AudioManager.Instance != null && !string.IsNullOrEmpty(sfxName))
-        {
-            AudioManager.Instance.PlaySFX(sfxName);
         }
     }
 }

@@ -12,7 +12,6 @@ public class WorkerSale : MonoBehaviour
     [SerializeField] float minTimeBetweenEvents = 400f;
     [SerializeField] float maxTimeBetweenEvents = 800f;
     [SerializeField] float eventDuration = 10f;
-    [SerializeField] float visibilityThreshold = 15f;
 
     GameObject activeIconInstance;
     TextMeshProUGUI timerTextInIcon;
@@ -32,7 +31,6 @@ public class WorkerSale : MonoBehaviour
             if (data.workerSaleTimer > 0)
             {
                 data.workerSaleTimer -= Time.deltaTime;
-                HandleWaitingStatus();
             }
             else
             {
@@ -53,20 +51,6 @@ public class WorkerSale : MonoBehaviour
         }
     }
 
-    void HandleWaitingStatus()
-    {
-        if (data.workerSaleTimer <= visibilityThreshold)
-        {
-            if (activeIconInstance == null)
-            {
-                SpawnEventIcon();
-                if (AudioManager.Instance != null) AudioManager.Instance.PlaySFX("Countdown_Alert");
-            }
-
-            UpdateIconTimerUI(data.workerSaleTimer);
-        }
-    }
-
     void SpawnEventIcon()
     {
         activeIconInstance = Event_Manager.Instance.AddEventIcon(saleIconPrefab);
@@ -83,8 +67,7 @@ public class WorkerSale : MonoBehaviour
         int minutes = Mathf.FloorToInt(timeToShow / 60);
         int seconds = Mathf.FloorToInt(timeToShow % 60);
         timerTextInIcon.text = string.Format("{0:00}:{1:00}", minutes, seconds);
-
-        timerTextInIcon.color = isEventActive ? Color.yellow : Color.white;
+        timerTextInIcon.color = Color.white;
     }
 
     IEnumerator StartSaleRoutine()

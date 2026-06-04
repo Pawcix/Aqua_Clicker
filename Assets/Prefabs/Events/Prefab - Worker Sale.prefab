@@ -239,6 +239,7 @@ GameObject:
   - component: {fileID: 2604106610903393149}
   - component: {fileID: 387665363253189686}
   - component: {fileID: 3881577745164550377}
+  - component: {fileID: 6262836502108520651}
   m_Layer: 5
   m_Name: Img - Worker Sale
   m_TagString: Untagged
@@ -303,3 +304,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 0.01
+--- !u!114 &6262836502108520651
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9197695236901784072}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28d5f562078ae2e468d80fbbf762e8c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UI_NotificationPulse
+  minScale: 1
+  maxScale: 1.025
+  pulseSpeed: 2.5

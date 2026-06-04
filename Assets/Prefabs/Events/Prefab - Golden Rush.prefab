@@ -147,6 +147,7 @@ GameObject:
   - component: {fileID: 5808762681025326742}
   - component: {fileID: 3682036809637828126}
   - component: {fileID: 7943681401996839082}
+  - component: {fileID: 2935842235664571940}
   m_Layer: 5
   m_Name: Img - Golden Rush
   m_TagString: Untagged
@@ -211,6 +212,21 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 0.01
+--- !u!114 &2935842235664571940
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6262206065644130863}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28d5f562078ae2e468d80fbbf762e8c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UI_NotificationPulse
+  minScale: 1
+  maxScale: 1.025
+  pulseSpeed: 2.5
 --- !u!1 &8271755434515883847
 GameObject:
   m_ObjectHideFlags: 0

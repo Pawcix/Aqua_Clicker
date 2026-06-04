@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: db3690027b4844d4eac41581abbdda00
+guid: 451fb0040ef16214285518e37eafa738
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -897188856957239982
-    second: Multiplier - x4 - Check_0
+      213: 6841549205136443102
+    second: Background Turquoise-export_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -48,7 +48,7 @@ TextureImporter:
   compressionQuality: 50
   spriteMode: 2
   spriteExtrude: 1
-  spriteMeshType: 1
+  spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
@@ -100,7 +100,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Multiplier - x4 - Check_0
+      name: Background Turquoise-export_0
       rect:
         serializedVersion: 2
         x: 0
@@ -108,15 +108,15 @@ TextureImporter:
         width: 160
         height: 160
       alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 20, y: 20, z: 20, w: 20}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 25dff94fc7b8c83f0800000000000000
-      internalID: -897188856957239982
+      spriteID: ed6838501c012fe50800000000000000
+      internalID: 6841549205136443102
       vertices: []
       indices: 
       edges: []
@@ -125,7 +125,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 26ac3c9a2024bb64cbf71eeffc341160
     internalID: 0
     vertices: []
     indices: 
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Multiplier - x4 - Check_0: -897188856957239982
+      Background Turquoise-export_0: 6841549205136443102
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

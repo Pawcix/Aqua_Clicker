@@ -13,12 +13,16 @@ public class RiskReward : MonoBehaviour
     [SerializeField] Sprite winIconSprite;
     [SerializeField] Sprite loseIconSprite;
 
+    [Header("Cooldown Integration:")]
+    [SerializeField] string cooldownPreferenceKey = "NextRiskRewardPlay";
+
     GameObject activeIconInstance;
     TextMeshProUGUI timerTextInIcon;
     Image iconDisplayInIcon;
 
     const string RiskEndTimeKey = "RiskBonusEndTime";
     bool isAnimationPlaying = false;
+    bool shouldStartTimer = false;
 
     void Start()
     {
@@ -31,33 +35,41 @@ public class RiskReward : MonoBehaviour
         {
             if (isAnimationPlaying) return;
 
-            if (!PlayerPrefs.HasKey(RiskEndTimeKey))
+            if (!PlayerPrefs.HasKey(RiskEndTimeKey) && shouldStartTimer)
             {
+                float calculatedDuration = GetRemainingCooldownSeconds();
+                data.riskBonusTimer = calculatedDuration;
+
                 DateTime endTime = DateTime.Now.AddSeconds(data.riskBonusTimer);
                 PlayerPrefs.SetString(RiskEndTimeKey, endTime.ToString());
                 PlayerPrefs.Save();
+
+                shouldStartTimer = false;
             }
 
-            DateTime bonusEndTime = DateTime.Parse(PlayerPrefs.GetString(RiskEndTimeKey));
-            TimeSpan timeRemaining = bonusEndTime - DateTime.Now;
-
-            if (timeRemaining.TotalSeconds > 0)
+            if (PlayerPrefs.HasKey(RiskEndTimeKey))
             {
-                data.riskBonusTimer = (float)timeRemaining.TotalSeconds;
+                DateTime bonusEndTime = DateTime.Parse(PlayerPrefs.GetString(RiskEndTimeKey));
+                TimeSpan timeRemaining = bonusEndTime - DateTime.Now;
 
-                if (activeIconInstance == null)
+                if (timeRemaining.TotalSeconds > 0)
                 {
-                    SpawnBoosterIcon();
-                }
+                    data.riskBonusTimer = (float)timeRemaining.TotalSeconds;
 
-                if (activeIconInstance != null)
-                {
-                    UpdateIconUI(timeRemaining);
+                    if (activeIconInstance == null)
+                    {
+                        SpawnBoosterIcon();
+                    }
+
+                    if (activeIconInstance != null)
+                    {
+                        UpdateIconUI(timeRemaining);
+                    }
                 }
-            }
-            else
-            {
-                RemoveBoosterIcon();
+                else
+                {
+                    RemoveBoosterIcon();
+                }
             }
         }
         else
@@ -72,11 +84,33 @@ public class RiskReward : MonoBehaviour
     public void LockBoosterForAnimation()
     {
         isAnimationPlaying = true;
+        shouldStartTimer = false;
+
+        if (PlayerPrefs.HasKey(RiskEndTimeKey))
+        {
+            PlayerPrefs.DeleteKey(RiskEndTimeKey);
+            PlayerPrefs.Save();
+        }
     }
 
     public void StartBoosterDisplay()
     {
         isAnimationPlaying = false;
+        shouldStartTimer = true;
+    }
+
+    float GetRemainingCooldownSeconds()
+    {
+        if (!PlayerPrefs.HasKey(cooldownPreferenceKey)) return 60f * 60f;
+
+        string savedTimeStr = PlayerPrefs.GetString(cooldownPreferenceKey);
+        if (string.IsNullOrEmpty(savedTimeStr) || !DateTime.TryParse(savedTimeStr, out DateTime readyTime))
+        {
+            return 60f * 60f;
+        }
+
+        TimeSpan remaining = readyTime - DateTime.Now;
+        return remaining.TotalSeconds > 0 ? (float)remaining.TotalSeconds : 60f * 60f;
     }
 
     void ValidateBonusOnLines()
@@ -170,5 +204,6 @@ public class RiskReward : MonoBehaviour
         }
 
         isAnimationPlaying = false;
+        shouldStartTimer = false;
     }
 }
