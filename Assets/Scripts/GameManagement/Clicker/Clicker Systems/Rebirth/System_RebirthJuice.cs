@@ -5,20 +5,29 @@ using UnityEngine.UI;
 
 public class System_RebirthJuice : MonoBehaviour
 {
-    public static System_RebirthJuice Instance { get; private set; }
+    public static System_RebirthJuice Instance { get; set; }
 
     [Header("Flash Settings:")]
     [SerializeField] Image flashImage;
-    [SerializeField] Color flashColor = new Color(0.73f, 0.33f, 0.83f); 
+    [SerializeField] Color flashColor = new Color(0.73f, 0.33f, 0.83f);
     [SerializeField][Range(0f, 1f)] float maxAlpha = 0.7f;
     [SerializeField] float flashDuration = 0.5f;
 
     [Header("Popup Text Settings:")]
     [SerializeField] TextMeshProUGUI bigPopupText;
-    [SerializeField] float textDuration = 2.0f;
+    [SerializeField] float textDuration = 2.5f;
+
+    [Header("Juice Juice Juice (Advanced Animations):")]
+    [SerializeField] float punchScale = 1.25f;
+    [SerializeField] float idlePulseSpeed = 4f;
+    [SerializeField] float idlePulseAmount = 0.05f;
+    [SerializeField] float idleBobSpeed = 3f;
+    [SerializeField] float idleBobAmount = 15f;
+    [SerializeField] float fadeOutDuration = 0.4f;
 
     Coroutine currentFlashRoutine;
     Coroutine currentTextRoutine;
+    Vector3 originalTextPosition;
 
     void Awake()
     {
@@ -32,6 +41,20 @@ public class System_RebirthJuice : MonoBehaviour
             return;
         }
 
+        Canvas canvas = GetComponent<Canvas>();
+        if (canvas == null)
+        {
+            canvas = gameObject.AddComponent<Canvas>();
+        }
+
+        canvas.overrideSorting = true;
+        canvas.sortingOrder = 100;
+
+        if (GetComponent<GraphicRaycaster>() == null)
+        {
+            gameObject.AddComponent<GraphicRaycaster>();
+        }
+
         if (flashImage != null)
         {
             flashImage.color = new Color(flashColor.r, flashColor.g, flashColor.b, 0f);
@@ -40,6 +63,7 @@ public class System_RebirthJuice : MonoBehaviour
 
         if (bigPopupText != null)
         {
+            originalTextPosition = bigPopupText.transform.localPosition;
             bigPopupText.gameObject.SetActive(false);
         }
     }
@@ -62,23 +86,27 @@ public class System_RebirthJuice : MonoBehaviour
     IEnumerator FlashRoutine()
     {
         flashImage.gameObject.SetActive(true);
-        float halfDuration = flashDuration / 2f;
+
+        float attackDuration = flashDuration * 0.25f;
+        float decayDuration = flashDuration * 0.75f;
         float elapsed = 0f;
 
-        while (elapsed < halfDuration)
+        while (elapsed < attackDuration)
         {
             elapsed += Time.deltaTime;
-            float alpha = Mathf.Lerp(0f, maxAlpha, elapsed / halfDuration);
+            float t = elapsed / attackDuration;
+            float alpha = Mathf.Lerp(0f, maxAlpha, Mathf.SmoothStep(0f, 1f, t));
             flashImage.color = new Color(flashColor.r, flashColor.g, flashColor.b, alpha);
             yield return null;
         }
 
         elapsed = 0f;
 
-        while (elapsed < halfDuration)
+        while (elapsed < decayDuration)
         {
             elapsed += Time.deltaTime;
-            float alpha = Mathf.Lerp(maxAlpha, 0f, elapsed / halfDuration);
+            float t = elapsed / decayDuration;
+            float alpha = Mathf.Lerp(maxAlpha, 0f, t * t);
             flashImage.color = new Color(flashColor.r, flashColor.g, flashColor.b, alpha);
             yield return null;
         }
@@ -89,22 +117,67 @@ public class System_RebirthJuice : MonoBehaviour
 
     IEnumerator TextPopupRoutine(float multiplier)
     {
-        bigPopupText.text = $"<color=#BA55D3><size=130%>REBIRTH!</size></color>\n<size=85%>GLOBAL MULTIPLIER: {multiplier:F2}x</size>";
+        bigPopupText.text = $"<color=#FFA500>REBIRTH!</color>\nGLOBAL MULTIPLIER\n<color=#FFA500>{multiplier:F2}x</color>";
+
+        bigPopupText.color = new Color(bigPopupText.color.r, bigPopupText.color.g, bigPopupText.color.b, 1f);
+        bigPopupText.transform.localPosition = originalTextPosition;
+        bigPopupText.transform.localScale = Vector3.zero;
         bigPopupText.gameObject.SetActive(true);
 
-        bigPopupText.transform.localScale = Vector3.zero;
         float elapsed = 0f;
-        float scaleDuration = 0.15f;
+        float introDuration = 0.25f;
 
-        while (elapsed < scaleDuration)
+        while (elapsed < introDuration)
         {
             elapsed += Time.deltaTime;
-            bigPopupText.transform.localScale = Vector3.Lerp(Vector3.zero, Vector3.one, elapsed / scaleDuration);
+            float t = elapsed / introDuration;
+
+            float currentScale = 0f;
+            if (t < 0.6f)
+            {
+                currentScale = Mathf.Lerp(0f, punchScale, t / 0.6f);
+            }
+            else
+            {
+                currentScale = Mathf.Lerp(punchScale, 1.0f, (t - 0.6f) / 0.4f);
+            }
+
+            bigPopupText.transform.localScale = Vector3.one * currentScale;
             yield return null;
         }
         bigPopupText.transform.localScale = Vector3.one;
 
-        yield return new WaitForSeconds(textDuration - scaleDuration);
+        float idleTimeRemaining = textDuration - introDuration - fadeOutDuration;
+        float idleElapsed = 0f;
+
+        while (idleElapsed < idleTimeRemaining)
+        {
+            idleElapsed += Time.deltaTime;
+
+            float yOffset = Mathf.Sin(Time.time * idleBobSpeed) * idleBobAmount;
+            bigPopupText.transform.localPosition = originalTextPosition + new Vector3(0f, yOffset, 0f);
+
+            float pulse = 1.0f + Mathf.Sin(Time.time * idlePulseSpeed) * idlePulseAmount;
+            bigPopupText.transform.localScale = Vector3.one * pulse;
+
+            yield return null;
+        }
+
+        elapsed = 0f;
+        Color startColor = bigPopupText.color;
+
+        while (elapsed < fadeOutDuration)
+        {
+            elapsed += Time.deltaTime;
+            float t = elapsed / fadeOutDuration;
+
+            float newAlpha = Mathf.Lerp(1f, 0f, t);
+            bigPopupText.color = new Color(startColor.r, startColor.g, startColor.b, newAlpha);
+
+            bigPopupText.transform.localPosition += new Vector3(0f, Time.deltaTime * 40f, 0f);
+
+            yield return null;
+        }
 
         bigPopupText.gameObject.SetActive(false);
     }

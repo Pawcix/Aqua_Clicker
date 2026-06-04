@@ -12,7 +12,6 @@ public class GoldenRain : MonoBehaviour
     [Header("Event Settings:")]
     [SerializeField] float timeBetweenEvents = 1200f;
     [SerializeField] float eventDuration = 10f;
-    [SerializeField] float visibilityThreshold = 300f;
 
     GameObject activeIconInstance;
     TextMeshProUGUI timerTextInIcon;
@@ -32,7 +31,6 @@ public class GoldenRain : MonoBehaviour
             if (data.goldenRainTimer > 0)
             {
                 data.goldenRainTimer -= Time.deltaTime;
-                HandleWaitingStatus();
             }
             else
             {
@@ -50,18 +48,6 @@ public class GoldenRain : MonoBehaviour
             {
                 EndGoldenRain();
             }
-        }
-    }
-
-    void HandleWaitingStatus()
-    {
-        if (data.goldenRainTimer <= visibilityThreshold)
-        {
-            if (activeIconInstance == null)
-            {
-                SpawnEventIcon();
-            }
-            UpdateIconTimerUI(data.goldenRainTimer);
         }
     }
 

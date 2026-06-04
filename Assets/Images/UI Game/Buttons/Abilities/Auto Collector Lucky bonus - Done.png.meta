@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 5697e03901c31af4a8e97c84d554d0d8
+guid: 4bc3d5556df2c734091be735d53ffe12
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -366053529876322106
-    second: AutoCollector_0
+      213: 4818133209757423397
+    second: Auto Collector Lucky bonus - Done_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: AutoCollector_0
+      name: Auto Collector Lucky bonus - Done_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 16
-        height: 16
+        width: 160
+        height: 160
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 6c8a1f601448beaf0800000000000000
-      internalID: -366053529876322106
+      spriteID: 5279a1070a27dd240800000000000000
+      internalID: 4818133209757423397
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      AutoCollector_0: -366053529876322106
+      Auto Collector Lucky bonus - Done_0: 4818133209757423397
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

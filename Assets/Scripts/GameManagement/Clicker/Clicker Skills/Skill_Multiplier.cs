@@ -6,12 +6,13 @@ public class Skill_Multiplier : MonoBehaviour
 {
     [SerializeField] Clicker_Skills masterSkills;
     [SerializeField] public Button multiplierButton;
-    [SerializeField] public int multiplierValue = 2;
+    [SerializeField] public int multiplierValue = 1;
+    [SerializeField] public int requiredLevel = 0;
 
     [Header("Visuals:")]
     [SerializeField] Image buttonImage;
-    [SerializeField] Sprite neutralSprite;
     [SerializeField] Sprite activeSprite;
+    [SerializeField] Sprite neutralSprite;
     [SerializeField] public TextMeshProUGUI reqText;
 
     void Start()
@@ -36,12 +37,29 @@ public class Skill_Multiplier : MonoBehaviour
     void SelectThisMultiplier()
     {
         if (masterSkills == null || masterSkills.data == null) return;
+        if (masterSkills.data.clickMultiplier == multiplierValue)
+        {
+            if (AudioManager.Instance != null)
+            {
+                AudioManager.Instance.PlaySFX("Skill - Off");
+            }
+            return;
+        }
 
         masterSkills.data.clickMultiplier = multiplierValue;
         masterSkills.RefreshMultiplierButtons();
 
         if (AudioManager.Instance != null)
-            AudioManager.Instance.PlaySFX("Select");
+        {
+            if (multiplierValue == 1)
+            {
+                AudioManager.Instance.PlaySFX("Skill - Off");
+            }
+            else
+            {
+                AudioManager.Instance.PlaySFX("Skill - On");
+            }
+        }
     }
 
     void OnEnable()

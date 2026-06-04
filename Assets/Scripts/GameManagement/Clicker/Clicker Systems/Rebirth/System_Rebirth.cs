@@ -1,5 +1,6 @@
 using TMPro;
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,8 +15,10 @@ public class System_Rebirth : MonoBehaviour
 
     [Header("UI Security Elements:")]
     [SerializeField] Button rebirthButton;
-    [SerializeField] TextMeshProUGUI statusText;
     [SerializeField] TextMeshProUGUI cooldownTimerText;
+
+    [Header("UI Box Container:")]
+    [SerializeField] GameObject rebirthButtonBox;
 
     [Header("Cooldown Settings (Offline Time):")]
     [SerializeField] int baseCooldownMinutes = 10;
@@ -65,7 +68,7 @@ public class System_Rebirth : MonoBehaviour
 
     void UpdateTimerUI()
     {
-        if (readyTimeMissing()) return;
+        if (cooldownTimerText == null) return;
 
         string savedTimeStr = PlayerPrefs.GetString(RebirthCooldownKey);
         if (!DateTime.TryParse(savedTimeStr, out DateTime readyTime))
@@ -84,8 +87,12 @@ public class System_Rebirth : MonoBehaviour
         }
         else
         {
+            if (rebirthButtonBox != null && rebirthButtonBox.activeInHierarchy)
+            {
+                rebirthButtonBox.SetActive(false);
+            }
+
             if (rebirthButton != null) rebirthButton.interactable = false;
-            if (statusText != null) statusText.text = "<color=#FF4444>LOCKED</color>";
 
             string timeStr;
             if (timeRemaining.TotalHours >= 1)
@@ -99,55 +106,37 @@ public class System_Rebirth : MonoBehaviour
                     timeRemaining.Minutes, timeRemaining.Seconds);
             }
 
-            if (cooldownTimerText != null)
-            {
-                cooldownTimerText.text = $"NEXT REBIRTH IN:\n<color=#FF4444>{timeStr}</color>";
-            }
+            cooldownTimerText.text = $"Next Rebirth in: {timeStr}";
         }
     }
 
     void UpdateAvailableRebirthUI()
     {
-        if (readyTimeMissing()) return;
+        if (cooldownTimerText == null) return;
 
         if (data.rebirthCount == 0 && data.currentLevel < requiredFirstLevel)
         {
+            if (rebirthButtonBox != null && rebirthButtonBox.activeInHierarchy) rebirthButtonBox.SetActive(false);
             if (rebirthButton != null) rebirthButton.interactable = false;
-            if (statusText != null) statusText.text = "<color=#FF4444>LOCKED</color>";
 
-            if (cooldownTimerText != null)
-            {
-                cooldownTimerText.text = $"FIRST REBIRTH REQ:\n<color=#FF4444>LEVEL {requiredFirstLevel} (YOU: {data.currentLevel})</color>";
-            }
+            cooldownTimerText.text = $"Level {requiredFirstLevel} Needed";
             return;
         }
 
-        if (rebirthButton != null) rebirthButton.interactable = true;
-        if (statusText != null) statusText.text = "<color=#00FF00>REBIRTH</color>";
-
-        float potentialBonus = CalculatePotentialBonus();
-        int levelSquared = data.currentLevel * data.currentLevel;
-
-        if (cooldownTimerText != null)
+        if (rebirthButtonBox != null && !rebirthButtonBox.activeInHierarchy)
         {
-            cooldownTimerText.text = $"<color=#888888>Every level upgrades your next run!\n" +
-                                    $"\n" +
-                                    $"CURRENT REWARD:\n" +
-                                    $"<color=#FFD700>+{potentialBonus:F3}x GLOBAL MULTIPLIER</color>\n" +
-                                    $"Progression: (Lvl {data.currentLevel})² × 0.001\n" +
-                                    $"Calculation: {levelSquared} × 0.001 = {potentialBonus:F3}x</color>";
+            rebirthButtonBox.SetActive(true);
         }
+
+        if (rebirthButton != null) rebirthButton.interactable = true;
+
+        cooldownTimerText.text = "Rebirth is ready";
     }
 
     void UpdateUIElements()
     {
         if (isCooldownActive) UpdateTimerUI();
         else UpdateAvailableRebirthUI();
-    }
-
-    bool readyTimeMissing()
-    {
-        return rebirthButton == null || statusText == null || cooldownTimerText == null;
     }
 
     float CalculatePotentialBonus()
@@ -192,18 +181,24 @@ public class System_Rebirth : MonoBehaviour
 
         isCooldownActive = true;
 
+        if (rebirthButtonBox != null)
+        {
+            rebirthButtonBox.SetActive(false);
+        }
+
         if (levelingSystem != null) levelingSystem.UpdateLevelUI(true);
         if (clickerPrefabs != null) clickerPrefabs.UpdateAllPrefabs(0, 0);
 
         UpdateUIElements();
 
-        System_RebirthJuice juiceEffect = GetComponent<System_RebirthJuice>();
         if (System_RebirthJuice.Instance != null)
         {
             System_RebirthJuice.Instance.TriggerRebirthEffects(data.rebirthMultiplier);
         }
 
         if (AudioManager.Instance != null)
-            AudioManager.Instance.PlaySFX("Rebirth_Sound");
+        {
+            AudioManager.Instance.PlaySFX("Rebirth");
+        }
     }
 }

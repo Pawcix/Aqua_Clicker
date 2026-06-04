@@ -11,7 +11,6 @@ public class GoldenRush : MonoBehaviour
     [Header("Event Settings:")]
     [SerializeField] float timeBetweenEvents = 400f;
     [SerializeField] float eventDuration = 30f;
-    [SerializeField] float visibilityThreshold = 300f;
 
     GameObject activeIconInstance;
     TextMeshProUGUI timerTextInIcon;
@@ -31,7 +30,6 @@ public class GoldenRush : MonoBehaviour
             if (data.goldRushTimer > 0)
             {
                 data.goldRushTimer -= Time.deltaTime;
-                HandleWaitingStatus();
             }
             else
             {
@@ -49,18 +47,6 @@ public class GoldenRush : MonoBehaviour
             {
                 EndGoldRush();
             }
-        }
-    }
-
-    void HandleWaitingStatus()
-    {
-        if (data.goldRushTimer <= visibilityThreshold)
-        {
-            if (activeIconInstance == null)
-            {
-                SpawnEventIcon();
-            }
-            UpdateIconTimerUI(data.goldRushTimer);
         }
     }
 
@@ -91,8 +77,6 @@ public class GoldenRush : MonoBehaviour
 
         if (activeIconInstance == null) SpawnEventIcon();
 
-        if (AudioManager.Instance != null) AudioManager.Instance.PlaySFX("GoldRushStart");
-
         yield return null;
     }
 
@@ -108,7 +92,5 @@ public class GoldenRush : MonoBehaviour
             activeIconInstance = null;
             timerTextInIcon = null;
         }
-
-        if (AudioManager.Instance != null) AudioManager.Instance.PlaySFX("GoldRushEnd");
     }
 }

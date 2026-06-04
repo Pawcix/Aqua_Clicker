@@ -27,6 +27,11 @@ public class System_Economy : MonoBehaviour
     public void AddPoints(double amount)
     {
         data.pointsCounterFloat += amount;
+
+        if (System_Leveling.Instance != null)
+        {
+            System_Leveling.Instance.RegisterPointGain(amount);
+        }
     }
 
     public void AddPoints(float amount)

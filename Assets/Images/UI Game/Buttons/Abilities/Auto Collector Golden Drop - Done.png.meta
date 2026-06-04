@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 13d6ecb22681d1e409dd0eea499c68b0
+guid: 2293427e6b5980a4084b42b9e2e579d9
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 8076783078588995320
-    second: Click Double Done_0
+      213: 3874723336719284934
+    second: Auto Collector Golden Drop - Done_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -37,7 +37,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -75,7 +75,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 2
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -96,24 +96,11 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
-    buildTarget: WebGL
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Click Double Done_0
+      name: Auto Collector Golden Drop - Done_0
       rect:
         serializedVersion: 2
         x: 0
@@ -128,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 8f6de27da6f761070800000000000000
-      internalID: 8076783078588995320
+      spriteID: 6cab1187858c5c530800000000000000
+      internalID: 3874723336719284934
       vertices: []
       indices: 
       edges: []
@@ -148,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Click Double Done_0: 8076783078588995320
+      Auto Collector Golden Drop - Done_0: 3874723336719284934
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

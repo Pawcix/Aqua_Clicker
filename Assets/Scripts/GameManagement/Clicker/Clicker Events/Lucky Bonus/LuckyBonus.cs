@@ -158,7 +158,7 @@ public class LuckyBonus : MonoBehaviour
         double divider = bonusDivider > 0 ? (double)bonusDivider : 1.0;
         double bonusAmount = Math.Max((double)minBonusValue, data.pointsCounterFloat / divider);
 
-        data.pointsCounterFloat += bonusAmount;
+        System_Economy.Instance.AddPoints(bonusAmount);
         data.luckyBonus++;
 
         SpawnBonusText(NumberFormatter.FormatWithDots(bonusAmount));
@@ -168,6 +168,11 @@ public class LuckyBonus : MonoBehaviour
 
         if (AudioManager.Instance != null)
             AudioManager.Instance.PlaySFX("Lucky Bonus");
+
+        if (System_Leveling.Instance != null)
+        {
+            System_Leveling.Instance.FlashGoldenDropColor();
+        }
 
         StartCoroutine(CollectParticleRoutine());
     }

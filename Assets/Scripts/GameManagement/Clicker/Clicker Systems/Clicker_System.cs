@@ -55,9 +55,6 @@ public class Clicker_System : MonoBehaviour
             {
                 double ppsThisFrame = finalPPS * Time.deltaTime;
                 data.pointsCounterFloat += ppsThisFrame;
-
-                if (System_Leveling.Instance != null)
-                    System_Leveling.Instance.RegisterPointGain(ppsThisFrame);
             }
         }
 
@@ -145,9 +142,6 @@ public class Clicker_System : MonoBehaviour
         }
 
         System_Economy.Instance.AddPoints(finalPoints);
-
-        if (System_Leveling.Instance != null)
-            System_Leveling.Instance.RegisterPointGain(finalPoints);
 
         if (ComboChain.Instance != null) ComboChain.Instance.OnClickRegistered(finalPoints);
 

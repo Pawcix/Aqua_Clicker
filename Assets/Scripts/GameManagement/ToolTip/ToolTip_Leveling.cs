@@ -13,6 +13,7 @@ public class ToolTip_Leveling : MonoBehaviour, IPointerEnterHandler, IPointerExi
     public void OnPointerEnter(PointerEventData eventData)
     {
         isMouseOver = true;
+        if (delayCoroutine != null) StopCoroutine(delayCoroutine);
         delayCoroutine = StartCoroutine(WaitAndShow());
     }
 
@@ -20,23 +21,27 @@ public class ToolTip_Leveling : MonoBehaviour, IPointerEnterHandler, IPointerExi
     {
         isMouseOver = false;
         if (delayCoroutine != null) StopCoroutine(delayCoroutine);
-        ToolTip.Instance.HideTooltip();
+
+        if (ToolTip_LevelManager.Instance != null)
+        {
+            ToolTip_LevelManager.Instance.HideTooltip();
+        }
     }
 
     IEnumerator WaitAndShow()
     {
         yield return new WaitForSeconds(delay);
-        if (isMouseOver)
+        if (isMouseOver && ToolTip_LevelManager.Instance != null)
         {
-            ToolTip.Instance.ShowTooltip(GetLevelingInfo(), transform.position);
+            ToolTip_LevelManager.Instance.ShowTooltip(GetLevelingInfo(), transform.position);
         }
     }
 
     void Update()
     {
-        if (isMouseOver && ToolTip.Instance != null)
+        if (isMouseOver && ToolTip_LevelManager.Instance != null)
         {
-            ToolTip.Instance.UpdateDynamicContent(GetLevelingInfo());
+            ToolTip_LevelManager.Instance.UpdateDynamicContent(GetLevelingInfo());
         }
     }
 
@@ -44,14 +49,16 @@ public class ToolTip_Leveling : MonoBehaviour, IPointerEnterHandler, IPointerExi
     {
         if (data == null) return "Loading...";
 
-        double progressPercent = (data.currentXP / data.xpToNextLevel) * 100;
+        double progressPercent = 0;
+        if (data.xpToNextLevel > 0)
+        {
+            progressPercent = (data.currentXP / data.xpToNextLevel) * 100;
+        }
 
-        string info = $"<color=#00BFFF>Level: {data.currentLevel}</color>\n";
-        info += $"\n";
+        string info = $"<color=#FFA500>Level: {data.currentLevel}</color>\n";
+        info += $"";
         info += $"XP: {NumberFormatter.FormatWithDots(data.currentXP)} / {NumberFormatter.FormatWithDots(data.xpToNextLevel)}\n";
         info += $"Progress: {progressPercent:F1}%\n";
-        info += $"\n";
-        info += $"<color=#FFD700>Rebirth Points: {data.rebirthPoints}</color>";
 
         return info;
     }

@@ -12,24 +12,63 @@ public class System_Leveling : MonoBehaviour
 
     [Header("UI Elements:")]
     [SerializeField] Slider xpSlider;
+    [SerializeField] Image xpSliderFill;
     [SerializeField] TextMeshProUGUI levelText;
     [SerializeField] TextMeshProUGUI percentText;
     [SerializeField] TextMeshProUGUI rebirthPointsText;
 
     [Header("Level Up Notification:")]
     [SerializeField] TextMeshProUGUI levelUpText;
-    [SerializeField] float displayDuration = 3f;
+    [SerializeField] float displayDuration = 2.5f;
+
+    [Header("Juicy Notification Settings:")]
+    [SerializeField] float punchScale = 1.3f;
+    [SerializeField] float idlePulseSpeed = 5f;
+    [SerializeField] float idlePulseAmount = 0.04f;
+    [SerializeField] float idleBobSpeed = 4f;
+    [SerializeField] float idleBobAmount = 8f;
+    [SerializeField] float fadeOutDuration = 0.4f;
 
     [Header("Settings:")]
     [SerializeField] float xpDifficultyMultiplier = 1.25f;
     [SerializeField] float lerpSpeed = 5f;
+    [SerializeField] float colorFlashDuration = 0.6f;
 
     float currentVisualXP;
+    Color originalFillColor;
+    Color luckyBonusColor;
+    Color goldenDropColor;
+    Coroutine colorFlashCoroutine;
+    Coroutine levelUpCoroutine;
+
+    Vector3 originalNotificationPos;
+    Color originalNotificationColor;
 
     void Awake()
     {
         if (Instance == null) Instance = this;
-        if (levelUpText != null) levelUpText.gameObject.SetActive(false);
+
+        if (levelUpText != null)
+        {
+            originalNotificationPos = levelUpText.transform.localPosition;
+            originalNotificationColor = levelUpText.color;
+            levelUpText.gameObject.SetActive(false);
+        }
+
+        if (xpSliderFill != null)
+        {
+            originalFillColor = xpSliderFill.color;
+        }
+
+        if (ColorUtility.TryParseHtmlString("#E84E40", out Color parsedLucky))
+        {
+            luckyBonusColor = parsedLucky;
+        }
+
+        if (ColorUtility.TryParseHtmlString("#FFCD00", out Color parsedGolden))
+        {
+            goldenDropColor = parsedGolden;
+        }
     }
 
     void Start()
@@ -69,6 +108,35 @@ public class System_Leveling : MonoBehaviour
         }
 
         UpdateLevelUI(false);
+    }
+
+    public void FlashLuckyBonusColor()
+    {
+        if (xpSliderFill == null) return;
+        if (colorFlashCoroutine != null) StopCoroutine(colorFlashCoroutine);
+        colorFlashCoroutine = StartCoroutine(FlashColorRoutine(luckyBonusColor));
+    }
+
+    public void FlashGoldenDropColor()
+    {
+        if (xpSliderFill == null) return;
+        if (colorFlashCoroutine != null) StopCoroutine(colorFlashCoroutine);
+        colorFlashCoroutine = StartCoroutine(FlashColorRoutine(goldenDropColor));
+    }
+
+    IEnumerator FlashColorRoutine(Color targetColor)
+    {
+        xpSliderFill.color = targetColor;
+        float elapsed = 0f;
+
+        while (elapsed < colorFlashDuration)
+        {
+            elapsed += Time.deltaTime;
+            xpSliderFill.color = Color.Lerp(targetColor, originalFillColor, elapsed / colorFlashDuration);
+            yield return null;
+        }
+
+        xpSliderFill.color = originalFillColor;
     }
 
     void LevelUp()
@@ -112,24 +180,73 @@ public class System_Leveling : MonoBehaviour
     {
         if (levelUpText != null)
         {
-            StopAllCoroutines();
-            StartCoroutine(LevelUpRoutine());
+            if (levelUpCoroutine != null) StopCoroutine(levelUpCoroutine);
+            levelUpCoroutine = StartCoroutine(LevelUpRoutine());
         }
     }
 
     IEnumerator LevelUpRoutine()
     {
-        levelUpText.text = "LEVEL UP!";
+        levelUpText.color = originalNotificationColor;
+        levelUpText.transform.localPosition = originalNotificationPos;
+        levelUpText.transform.localScale = Vector3.zero;
         levelUpText.gameObject.SetActive(true);
-        levelUpText.transform.localScale = Vector3.one * 0.5f;
-        float elapsed = 0;
-        while (elapsed < 0.2f)
+
+        float elapsed = 0f;
+        float introDuration = 0.2f;
+
+        while (elapsed < introDuration)
         {
             elapsed += Time.deltaTime;
-            levelUpText.transform.localScale = Vector3.Lerp(Vector3.one * 0.5f, Vector3.one, elapsed / 0.2f);
+            float t = elapsed / introDuration;
+
+            float currentScale = 0f;
+            if (t < 0.6f)
+            {
+                currentScale = Mathf.Lerp(0f, punchScale, t / 0.6f);
+            }
+            else
+            {
+                currentScale = Mathf.Lerp(punchScale, 1.0f, (t - 0.6f) / 0.4f);
+            }
+
+            levelUpText.transform.localScale = Vector3.one * currentScale;
             yield return null;
         }
-        yield return new WaitForSeconds(displayDuration);
+        levelUpText.transform.localScale = Vector3.one;
+
+        float idleTimeRemaining = displayDuration - introDuration - fadeOutDuration;
+        float idleElapsed = 0f;
+
+        while (idleElapsed < idleTimeRemaining)
+        {
+            idleElapsed += Time.deltaTime;
+
+            float yOffset = Mathf.Sin(Time.time * idleBobSpeed) * idleBobAmount;
+            levelUpText.transform.localPosition = originalNotificationPos + new Vector3(0f, yOffset, 0f);
+
+            float pulse = 1.0f + Mathf.Sin(Time.time * idlePulseSpeed) * idlePulseAmount;
+            levelUpText.transform.localScale = Vector3.one * pulse;
+
+            yield return null;
+        }
+
+        elapsed = 0f;
+        Color startColor = levelUpText.color;
+        Vector3 startPos = levelUpText.transform.localPosition;
+
+        while (elapsed < fadeOutDuration)
+        {
+            elapsed += Time.deltaTime;
+            float t = elapsed / fadeOutDuration;
+            float newAlpha = Mathf.Lerp(1f, 0f, t);
+            levelUpText.color = new Color(startColor.r, startColor.g, startColor.b, newAlpha);
+
+            levelUpText.transform.localPosition += new Vector3(0f, Time.deltaTime * 60f, 0f);
+
+            yield return null;
+        }
+
         levelUpText.gameObject.SetActive(false);
     }
 }

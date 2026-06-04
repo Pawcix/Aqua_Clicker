@@ -16,9 +16,9 @@ public class Clicker_Skills : MonoBehaviour
 
     [Header("Abilities Unlock Levels (Permanent Mastery LVL):")]
     [SerializeField] int unlockAutoClickLvl = 20;
-    [SerializeField] int unlockAntiCheatLvl = 50;
-    [SerializeField] int unlockAutoColLvl = 80;
-    [SerializeField] int unlockLuckyColLvl = 150;
+    [SerializeField] int unlockAutoColLvl = 50;
+    [SerializeField] int unlockLuckyColLvl = 80;
+    [SerializeField] int unlockAntiCheatLvl = 150;
 
     [Header("Required Level Text Elements:")]
     [SerializeField] TextMeshProUGUI reqAutoClickText;
@@ -30,11 +30,56 @@ public class Clicker_Skills : MonoBehaviour
     [SerializeField] Color lockedColor = new Color(0.3f, 0.3f, 0.3f, 0.6f);
     [SerializeField] Color unlockedColor = Color.white;
 
-    public bool isAntiCheatBypassActive { get => data.isAntiCheatBypassActive; set => data.isAntiCheatBypassActive = value; }
+    public bool isAntiCheatBypassActive
+    {
+        get => data.isAntiCheatBypassActive;
+        set
+        {
+            if (data.isAntiCheatBypassActive != value) PlaySkillSound(value);
+            data.isAntiCheatBypassActive = value;
+        }
+    }
+
     public int currentSkinIndex { get => data.currentSkinIndex; set => data.currentSkinIndex = value; }
-    public bool isAutoClickerActive { get => data.isAutoClickerActive; set => data.isAutoClickerActive = value; }
-    public bool isAutoCollectorActive { get => data.isAutoCollectorActive; set => data.isAutoCollectorActive = value; }
-    public bool isLuckyCollectorActive { get => data.isLuckyCollectorActive; set => data.isLuckyCollectorActive = value; }
+
+    public bool isAutoClickerActive
+    {
+        get => data.isAutoClickerActive;
+        set
+        {
+            if (data.isAutoClickerActive != value) PlaySkillSound(value);
+            data.isAutoClickerActive = value;
+        }
+    }
+
+    public bool isAutoCollectorActive
+    {
+        get => data.isAutoCollectorActive;
+        set
+        {
+            if (data.isAutoCollectorActive != value) PlaySkillSound(value);
+            data.isAutoCollectorActive = value;
+        }
+    }
+
+    public bool isLuckyCollectorActive
+    {
+        get => data.isLuckyCollectorActive;
+        set
+        {
+            if (data.isLuckyCollectorActive != value) PlaySkillSound(value);
+            data.isLuckyCollectorActive = value;
+        }
+    }
+
+    void PlaySkillSound(bool turnOn)
+    {
+        if (AudioManager.Instance != null)
+        {
+            string sfxName = turnOn ? "Skill - On" : "Skill - Off";
+            AudioManager.Instance.PlaySFX(sfxName);
+        }
+    }
 
     public void UpdateAllSkills(int totalPoints) { }
 
@@ -56,9 +101,17 @@ public class Clicker_Skills : MonoBehaviour
         {
             if (sm == null) continue;
 
-            int requiredAwayLvl = (sm.multiplierValue - 1) * 20;
+            bool isUnlocked = false;
 
-            bool isUnlocked = data.awayMasteryLvl >= requiredAwayLvl;
+            if (sm.multiplierValue == 1)
+            {
+                isUnlocked = true;
+            }
+            else
+            {
+                int requiredAwayLvl = sm.requiredLevel;
+                isUnlocked = data.awayMasteryLvl >= requiredAwayLvl;
+            }
 
             if (sm.multiplierButton != null)
             {
@@ -72,21 +125,20 @@ public class Clicker_Skills : MonoBehaviour
 
             if (sm.reqText != null)
             {
-                if (isUnlocked)
+                if (isUnlocked || sm.multiplierValue == 1)
                 {
                     sm.reqText.gameObject.SetActive(false);
                 }
                 else
                 {
                     sm.reqText.gameObject.SetActive(true);
-                    sm.reqText.text = $"REQ Mastery Income: \n{requiredAwayLvl} LEV";
+                    sm.reqText.text = $"REQ Mastery Income: \n{sm.requiredLevel} LEV";
                 }
             }
 
             sm.RefreshVisuals();
         }
     }
-
     public void RefreshSkillsVisuals()
     {
         if (data == null) return;
@@ -138,6 +190,11 @@ public class Clicker_Skills : MonoBehaviour
             if (isUnlocked)
             {
                 reqText.gameObject.SetActive(false);
+
+                if (ToolTip_AbilitiesManager.Instance != null)
+                {
+                    ToolTip_AbilitiesManager.Instance.HideTooltip();
+                }
             }
             else
             {

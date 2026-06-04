@@ -82,7 +82,7 @@ public class GoldenDrop_Item : MonoBehaviour
 
         if (bonus < 100.0) bonus = 100.0;
 
-        data.pointsCounterFloat += bonus;
+        System_Economy.Instance.AddPoints(bonus);
         data.goldenDrops++;
 
         if (ScreenFlash.Instance != null) ScreenFlash.Instance.TriggerGoldFlash();
@@ -110,6 +110,11 @@ public class GoldenDrop_Item : MonoBehaviour
         if (AudioManager.Instance != null)
         {
             AudioManager.Instance.PlaySFX("Golden Drop - Collect");
+        }
+
+        if (System_Leveling.Instance != null)
+        {
+            System_Leveling.Instance.FlashGoldenDropColor();
         }
 
         StartCoroutine(ClickAnimationRoutine());
