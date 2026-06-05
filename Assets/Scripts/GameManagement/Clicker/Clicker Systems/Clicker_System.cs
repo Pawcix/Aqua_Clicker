@@ -54,7 +54,15 @@ public class Clicker_System : MonoBehaviour
             if (finalPPS > 0)
             {
                 double ppsThisFrame = finalPPS * Time.deltaTime;
-                data.pointsCounterFloat += ppsThisFrame;
+
+                if (System_Economy.Instance != null)
+                {
+                    System_Economy.Instance.AddPoints(ppsThisFrame, true);
+                }
+                else
+                {
+                    data.pointsCounterFloat += ppsThisFrame;
+                }
             }
         }
 

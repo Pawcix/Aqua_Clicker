@@ -4,6 +4,7 @@ using UnityEngine.UI;
 
 public class Worker_Element : MonoBehaviour
 {
+    [Header("UI Text References:")]
     [SerializeField] TextMeshProUGUI nameText;
     [SerializeField] TextMeshProUGUI powerText;
     [SerializeField] TextMeshProUGUI priceBuyText;
@@ -11,8 +12,15 @@ public class Worker_Element : MonoBehaviour
     [SerializeField] TextMeshProUGUI totalBonusText;
     [SerializeField] TextMeshProUGUI descriptionText;
     [SerializeField] TextMeshProUGUI saleLabelText;
+
+    [Header("UI Interaction Elements:")]
     [SerializeField] Button buyButton;
     [SerializeField] Image workerImage;
+    [SerializeField] Image backgroundImage;
+
+    [Header("Visual Theme Settings:")]
+    [SerializeField] Color normalColor = Color.white;
+    [SerializeField] Color lockedColor = new Color(0.4f, 0.4f, 0.4f, 1f);
 
     System_Data data;
     Worker workerTemplate;
@@ -20,6 +28,7 @@ public class Worker_Element : MonoBehaviour
     int cachedAmount;
     double cachedTotalPrice;
     bool lastKnownSaleState;
+    bool isCurrentlyAffordable = true;
 
     void Update()
     {
@@ -39,10 +48,13 @@ public class Worker_Element : MonoBehaviour
                 buyButton.interactable = canAfford;
             }
 
-            if (Worker_PurchaseSettings.CurrentMode == Worker_PurchaseSettings.PurchaseMode.Max)
+            if (isCurrentlyAffordable != canAfford)
             {
-                UpdatePriceText();
+                isCurrentlyAffordable = canAfford;
+                ApplyVisualTheme(isCurrentlyAffordable);
             }
+
+            UpdatePriceText();
         }
     }
 
@@ -112,7 +124,27 @@ public class Worker_Element : MonoBehaviour
         if (totalBonusText != null) totalBonusText.text = "PPS: " + totalPPS.ToString("F1");
         if (descriptionText != null) descriptionText.text = workerTemplate.description;
 
+        CalculateCurrentBulkStats();
+        isCurrentlyAffordable = data.pointsCounterFloat >= cachedTotalPrice && cachedAmount > 0;
+        ApplyVisualTheme(isCurrentlyAffordable);
+
         UpdatePriceText();
+    }
+
+    void ApplyVisualTheme(bool affordable)
+    {
+        Color applyColor = affordable ? normalColor : lockedColor;
+
+        if (backgroundImage != null) backgroundImage.color = applyColor;
+        if (workerImage != null) workerImage.color = applyColor;
+
+        float textAlpha = affordable ? 1.0f : 0.5f;
+
+        if (nameText != null) nameText.alpha = textAlpha;
+        if (powerText != null) powerText.alpha = textAlpha;
+        if (levelText != null) levelText.alpha = textAlpha;
+        if (totalBonusText != null) totalBonusText.alpha = textAlpha;
+        if (descriptionText != null) descriptionText.alpha = textAlpha;
     }
 
     void UpdatePriceText()
@@ -126,13 +158,24 @@ public class Worker_Element : MonoBehaviour
         priceBuyText.color = data.isWorkerSaleActive ? Color.green : Color.white;
 
         string finalButtonText = "";
-        if (Worker_PurchaseSettings.CurrentMode == Worker_PurchaseSettings.PurchaseMode.Max)
+
+        switch (Worker_PurchaseSettings.CurrentMode)
         {
-            finalButtonText = $"MAX ({cachedAmount})\n{NumberFormatter.FormatWithDots(cachedTotalPrice)}";
-        }
-        else
-        {
-            finalButtonText = NumberFormatter.FormatWithDots(cachedTotalPrice);
+            case Worker_PurchaseSettings.PurchaseMode.x1:
+                finalButtonText = $"Price x1\n{NumberFormatter.FormatWithDots(cachedTotalPrice)}";
+                break;
+
+            case Worker_PurchaseSettings.PurchaseMode.x5:
+                finalButtonText = $"Price x5\n{NumberFormatter.FormatWithDots(cachedTotalPrice)}";
+                break;
+
+            case Worker_PurchaseSettings.PurchaseMode.Max:
+                finalButtonText = $"MAX ({cachedAmount})\n{NumberFormatter.FormatWithDots(cachedTotalPrice)}";
+                break;
+
+            default:
+                finalButtonText = NumberFormatter.FormatWithDots(cachedTotalPrice);
+                break;
         }
 
         priceBuyText.text = finalButtonText;

@@ -21,7 +21,7 @@ public class Clicker_Workers : MonoBehaviour
         data.workersPPS += (double)power;
 
         if (AudioManager.Instance != null)
-            AudioManager.Instance.PlaySFX("Buy Sound");
+            AudioManager.Instance.PlaySFX("Worker");
 
         double currentPoints = data.pointsCounterFloat;
         float totalPPSWithBonuses = (float)((data.basePPS + data.workersPPS) * data.currentDailyMultiplier);

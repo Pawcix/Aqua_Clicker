@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a714e85a039f0f43b6daaf89808662b, type: 3}
   m_Name: '#1'
   m_EditorClassIdentifier: 
-  workerName: "\u0141y\u017Ceczka Bo\u017Ca"
-  icon: {fileID: -4286987140415026430, guid: b1c5e92de12dd744aa96abee999b682c, type: 3}
-  description: Lyzeczka Boza
-  basePower: 0.1
-  basePrice: 10
-  priceMultiplier: 1.25
+  workerName: Water Drops
+  icon: {fileID: 4026136583318243106, guid: 3963aceec9078bc459d9a42f435cc17e, type: 3}
+  description: Water Drops
+  basePower: 0.2
+  basePrice: 50
+  priceMultiplier: 1.15
