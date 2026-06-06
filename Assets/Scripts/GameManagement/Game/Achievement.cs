@@ -4,7 +4,6 @@ public enum AchievementType
 {
     TotalPoints,
     GoldenDrops,
-    TotalClicks
 }
 
 [CreateAssetMenu(fileName = "New Achievement", menuName = "Achievements/Achievement")]

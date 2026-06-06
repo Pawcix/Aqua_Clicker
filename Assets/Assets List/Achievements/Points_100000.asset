@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8f01aaf27b6ef2e49a57ec2afcdf5b36, type: 3}
-  m_Name: GoldenDrop_500
+  m_Name: Points_100000
   m_EditorClassIdentifier: Assembly-CSharp::Achievement
-  id: GoldenDrop_500
-  title: 'Golden Drop: 500'
-  icon: {fileID: -2774948597963651544, guid: db98d125fb1c62a448cbb6f69dfcac99, type: 3}
-  description: Collect 500 Golden Drop
-  type: 1
-  requiredValue: 500
-  rewardSkinID: 14
+  id: Points_100000
+  title: 'Points: 100.000'
+  icon: {fileID: 7839864617260609291, guid: 742e50268a2486f4f807969009e1b96f, type: 3}
+  description: Earn 100.000 points
+  type: 0
+  requiredValue: 100000
+  rewardSkinID: 3

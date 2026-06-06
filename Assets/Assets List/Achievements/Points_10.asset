@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Points_10
   m_EditorClassIdentifier: Assembly-CSharp::Achievement
   id: Points_10
-  title: Points 10
-  icon: {fileID: -1372219598972206952, guid: a82a0ca6a80e8234993867da85a44182, type: 3}
-  description: "Zdob\u0105d\u017A 10 punkt\xF3w"
+  title: 'Points: 10'
+  icon: {fileID: 540264420769368147, guid: 1d108074b07e6c44c96d816e2f6ae54e, type: 3}
+  description: Earn 10 points
   type: 0
   requiredValue: 10
-  rewardSkinID: 2
+  rewardSkinID: 1

@@ -40,7 +40,7 @@ public class UI_ToolTipAchievements : MonoBehaviour
 
     public void ShowTooltip(string title, string description, bool isUnlocked, AchievementType type, double requiredValue)
     {
-        titleText.text = $"<color=#FFD700><b>{title}</b></color>";
+        titleText.text = $"<color=#FFD700>{title}</color>";
 
         if (tooltipBackgroundDisplay != null)
         {
@@ -60,7 +60,7 @@ public class UI_ToolTipAchievements : MonoBehaviour
                     break;
                 case AchievementType.GoldenDrops:
                     currentProgress = data.goldenDrops;
-                    unitName = "drops";
+                    unitName = "golden drops";
                     break;
             }
         }
@@ -71,7 +71,7 @@ public class UI_ToolTipAchievements : MonoBehaviour
         string formattedRequired = NumberFormatter.FormatWithDots(requiredValue);
         string progressLine = $"Progress: {formattedCurrent} / {formattedRequired} {unitName}";
 
-        descriptionText.text = $"{description}\n\n{progressLine}";
+        descriptionText.text = $"{description}\n{progressLine}";
         tooltipWindow.SetActive(true);
 
         LayoutRebuilder.ForceRebuildLayoutImmediate(windowRect);

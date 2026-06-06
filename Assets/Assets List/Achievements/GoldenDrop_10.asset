@@ -13,7 +13,9 @@ MonoBehaviour:
   m_Name: GoldenDrop_10
   m_EditorClassIdentifier: Assembly-CSharp::Achievement
   id: GoldenDrop_10
-  title: GoldenDrop 10
-  icon: {fileID: -366053529876322106, guid: 5697e03901c31af4a8e97c84d554d0d8, type: 3}
+  title: 'Golden Drop: 10'
+  icon: {fileID: 7576940372254174053, guid: 38d667326766b2241a66dd76f426c86e, type: 3}
+  description: Collect 10 Golden Drop
   type: 1
   requiredValue: 10
+  rewardSkinID: 9
