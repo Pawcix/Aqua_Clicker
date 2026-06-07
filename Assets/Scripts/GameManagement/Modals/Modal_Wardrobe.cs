@@ -16,6 +16,11 @@ public class Modal_Wardrobe : MonoBehaviour
 
         bool wasActive = wardrobeModal.activeInHierarchy;
 
+        if (keyShortsSource != null)
+        {
+            keyShortsSource.CloseAllModals();
+        }
+
         if (!wasActive)
         {
             wardrobeModal.SetActive(true);
@@ -23,17 +28,13 @@ public class Modal_Wardrobe : MonoBehaviour
 
         else
         {
-            if (keyShortsSource != null) keyShortsSource.CloseAllModals();
-
-            wardrobeModal.SetActive(true);
-
             if (System_Notification.Instance != null)
             {
                 System_Notification.Instance.SetAlert(false);
             }
-
-            if (AudioManager.Instance != null) AudioManager.Instance.PlaySFX("Open");
         }
+
+        if (AudioManager.Instance != null) AudioManager.Instance.PlaySFX("Open");
     }
 }
 

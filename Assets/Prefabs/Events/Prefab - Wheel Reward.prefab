@@ -148,7 +148,6 @@ GameObject:
   - component: {fileID: 4731437077227289670}
   - component: {fileID: 4264801268365806562}
   - component: {fileID: 6066557692116268120}
-  - component: {fileID: -4678829646944353115}
   m_Layer: 5
   m_Name: Prefab - Wheel Reward
   m_TagString: Untagged
@@ -229,20 +228,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TooltipTrigger
   content: 'Event: Wheel Reward'
   delay: 1
---- !u!114 &-4678829646944353115
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5378095192875694876}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bb977a49ea7934a4093439de15a08486, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UI_ButtonScaleOnly
-  hoverScale: 1.025
-  scaleSpeed: 25
 --- !u!1 &9158619245937851636
 GameObject:
   m_ObjectHideFlags: 0
@@ -254,7 +239,7 @@ GameObject:
   - component: {fileID: 5962663220096417440}
   - component: {fileID: 6743634843490265779}
   - component: {fileID: 156498953154594604}
-  - component: {fileID: 8424039657394728303}
+  - component: {fileID: 5141585800949857143}
   m_Layer: 5
   m_Name: Img - Wheel Reward
   m_TagString: Untagged
@@ -319,7 +304,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 0.01
---- !u!114 &8424039657394728303
+--- !u!114 &5141585800949857143
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -332,5 +317,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UI_NotificationPulse
   minScale: 1
-  maxScale: 1.05
+  maxScale: 1.025
   pulseSpeed: 2.5

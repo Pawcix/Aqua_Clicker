@@ -13,7 +13,7 @@ public class WheelRewards : MonoBehaviour
     TextMeshProUGUI timerTextInIcon;
     Image iconDisplayInIcon;
 
-    private const string WheelEndTimeKey = "WheelBonusEndTime";
+    const string WheelNextSpinKey = "NextWheelSpin";
 
     void Start()
     {
@@ -22,17 +22,10 @@ public class WheelRewards : MonoBehaviour
 
     void Update()
     {
-        if (data.wheelMultiplier != 1.0f)
+        if (data.wheelMultiplier != 1.0f && PlayerPrefs.HasKey(WheelNextSpinKey))
         {
-            if (!PlayerPrefs.HasKey(WheelEndTimeKey))
-            {
-                DateTime endTime = DateTime.Now.AddSeconds(data.wheelBonusTimer);
-                PlayerPrefs.SetString(WheelEndTimeKey, endTime.ToString());
-                PlayerPrefs.Save();
-            }
-
-            DateTime bonusEndTime = DateTime.Parse(PlayerPrefs.GetString(WheelEndTimeKey));
-            TimeSpan timeRemaining = bonusEndTime - DateTime.Now;
+            DateTime nextSpinTime = DateTime.Parse(PlayerPrefs.GetString(WheelNextSpinKey));
+            TimeSpan timeRemaining = nextSpinTime - DateTime.Now;
 
             if (timeRemaining.TotalSeconds > 0)
             {
@@ -61,28 +54,25 @@ public class WheelRewards : MonoBehaviour
 
     void ValidateBonusOnStart()
     {
-        if (PlayerPrefs.HasKey(WheelEndTimeKey))
+        if (PlayerPrefs.HasKey(WheelNextSpinKey))
         {
-            DateTime bonusEndTime = DateTime.Parse(PlayerPrefs.GetString(WheelEndTimeKey));
+            DateTime nextSpinTime = DateTime.Parse(PlayerPrefs.GetString(WheelNextSpinKey));
 
-            if (DateTime.Now >= bonusEndTime)
+            if (DateTime.Now >= nextSpinTime)
             {
-                PlayerPrefs.DeleteKey(WheelEndTimeKey);
-                PlayerPrefs.Save();
-                if (data != null)
-                {
-                    data.wheelMultiplier = 1.0f;
-                    data.wheelBonusTimer = 0;
-                    data.currentWheelRewardIcon = null;
-                }
+                ResetBonus();
             }
             else
             {
                 if (data != null)
                 {
-                    data.wheelBonusTimer = (float)(bonusEndTime - DateTime.Now).TotalSeconds;
+                    data.wheelBonusTimer = (float)(nextSpinTime - DateTime.Now).TotalSeconds;
                 }
             }
+        }
+        else
+        {
+            ResetBonus();
         }
     }
 
@@ -95,15 +85,20 @@ public class WheelRewards : MonoBehaviour
             activeIconInstance.transform.SetAsFirstSibling();
             timerTextInIcon = activeIconInstance.GetComponentInChildren<TextMeshProUGUI>();
 
-            Transform iconTransform = activeIconInstance.transform.Find("Img - Wheel Reward");
-            if (iconTransform != null)
+            Image[] allImages = activeIconInstance.GetComponentsInChildren<Image>();
+            foreach (Image img in allImages)
             {
-                iconDisplayInIcon = iconTransform.GetComponent<Image>();
-
-                if (iconDisplayInIcon != null && data.currentWheelRewardIcon != null)
+                if (img.gameObject != activeIconInstance)
                 {
-                    iconDisplayInIcon.sprite = data.currentWheelRewardIcon;
+                    iconDisplayInIcon = img;
+                    break;
                 }
+            }
+
+            if (iconDisplayInIcon != null && data.currentWheelRewardIcon != null)
+            {
+                iconDisplayInIcon.sprite = data.currentWheelRewardIcon;
+                iconDisplayInIcon.color = Color.white;
             }
         }
     }
@@ -112,8 +107,8 @@ public class WheelRewards : MonoBehaviour
     {
         if (timerTextInIcon == null) return;
 
-        int mins = timeRemaining.Minutes;
         int secs = timeRemaining.Seconds;
+        int mins = (int)timeRemaining.TotalMinutes;
 
         if (timeRemaining.TotalSeconds < 0) { mins = 0; secs = 0; }
 
@@ -131,12 +126,11 @@ public class WheelRewards : MonoBehaviour
         timerTextInIcon = null;
         iconDisplayInIcon = null;
 
-        if (PlayerPrefs.HasKey(WheelEndTimeKey))
-        {
-            PlayerPrefs.DeleteKey(WheelEndTimeKey);
-            PlayerPrefs.Save();
-        }
+        ResetBonus();
+    }
 
+    void ResetBonus()
+    {
         if (data != null)
         {
             data.wheelMultiplier = 1.0f;

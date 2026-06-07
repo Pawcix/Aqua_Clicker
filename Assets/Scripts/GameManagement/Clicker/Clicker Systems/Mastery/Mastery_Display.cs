@@ -34,33 +34,33 @@ public class Mastery_Display : MonoBehaviour
             case Mastery.MasteryType.Click:
                 lvl = data.clickMasteryLvl;
                 xp = data.clickMasteryXP;
-                needed = 100 * Mathf.Pow(1.2f, lvl);
+                needed = 100f * Mathf.Pow(1.10f, lvl);
                 bonusValue = lvl * 0.5f;
-                label = "CLICK POWER";
+                label = "\nCLICK POWER";
                 break;
 
             case Mastery.MasteryType.Critical:
                 lvl = data.critMasteryLvl;
                 xp = data.critMasteryXP;
-                needed = 150 * Mathf.Pow(1.25f, lvl);
+                needed = 200f * Mathf.Pow(1.15f, lvl);
                 bonusValue = lvl * 1.0f;
-                label = "CRIT MULTI";
+                label = "\nCRIT MULTI";
                 break;
 
             case Mastery.MasteryType.Combo:
                 lvl = data.comboMasteryLvl;
                 xp = data.comboMasteryXP;
-                needed = 120 * Mathf.Pow(1.22f, lvl);
+                needed = 150f * Mathf.Pow(1.12f, lvl);
                 bonusValue = lvl * 1.0f;
-                label = "COMBO POWER";
+                label = "\nCOMBO POWER";
                 break;
 
             case Mastery.MasteryType.AwayIncome:
                 lvl = data.awayMasteryLvl;
                 xp = data.awayMasteryXP;
-                needed = 50 * Mathf.Pow(1.15f, lvl);
+                needed = 250f * Mathf.Pow(1.12f, lvl);
                 bonusValue = lvl * 1.0f;
-                label = "AWAY PROFITS";
+                label = "\nAWAY PROFITS";
                 break;
         }
 

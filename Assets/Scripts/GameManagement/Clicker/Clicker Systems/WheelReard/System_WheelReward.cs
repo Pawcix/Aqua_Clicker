@@ -13,7 +13,8 @@ public class System_WheelFortune : MonoBehaviour
     [Header("UI References")]
     [SerializeField] RectTransform wheelCircle;
     [SerializeField] GameObject spinButton;
-    [SerializeField] TextMeshProUGUI rewardNameText;
+    [SerializeField] TextMeshProUGUI spinButtonText;
+    [SerializeField] GameObject timerBox;
     [SerializeField] TextMeshProUGUI timerText;
     [SerializeField] float idleRotationSpeed = 20f;
 
@@ -22,166 +23,137 @@ public class System_WheelFortune : MonoBehaviour
     [SerializeField] float spinDuration = 4f;
     [SerializeField] AnimationCurve spinCurve;
     [SerializeField] int minutesWait = 30;
-
-    [Header("Calibration")]
-    [Range(0, 360)]
     [SerializeField] float angleOffset = 0f;
 
+    [SerializeField] float resultDisplayTime = 3f;
+
     bool isSpinning = false;
-    bool canSpin = false;
+    bool isShowingResult = false;
 
     void Start()
     {
-        if (rewardNameText != null) rewardNameText.text = "";
-        CheckTimer();
+        UpdateWheelState();
     }
 
     void Update()
     {
-        if (!isSpinning && !canSpin)
-        {
-            UpdateTimerUI();
-        }
-
         if (!isSpinning)
         {
             wheelCircle.Rotate(Vector3.forward, idleRotationSpeed * Time.deltaTime);
+
+            if (!isShowingResult)
+            {
+                UpdateTimerLogic();
+            }
         }
     }
 
-    void CheckTimer()
+    void UpdateTimerLogic()
     {
         if (!PlayerPrefs.HasKey("NextWheelSpin"))
         {
-            canSpin = true;
+            spinButton.SetActive(true);
+            spinButtonText.text = "SPIN";
+            timerBox.SetActive(false);
+            return;
         }
-        else
-        {
-            DateTime nextSpinTime = DateTime.Parse(PlayerPrefs.GetString("NextWheelSpin"));
-            canSpin = DateTime.Now >= nextSpinTime;
-        }
-
-        if (spinButton != null) spinButton.SetActive(canSpin);
-    }
-
-    void UpdateTimerUI()
-    {
-        if (!PlayerPrefs.HasKey("NextWheelSpin")) return;
 
         DateTime nextSpinTime = DateTime.Parse(PlayerPrefs.GetString("NextWheelSpin"));
         TimeSpan timeRemaining = nextSpinTime - DateTime.Now;
 
         if (timeRemaining.TotalSeconds <= 0)
         {
-            canSpin = true;
-            if (timerText != null) timerText.gameObject.SetActive(false);
-            if (spinButton != null) spinButton.SetActive(true);
+            spinButton.SetActive(true);
+            spinButtonText.text = "SPIN";
+            timerBox.SetActive(false);
         }
         else
         {
-            canSpin = false;
-            if (spinButton != null) spinButton.SetActive(false);
-            if (timerText != null)
-            {
-                timerText.gameObject.SetActive(true);
-                timerText.text = string.Format("{0:D2}:{1:D2}", timeRemaining.Minutes, timeRemaining.Seconds);
-            }
+            spinButton.SetActive(false);
+            timerBox.SetActive(true);
+            timerText.text = $"Next Spin: {timeRemaining.Minutes:D2}:{timeRemaining.Seconds:D2}";
         }
     }
 
     public void StartSpin()
     {
-        if (isSpinning || !canSpin || rewards.Count == 0) return;
+        if (isSpinning || isShowingResult) return;
 
-        float randomFinalAngle = UnityEngine.Random.Range(0f, 360f);
-        float totalRotation = (360f * 5f) + randomFinalAngle;
+        spinButtonText.text = "SPINNING...";
 
-        StartCoroutine(SpinRoutine(totalRotation));
+        int targetSliceIndex = UnityEngine.Random.Range(0, 8);
+        float sliceSize = 45f;
+
+        float targetAngle = (targetSliceIndex * sliceSize) + (sliceSize / 2f);
+        float totalRotation = (360f * 5f) - targetAngle;
+
+        StartCoroutine(SpinRoutine(totalRotation, targetSliceIndex));
     }
 
-    WheelReward ChooseWinner()
-    {
-        float totalChance = 0;
-        foreach (var r in rewards) totalChance += r.chance;
-
-        float randomVal = UnityEngine.Random.Range(0, totalChance);
-        float currentSum = 0;
-
-        foreach (var r in rewards)
-        {
-            currentSum += r.chance;
-            if (randomVal <= currentSum)
-            {
-                return r;
-            }
-        }
-        return rewards[0];
-    }
-
-    IEnumerator SpinRoutine(float totalRotation)
+    IEnumerator SpinRoutine(float totalRotation, int targetSliceIndex)
     {
         isSpinning = true;
-        canSpin = false;
-        if (spinButton != null) spinButton.SetActive(false);
+        spinButton.SetActive(false);
+        timerBox.SetActive(false);
 
         float elapsed = 0;
-        float startAngle = wheelCircle.eulerAngles.z;
-
         while (elapsed < spinDuration)
         {
             elapsed += Time.deltaTime;
-            float t = elapsed / spinDuration;
-            float curveT = spinCurve.Evaluate(t);
-            float currentRotation = startAngle + (totalRotation * curveT);
-            wheelCircle.eulerAngles = new Vector3(0, 0, currentRotation);
-
+            wheelCircle.eulerAngles = new Vector3(0, 0, -(totalRotation * spinCurve.Evaluate(elapsed / spinDuration)) + angleOffset);
             yield return null;
         }
 
         isSpinning = false;
-        EvaluateFinalReward();
+        isShowingResult = true;
 
         DateTime nextTime = DateTime.Now.AddMinutes(minutesWait);
         PlayerPrefs.SetString("NextWheelSpin", nextTime.ToString());
         PlayerPrefs.Save();
+
+        spinButton.SetActive(true);
+        EvaluateFinalReward(targetSliceIndex);
+
+        StartCoroutine(HideResultAfterDelay());
     }
 
-    void EvaluateFinalReward()
+    void EvaluateFinalReward(int finalSliceIndex)
     {
-        float rot = wheelCircle.eulerAngles.z % 360;
-        if (rot < 0) rot += 360;
+        WheelReward finalReward = (finalSliceIndex == 0) ? rewards[0] : rewards[1];
+        spinButtonText.text = (finalSliceIndex == 0) ? "WIN\n " + finalReward.rewardName : "FAILED\n " + finalReward.rewardName;
 
-        int rewardIndex = 0;
-        float snapAngle = 0;
-
-        if (rot > 22.5f && rot <= 67.5f) { rewardIndex = 1; snapAngle = 45f; }
-        else if (rot > 67.5f && rot <= 112.5f) { rewardIndex = 2; snapAngle = 90f; }
-        else if (rot > 112.5f && rot <= 157.5f) { rewardIndex = 3; snapAngle = 135f; }
-        else if (rot > 157.5f && rot <= 202.5f) { rewardIndex = 4; snapAngle = 180f; }
-        else if (rot > 202.5f && rot <= 247.5f) { rewardIndex = 5; snapAngle = 225f; }
-        else if (rot > 247.5f && rot <= 292.5f) { rewardIndex = 6; snapAngle = 270f; }
-        else if (rot > 292.5f && rot <= 337.5f) { rewardIndex = 7; snapAngle = 315f; }
-        else { rewardIndex = 0; snapAngle = 0f; }
-
-        wheelCircle.eulerAngles = new Vector3(0, 0, snapAngle + 22.5f + angleOffset);
-
-        if (rewardIndex < rewards.Count)
-        {
-            WheelReward winner = rewards[rewardIndex];
-            if (rewardNameText != null) rewardNameText.text = "YOU WON: " + winner.rewardName;
-            GiveReward(winner);
-        }
+        GiveReward(finalReward);
     }
 
     void GiveReward(WheelReward reward)
     {
-        if (reward.type == WheelReward.RewardType.Points)
-        {
-            float bonusPercent = (float)reward.value;
+        data.wheelMultiplier = (float)reward.value;
+        data.wheelBonusTimer = minutesWait * 60f;
+        data.currentWheelRewardIcon = reward.rewardIcon;
+    }
 
-            data.wheelMultiplier = 1.0f + bonusPercent;
-            data.wheelBonusTimer = 600f;
-            data.currentWheelRewardIcon = reward.rewardIcon;
+    IEnumerator HideResultAfterDelay()
+    {
+        yield return new WaitForSeconds(resultDisplayTime);
+
+        isShowingResult = false;
+    }
+
+    void UpdateWheelState()
+    {
+        isShowingResult = false;
+
+        if (PlayerPrefs.HasKey("NextWheelSpin"))
+        {
+            DateTime nextSpin = DateTime.Parse(PlayerPrefs.GetString("NextWheelSpin"));
+            if (DateTime.Now < nextSpin)
+            {
+                spinButton.SetActive(false);
+                timerBox.SetActive(true);
+                return;
+            }
         }
+        spinButton.SetActive(true);
+        timerBox.SetActive(false);
     }
 }

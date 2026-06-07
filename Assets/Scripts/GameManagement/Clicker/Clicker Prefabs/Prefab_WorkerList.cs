@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using System.Collections.Generic;
 
@@ -6,6 +7,7 @@ public class Prefab_WorkerList : MonoBehaviour
     [Header("Settings:")]
     [SerializeField] GameObject workerStatPrefab;
     [SerializeField] Transform container;
+    [SerializeField] TextMeshProUGUI emptyListText;
 
     [Header("Data:")]
     [SerializeField] List<Worker> allWorkerTemplates;

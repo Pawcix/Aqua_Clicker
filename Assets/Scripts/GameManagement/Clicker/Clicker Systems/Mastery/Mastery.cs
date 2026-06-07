@@ -16,27 +16,27 @@ public class Mastery : MonoBehaviour
         {
             case MasteryType.Click:
                 data.clickMasteryXP += amount;
-                CheckLevelUp(ref data.clickMasteryLvl, ref data.clickMasteryXP, 100);
+                CheckLevelUp(ref data.clickMasteryLvl, ref data.clickMasteryXP, 100f, 1.10f);
                 break;
 
             case MasteryType.Combo:
                 data.comboMasteryXP += amount;
-                CheckLevelUp(ref data.comboMasteryLvl, ref data.comboMasteryXP, 150);
+                CheckLevelUp(ref data.comboMasteryLvl, ref data.comboMasteryXP, 150f, 1.12f);
                 break;
 
             case MasteryType.Critical:
                 data.critMasteryXP += amount;
-                CheckLevelUp(ref data.critMasteryLvl, ref data.critMasteryXP, 200);
+                CheckLevelUp(ref data.critMasteryLvl, ref data.critMasteryXP, 200f, 1.15f);
                 break;
 
             case MasteryType.AwayIncome:
                 data.awayMasteryXP += amount;
-                CheckLevelUp(ref data.awayMasteryLvl, ref data.awayMasteryXP, 500);
+                CheckLevelUp(ref data.awayMasteryLvl, ref data.awayMasteryXP, 250f, 1.12f);
                 break;
         }
     }
 
-    void CheckLevelUp(ref int level, ref float currentXP, float baseNeeded)
+    void CheckLevelUp(ref int level, ref float currentXP, float baseNeeded, float multiplier)
     {
         int maxLevel = 200;
 
@@ -46,9 +46,10 @@ public class Mastery : MonoBehaviour
             return;
         }
 
-        float needed = baseNeeded * Mathf.Pow(1.2f, level);
+        int loopSafety = 0;
+        float needed = baseNeeded * Mathf.Pow(multiplier, level);
 
-        if (currentXP >= needed)
+        while (currentXP >= needed && loopSafety < 100)
         {
             currentXP -= needed;
             level++;
@@ -57,7 +58,11 @@ public class Mastery : MonoBehaviour
             {
                 level = maxLevel;
                 currentXP = 0;
+                break;
             }
+
+            needed = baseNeeded * Mathf.Pow(multiplier, level);
+            loopSafety++;
         }
     }
 

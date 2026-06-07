@@ -29,7 +29,6 @@ public class System_IncomeCalculator : MonoBehaviour
         double comboMult = ComboChain.Instance != null ? ComboChain.Instance.GetCurrentMultiplier() : 1.0;
         double goldRushMult = data.isGoldRushActive ? 2.0 : 1.0;
         double rebirthMult = data.rebirthMultiplier > 0 ? data.rebirthMultiplier : 1.0;
-
         double finalPPS;
         if (workersTotalPPS < 0.01)
         {
@@ -39,13 +38,12 @@ public class System_IncomeCalculator : MonoBehaviour
         {
             finalPPS = workersTotalPPS * data.currentDailyMultiplier * data.wheelMultiplier * goldRushMult * comboMult * data.riskMultiplier * rebirthMult;
         }
-
-        bool hasAnyModifier = data.currentDailyMultiplier > 1.0f ||
-                           data.wheelMultiplier > 1.0f ||
-                           data.isGoldRushActive ||
-                           comboMult > 1.0 ||
-                           data.riskMultiplier != 1.0f ||
-                           rebirthMult > 1.0;
+        bool hasAnyModifier = data.currentDailyMultiplier != 1.0f ||
+                              data.wheelMultiplier != 1.0f ||
+                              data.isGoldRushActive ||
+                              comboMult != 1.0 ||
+                              data.riskMultiplier != 1.0f ||
+                              rebirthMult > 1.0;
 
         if (workersTotalPPS < 0.01 && !hasAnyModifier)
         {
@@ -59,7 +57,15 @@ public class System_IncomeCalculator : MonoBehaviour
         StringBuilder breakdown = new StringBuilder();
 
         string finalPPSStr = finalPPS < 10 ? finalPPS.ToString("F1") : NumberFormatter.FormatWithDots(finalPPS);
-        formula.Append($"<color=#00FF00>{finalPPSStr}</color> = ");
+
+        if (workersTotalPPS < 0.01)
+        {
+            formula.Append($"<color=#00FF00>x{finalPPSStr}</color> = ");
+        }
+        else
+        {
+            formula.Append($"<color=#00FF00>{finalPPSStr}</color> = ");
+        }
 
         bool firstElementAdded = false;
 
@@ -68,6 +74,12 @@ public class System_IncomeCalculator : MonoBehaviour
             string workersPPSStr = workersTotalPPS < 10 ? workersTotalPPS.ToString("F1") : NumberFormatter.FormatWithDots(workersTotalPPS);
             formula.Append($"<color={colBase}>{workersPPSStr}</color>");
             breakdown.Append($"<color={colBase}>WORKERS: {workersPPSStr}</color>\n");
+            firstElementAdded = true;
+        }
+        else
+        {
+            formula.Append($"<color={colBase}>1.0</color>");
+            breakdown.Append($"<color={colBase}>BASE PREVIEW: 1.0</color>\n");
             firstElementAdded = true;
         }
 
@@ -92,6 +104,6 @@ public class System_IncomeCalculator : MonoBehaviour
         AddMultiplier(rebirthMult, colRebirth, "REBIRTH BONUS");
 
         formulaText.text = formula.ToString();
-        breakdownText.text = breakdown.ToString();
+        if (breakdownText != null) breakdownText.text = breakdown.ToString();
     }
 }

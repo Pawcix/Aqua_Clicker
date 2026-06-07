@@ -1,0 +1,199 @@
+fileFormatVersion: 2
+guid: c25e013635f53f547b7a3e9f83339a93
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -7910594248768304537
+    second: Away Income_0
+  - first:
+      213: -6455291463197398205
+    second: Away Income_1
+  - first:
+      213: 1481862207916323944
+    second: Away Income_2
+  - first:
+      213: -1879779586986122113
+    second: Away Income_3
+  - first:
+      213: -538742857630158165
+    second: Away Income_4
+  - first:
+      213: -4635486066472679039
+    second: Away Income_5
+  - first:
+      213: -2488700799932927227
+    second: Away Income_6
+  - first:
+      213: 5756535584087877188
+    second: Away Income_7
+  - first:
+      213: -3802561905955572674
+    second: Away Income_8
+  - first:
+      213: 4736606804043218954
+    second: Away Income_9
+  - first:
+      213: 6042169601651800820
+    second: Away Income_10
+  - first:
+      213: 2393270959299079521
+    second: Away Income_11
+  - first:
+      213: -132574010215321093
+    second: Away Income_12
+  - first:
+      213: 964839549885411025
+    second: Away Income_13
+  - first:
+      213: 5335699259841074968
+    second: Away Income_14
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Away Income_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 200
+        height: 200
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 76acaef517ce73290800000000000000
+      internalID: -7910594248768304537
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: b44c6c836c933794ea18ee5c60ec39ed
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Away Income_0: -7910594248768304537
+      Away Income_1: -6455291463197398205
+      Away Income_10: 6042169601651800820
+      Away Income_11: 2393270959299079521
+      Away Income_12: -132574010215321093
+      Away Income_13: 964839549885411025
+      Away Income_14: 5335699259841074968
+      Away Income_2: 1481862207916323944
+      Away Income_3: -1879779586986122113
+      Away Income_4: -538742857630158165
+      Away Income_5: -4635486066472679039
+      Away Income_6: -2488700799932927227
+      Away Income_7: 5756535584087877188
+      Away Income_8: -3802561905955572674
+      Away Income_9: 4736606804043218954
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

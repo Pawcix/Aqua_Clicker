@@ -43,7 +43,6 @@ public class System_AwayIncome : MonoBehaviour
 
             if (totalBasePPS > 0)
             {
-
                 float masteryBonus = 0f;
                 if (Mastery.Instance != null)
                 {
@@ -59,7 +58,10 @@ public class System_AwayIncome : MonoBehaviour
 
                     if (Mastery.Instance != null)
                     {
-                        float xpGained = (float)(secondsAway / 60f);
+                        float baseTimeXP = (float)secondsAway;
+                        float wealthMultiplier = 1f + (float)System.Math.Log10(totalBasePPS + 1);
+
+                        float xpGained = baseTimeXP * wealthMultiplier;
                         Mastery.Instance.AddMasteryXP(Mastery.MasteryType.AwayIncome, xpGained);
                     }
 

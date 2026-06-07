@@ -7,7 +7,10 @@ public class Modal_WheelReward : MonoBehaviour
 
     void Awake()
     {
-        if (wheelRewardModal != null) wheelRewardModal.SetActive(false);
+        if (wheelRewardModal != null)
+        {
+            wheelRewardModal.SetActive(false);
+        }
     }
 
     public void ToggleSettings()
@@ -16,22 +19,23 @@ public class Modal_WheelReward : MonoBehaviour
 
         bool wasActive = wheelRewardModal.activeInHierarchy;
 
-        if (wasActive)
+        if (keyShortsSource != null)
         {
-            wheelRewardModal.SetActive(false);
+            keyShortsSource.CloseAllModals();
+        }
+
+        if (!wasActive)
+        {
+            wheelRewardModal.SetActive(true);
         }
         else
         {
-            if (keyShortsSource != null) keyShortsSource.CloseAllModals();
-
-            wheelRewardModal.SetActive(true);
-
             if (System_NotificationWheelReward.Instance != null)
             {
                 System_NotificationWheelReward.Instance.SetAlert(false);
             }
-
-            if (AudioManager.Instance != null) AudioManager.Instance.PlaySFX("Open");
         }
+
+        if (AudioManager.Instance != null) AudioManager.Instance.PlaySFX("Modal - Open and Close");
     }
 }

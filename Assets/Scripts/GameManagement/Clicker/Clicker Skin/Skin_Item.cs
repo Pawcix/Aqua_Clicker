@@ -7,18 +7,13 @@ public class Skin_Item : MonoBehaviour
     public int skinID;
 
     [Header("Visuals:")]
-    [SerializeField] Image frameImage;
-    [SerializeField] Sprite normalFrame;
-    [SerializeField] Sprite selectedFrame;
-    [SerializeField] System_NotificationSkin skinBadge;
+    [Tooltip("Główny obrazek skina w szafie")]
+    [SerializeField] Image skinImage;
 
-    Button button;
-    System_Wardrobe wardrobe;
+    [SerializeField] System_NotificationSkin skinBadge;
 
     void Awake()
     {
-        wardrobe = Object.FindFirstObjectByType<System_Wardrobe>();
-
         Button btn = GetComponent<Button>();
         if (btn != null)
             btn.onClick.AddListener(OnItemClicked);
@@ -26,8 +21,6 @@ public class Skin_Item : MonoBehaviour
 
     void Start()
     {
-        if (wardrobe == null) wardrobe = Object.FindFirstObjectByType<System_Wardrobe>();
-
         Invoke(nameof(RefreshVisuals), 0.1f);
     }
 
@@ -42,25 +35,30 @@ public class Skin_Item : MonoBehaviour
 
         System_Wardrobe.Instance.MarkSkinAsSeen(skinID);
         System_Wardrobe.Instance.SelectSkin(skinID);
-        
-        RefreshVisuals();
-
-        if (System_Notification.Instance != null)
-            System_Notification.Instance.CheckGlobalNotification();
     }
 
     public void RefreshVisuals()
     {
-        if (System_Wardrobe.Instance == null || System_Wardrobe.Instance.data == null || frameImage == null) return;
+        if (System_Wardrobe.Instance == null || System_Wardrobe.Instance.data == null) return;
 
         bool isUnlocked = System_Wardrobe.Instance.IsSkinUnlocked(skinID);
         bool isNew = isUnlocked && !System_Wardrobe.Instance.data.seenSkinIDs.Contains(skinID) && skinID != 0;
+        bool isEquipped = System_Wardrobe.Instance.GetCurrentSelectedID() == skinID;
 
         var skinData = System_Wardrobe.Instance.GetAllSkins().Find(s => s.skinID == skinID);
-        if (skinData != null)
+
+        if (skinData != null && skinImage != null)
         {
-            frameImage.sprite = isUnlocked ? skinData.skinSprite : skinData.lockedSprite;
-            frameImage.color = isUnlocked ? Color.white : new Color(0.2f, 0.2f, 0.2f, 1f);
+            if (!isUnlocked)
+            {
+                skinImage.sprite = skinData.lockedSprite;
+                skinImage.color = new Color(0.2f, 0.2f, 0.2f, 1f);
+            }
+            else
+            {
+                skinImage.sprite = isEquipped ? skinData.highlightedSprite : skinData.skinSprite;
+                skinImage.color = Color.white;
+            }
         }
 
         if (skinBadge != null)

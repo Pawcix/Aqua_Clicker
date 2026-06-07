@@ -18,4 +18,4 @@ MonoBehaviour:
   description: Earn 100.000 points
   type: 0
   requiredValue: 100000
-  rewardSkinID: 3
+  rewardSkinID: 5

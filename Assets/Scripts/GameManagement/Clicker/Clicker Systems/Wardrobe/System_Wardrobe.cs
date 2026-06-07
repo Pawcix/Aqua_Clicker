@@ -11,17 +11,35 @@ public class System_Wardrobe : MonoBehaviour
     [Header("References:")]
     [SerializeField] System_WardrobeProgressBar wardrobeProgressBar;
     [SerializeField] Clicker_Skills masterSkills;
+
+    [Tooltip("Główny komponent Image na przycisku kropli")]
     [SerializeField] Image mainClickerDisplay;
+
+    [Tooltip("Główny komponent Button na przycisku kropli (aby zmieniać Sprite Swap)")]
+    [SerializeField] Button mainClickerButton;
 
     [Header("Scroll Settings:")]
     [SerializeField] Scrollbar wardrobeScrollbar;
     [SerializeField] ScrollRect wardrobeScrollRect;
 
-    [Header("Skin Lists:")]
-    public List<ClickerSkin> commonSkins;
-    public List<ClickerSkin> rareSkins;
-    public List<ClickerSkin> legendarySkins;
-    public List<ClickerSkin> secretSkins;
+    [Header("Skin List:")]
+    public List<ClickerSkin> allSkins;
+
+    void Start()
+    {
+        if (masterSkills != null && masterSkills.data != null)
+        {
+            foreach (var skin in allSkins)
+            {
+                if (skin.isFreeAtStart && !masterSkills.data.unlockedSkinIDs.Contains(skin.skinID))
+                {
+                    masterSkills.data.unlockedSkinIDs.Add(skin.skinID);
+                }
+            }
+        }
+
+        RefreshProgressBar();
+    }
 
     void Awake()
     {
@@ -44,8 +62,7 @@ public class System_Wardrobe : MonoBehaviour
         return masterSkills.currentSkinIndex;
     }
 
-    public List<ClickerSkin> GetAllSkins() =>
-        commonSkins.Concat(rareSkins).Concat(legendarySkins).Concat(secretSkins).ToList();
+    public List<ClickerSkin> GetAllSkins() => allSkins;
 
     public void RefreshAllItemFrames()
     {
@@ -100,7 +117,9 @@ public class System_Wardrobe : MonoBehaviour
         if (skin != null)
         {
             masterSkills.currentSkinIndex = id;
-            if (mainClickerDisplay != null) mainClickerDisplay.sprite = skin.skinSprite;
+
+            UpdateMainDisplay(skin);
+
             RefreshProgressBar();
 
             AudioManager.Instance.PlaySFX("Equip");
@@ -111,12 +130,25 @@ public class System_Wardrobe : MonoBehaviour
     public void LoadSkin(int id)
     {
         var skin = GetAllSkins().Find(s => s.skinID == id);
-        if (skin != null) UpdateMainDisplay(skin.skinSprite);
+        if (skin != null) UpdateMainDisplay(skin);
     }
 
-    void UpdateMainDisplay(Sprite sp)
+    void UpdateMainDisplay(ClickerSkin skin)
     {
-        if (mainClickerDisplay != null) mainClickerDisplay.sprite = sp;
+        if (mainClickerDisplay != null)
+        {
+            mainClickerDisplay.sprite = skin.skinSprite;
+        }
+
+        if (mainClickerButton != null)
+        {
+            SpriteState state = mainClickerButton.spriteState;
+
+            state.highlightedSprite = skin.highlightedSprite;
+            state.pressedSprite = skin.pressedSprite;
+
+            mainClickerButton.spriteState = state;
+        }
     }
 
     public int GetUnlockedSkinsCount()

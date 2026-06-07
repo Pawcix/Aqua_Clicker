@@ -18,4 +18,4 @@ MonoBehaviour:
   description: Collect 150 Golden Drop
   type: 1
   requiredValue: 150
-  rewardSkinID: 12
+  rewardSkinID: 10
