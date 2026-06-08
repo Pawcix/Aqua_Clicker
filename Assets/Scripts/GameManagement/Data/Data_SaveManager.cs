@@ -24,6 +24,17 @@ public class Data_SaveManager : MonoBehaviour
         LoadGame();
     }
 
+    void Start()
+    {
+        InvokeRepeating(nameof(TriggerAutoSave), 10f, 30f);
+    }
+
+    void TriggerAutoSave()
+    {
+        SaveLastSeenTime();
+        SaveGame();
+    }
+
     public void SaveGame()
     {
         if (systemData == null) return;
@@ -156,7 +167,7 @@ public class Data_SaveManager : MonoBehaviour
             systemData.workerSaleTimer = loadedData.workerSaleTimer;
             systemData.isWorkerSaleActive = loadedData.isWorkerSaleActive;
             systemData.currentWheelRewardIcon = loadedData.currentWheelRewardIcon;
-            
+
             systemData.riskMultiplier = loadedData.riskMultiplier;
             systemData.riskBonusTimer = loadedData.riskBonusTimer;
             systemData.lastRiskResultText = loadedData.lastRiskResultText;
@@ -222,16 +233,4 @@ public class Data_SaveManager : MonoBehaviour
             if (away != null) away.CalculateAwayIncome();
         }
     }
-
-    // [ContextMenu("Eksportuj zapis do TXT na Pulpit")]
-    // public void ExportToDesktop()
-    // {
-    //     string path = Path.Combine(Application.persistentDataPath, "savegame.dat");
-    //     if (File.Exists(path))
-    //     {
-    //         string decrypted = EncryptDecrypt(File.ReadAllText(path));
-    //         string desktopPath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Desktop), "DEKODER_AQUA.txt");
-    //         File.WriteAllText(desktopPath, decrypted);
-    //     }
-    // }
 }

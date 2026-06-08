@@ -8185,7 +8185,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 144.6, y: -100}
-  m_SizeDelta: {x: 169.2, y: 64.81}
+  m_SizeDelta: {x: 0, y: 64.81}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &234983138
 MonoBehaviour:
@@ -18852,7 +18852,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 255.9, y: -70}
-  m_SizeDelta: {x: 431.8, y: 61.21}
+  m_SizeDelta: {x: 0, y: 61.21}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &645104043
 MonoBehaviour:
@@ -19195,10 +19195,10 @@ MonoBehaviour:
   loginStreak: 0
   lastBonusDate: 
   currentDailyMultiplier: 1
-  clickMasteryLvl: 100
+  clickMasteryLvl: 0
   critMasteryLvl: 0
   comboMasteryLvl: 0
-  awayMasteryLvl: 60
+  awayMasteryLvl: 0
   clickMasteryXP: 0
   critMasteryXP: 0
   comboMasteryXP: 0
@@ -19554,7 +19554,7 @@ MonoBehaviour:
   data: {fileID: 652133963}
   spawner: {fileID: 275624515}
   goldenRainIconPrefab: {fileID: 8928763060196377588, guid: f0db143a5b51e0240b3e1e832edf667a, type: 3}
-  timeBetweenEvents: 10
+  timeBetweenEvents: 1200
   eventDuration: 10
 --- !u!224 &658527814 stripped
 RectTransform:
@@ -23534,7 +23534,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 216.8, y: -70}
-  m_SizeDelta: {x: 353.6, y: 61.21}
+  m_SizeDelta: {x: 0, y: 61.21}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &808718096
 MonoBehaviour:
@@ -26799,8 +26799,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 754.36694, y: -336.36627}
-  m_SizeDelta: {x: 1508.7339, y: 0}
+  m_AnchoredPosition: {x: 730.2908, y: -351.52985}
+  m_SizeDelta: {x: 1460.5815, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &919504158
 MonoBehaviour:
@@ -28542,37 +28542,11 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '<color=#FFD700>Developed by</color>
-
-    <size=100%>Szatanik Studio</size>
-
-
-    <color=#FFD700>Created
-    by</color>
-
-    <size=100%>Pawel Szatanik</size>
-
-
-    <color=#FFD700>SPECIAL
-    THANKS TO</color>
-
-    <size=80%>JestemGuestem</size>
-
-    <size=80%>Dominik
-    Modrzejewski</size>
-
-
-    <color=#FFD700>Version</color>
-
-    <size=60%>1.0.0</size>
-
-
-    <color=#FF0078>Thank
-    you for playing </color>
-
-    <color=#FF0078><3</color>
-
-'
+  m_text: "<color=#FFD700>Developed by</color>\n<size=100%>Szatanik Studio</size>\n\n<color=#FFD700>Created
+    by</color>\n<size=100%>Pawel Szatanik</size>\n\n<color=#FFD700>SPECIAL THANKS
+    TO</color>\n<size=80%>JestemGuestem</size>\n<size=80%>Dominik Modrzejewski</size>\\n
+    \n\n<color=#FFD700>Version</color>\n<size=60%>1.0.0</size>\n\n<color=#FF0078>Thank
+    you for playing </color>\n<color=#FF0078><3</color>\n"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 148b13d36bdbc9a46a9635b19e2842a5, type: 2}
   m_sharedMaterial: {fileID: 7145518581805339885, guid: 148b13d36bdbc9a46a9635b19e2842a5, type: 2}
@@ -32628,7 +32602,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 310.3, y: -70}
-  m_SizeDelta: {x: 540.6, y: 61.21}
+  m_SizeDelta: {x: 0, y: 61.21}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1118951578
 MonoBehaviour:
@@ -34101,7 +34075,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 295, y: -70}
-  m_SizeDelta: {x: 510, y: 61.21}
+  m_SizeDelta: {x: 0, y: 61.21}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1160278781
 MonoBehaviour:
@@ -52432,7 +52406,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1488.7339, y: 0}
+  m_SizeDelta: {x: 1440.5815, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1699239393
 MonoBehaviour:
@@ -58112,8 +58086,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WorkerSale
   data: {fileID: 652133963}
   saleIconPrefab: {fileID: 1534383532606781972, guid: f96f5d308d09f244c9d1e602fe0fd47d, type: 3}
-  minTimeBetweenEvents: 4
-  maxTimeBetweenEvents: 8
+  minTimeBetweenEvents: 400
+  maxTimeBetweenEvents: 800
   eventDuration: 10
 --- !u!1 &1951860801
 GameObject:
@@ -58595,7 +58569,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GoldenRush
   data: {fileID: 652133963}
   goldRushIconPrefab: {fileID: 8271755434515883847, guid: 974410d494403ec49bd66520e5961196, type: 3}
-  timeBetweenEvents: 10
+  timeBetweenEvents: 400
   eventDuration: 30
 --- !u!1 &1971370693
 GameObject:

@@ -16,5 +16,5 @@ MonoBehaviour:
   icon: {fileID: 4521803636629973388, guid: bac22dab3ab39604e8f58172602ab45e, type: 3}
   description: Mug of water
   basePower: 1
-  basePrice: 50
+  basePrice: 250
   priceMultiplier: 1.25
