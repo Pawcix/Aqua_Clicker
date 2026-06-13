@@ -79,4 +79,9 @@ public class System_Data : MonoBehaviour
     [Header("Rebirth Stats:")]
     public int rebirthCount = 0;
     public float rebirthMultiplier = 1.0f;
+
+
+
+
+    public int currentBackground = 0;
 }

@@ -89,7 +89,8 @@ public class Data_SaveManager : MonoBehaviour
             riskBonusTimer = systemData.riskBonusTimer,
             lastRiskResultText = systemData.lastRiskResultText,
             rebirthCount = systemData.rebirthCount,
-            rebirthMultiplier = systemData.rebirthMultiplier
+            rebirthMultiplier = systemData.rebirthMultiplier,
+            currentBackground = systemData.currentBackground
         };
 
         string json = JsonUtility.ToJson(dataToSave, true);
@@ -174,6 +175,7 @@ public class Data_SaveManager : MonoBehaviour
 
             systemData.rebirthCount = loadedData.rebirthCount;
             systemData.rebirthMultiplier = loadedData.rebirthMultiplier;
+            systemData.currentBackground = loadedData.currentBackground;
 
             if (loadedData.xpToNextLevel > 0)
                 systemData.xpToNextLevel = loadedData.xpToNextLevel;

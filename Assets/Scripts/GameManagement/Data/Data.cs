@@ -63,4 +63,8 @@ public class GameData
 
     public int rebirthCount;
     public float rebirthMultiplier;
+
+
+
+    public int currentBackground = 0;
 }
