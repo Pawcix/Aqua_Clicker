@@ -54,6 +54,7 @@ public class System_Data : MonoBehaviour
     [Header("Daily Bonus:")]
     public int loginStreak = 0;
     public string lastBonusDate = "";
+    public string lastNotificationDate;
     public float currentDailyMultiplier = 1.0f;
 
     [Header("Mastery Levels:")]
