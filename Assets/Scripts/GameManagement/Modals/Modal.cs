@@ -54,6 +54,5 @@ public class Modal : MonoBehaviour
         }
 
         targetModal.SetActive(false);
-
     }
 }

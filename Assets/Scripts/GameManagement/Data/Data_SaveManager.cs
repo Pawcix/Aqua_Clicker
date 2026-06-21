@@ -191,10 +191,6 @@ public class Data_SaveManager : MonoBehaviour
         catch (Exception e)
         {
             Debug.LogError($"Failed to load save data: {e.Message}");
-            if (AntiCheat_JSON.Instance != null)
-            {
-                AntiCheat_JSON.Instance.TriggerFileTamperProtection();
-            }
 
             if (System_Achievements.Instance != null) System_Achievements.Instance.EnableChecking();
         }

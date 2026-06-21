@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: abea5828e192d904aa0b38c9c572b0a4
+guid: 7db81435f51b7834e88fbc2b6cc44508
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -8298030383405116610
-    second: Button shop small_0
+      213: 285694945501975970
+    second: Done_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -37,7 +37,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -75,7 +75,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 2
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -101,7 +101,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 2
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -113,23 +113,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Button shop small_0
+      name: Done_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 640
-        height: 320
+        width: 180
+        height: 180
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: e335db5c45977dc80800000000000000
-      internalID: -8298030383405116610
+      spriteID: 2a515cc0a0ef6f300800000000000000
+      internalID: 285694945501975970
       vertices: []
       indices: 
       edges: []
@@ -138,7 +138,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 9fb2e167c0de291488552faea56f81a1
     internalID: 0
     vertices: []
     indices: 
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Button shop small_0: -8298030383405116610
+      Done_0: 285694945501975970
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

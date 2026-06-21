@@ -3,7 +3,6 @@ using UnityEngine;
 public class Modal_Upgrades : MonoBehaviour
 {
     public GameObject upgradesModal;
-    public KeyShorts keyShortsSource;
 
     void Awake()
     {
@@ -18,11 +17,6 @@ public class Modal_Upgrades : MonoBehaviour
         if (upgradesModal == null) return;
 
         bool wasActive = upgradesModal.activeInHierarchy;
-
-        if (keyShortsSource != null)
-        {
-            keyShortsSource.CloseAllModals();
-        }
 
         if (!wasActive)
         {

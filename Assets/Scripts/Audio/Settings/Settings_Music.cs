@@ -15,53 +15,43 @@ public class Settings_Music : MonoBehaviour
     public Sprite musicOnSpriteHighlighted;
     public Sprite musicOffSpriteHighlighted;
 
-    bool isMusicOn = true;
+    private bool isMusicOn = true;
+    private float lastVolume = 1.0f;
 
     void Start()
     {
+        if (musicSlider != null) lastVolume = musicSlider.value;
         UpdateTargetButtonSprites();
     }
 
     public void ToggleMusic()
     {
-        AudioManager.Instance.ToggleMusic();
         isMusicOn = !isMusicOn;
 
+        if (musicSlider != null)
+        {
+            if (isMusicOn)
+            {
+                musicSlider.value = lastVolume;
+            }
+            else
+            {
+                lastVolume = musicSlider.value;
+                musicSlider.value = 0f;
+            }
+        }
+
+        MusicVolume();
         UpdateTargetButtonSprites();
 
-        if (EventSystem.current != null)
-        {
-            EventSystem.current.SetSelectedGameObject(null);
-        }
+        if (AudioManager.Instance != null) AudioManager.Instance.PlaySFX("Modal - Open and Close");
+        if (EventSystem.current != null) EventSystem.current.SetSelectedGameObject(null);
     }
 
-    void UpdateTargetButtonSprites()
+    public void OnSliderChanged(float value)
     {
-        if (musicToggleButton == null) return;
-
-        musicToggleButton.transition = Selectable.Transition.SpriteSwap;
-
-        if (musicOnSprite != null && musicOffSprite != null)
-        {
-            musicToggleButton.image.sprite = isMusicOn ? musicOnSprite : musicOffSprite;
-        }
-
-        SpriteState state = new SpriteState();
-
-        if (isMusicOn)
-        {
-            state.highlightedSprite = musicOnSpriteHighlighted;
-            state.pressedSprite = musicOnSprite;
-            state.selectedSprite = musicOnSprite;
-        }
-        else
-        {
-            state.highlightedSprite = musicOffSpriteHighlighted;
-            state.pressedSprite = musicOffSprite;
-            state.selectedSprite = musicOffSprite;
-        }
-
-        musicToggleButton.spriteState = state;
+        if (value > 0) lastVolume = value;
+        AudioManager.Instance.MusicVolume(value);
     }
 
     public void MusicVolume()
@@ -70,5 +60,18 @@ public class Settings_Music : MonoBehaviour
         {
             AudioManager.Instance.MusicVolume(musicSlider.value);
         }
+    }
+
+    void UpdateTargetButtonSprites()
+    {
+        if (musicToggleButton == null) return;
+        musicToggleButton.transition = Selectable.Transition.SpriteSwap;
+        musicToggleButton.image.sprite = isMusicOn ? musicOnSprite : musicOffSprite;
+
+        SpriteState state = new SpriteState();
+        state.highlightedSprite = isMusicOn ? musicOnSpriteHighlighted : musicOffSpriteHighlighted;
+        state.pressedSprite = isMusicOn ? musicOnSprite : musicOffSprite;
+        state.selectedSprite = isMusicOn ? musicOnSprite : musicOffSprite;
+        musicToggleButton.spriteState = state;
     }
 }

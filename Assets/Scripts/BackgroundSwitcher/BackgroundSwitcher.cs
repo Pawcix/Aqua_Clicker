@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 using System.Collections.Generic;
 
 public class BackgroundSwitcher : MonoBehaviour
@@ -7,36 +8,34 @@ public class BackgroundSwitcher : MonoBehaviour
     [Header("UI Elements")]
     public Image backgroundImage;
     public Image previewImage;
+    public TextMeshProUGUI backgroundNameText;
 
     [Header("Data")]
     public System_Data dataSystem;
     public List<Sprite> backgroundList;
+    public List<string> backgroundNames;
 
     private int currentIndex = 0;
 
     void Start()
     {
-        currentIndex = dataSystem.currentBackground;
-
-        if (currentIndex < 0 || currentIndex >= backgroundList.Count)
-            currentIndex = 0;
-
-        UpdateDisplays();
+        currentIndex = Mathf.Clamp(dataSystem.currentBackground, 0, backgroundList.Count - 1);
+        UpdateDisplay();
     }
 
     public void NextBackground()
     {
-        currentIndex++;
-        if (currentIndex >= backgroundList.Count) currentIndex = 0;
+        if (backgroundList.Count == 0) return;
 
+        currentIndex = (currentIndex + 1) % backgroundList.Count;
         SaveAndDisplay();
     }
 
     public void PreviousBackground()
     {
-        currentIndex--;
-        if (currentIndex < 0) currentIndex = backgroundList.Count - 1;
+        if (backgroundList.Count == 0) return;
 
+        currentIndex = (currentIndex - 1 + backgroundList.Count) % backgroundList.Count;
         SaveAndDisplay();
     }
 
@@ -45,12 +44,24 @@ public class BackgroundSwitcher : MonoBehaviour
         if (AudioManager.Instance != null) AudioManager.Instance.PlaySFX("Modal - Open and Close");
 
         dataSystem.currentBackground = currentIndex;
-        UpdateDisplays();
+        UpdateDisplay();
     }
 
-    public void UpdateDisplays()
+    void UpdateDisplay()
     {
-        backgroundImage.sprite = backgroundList[currentIndex];
-        previewImage.sprite = backgroundList[currentIndex];
+        if (backgroundImage != null && currentIndex < backgroundList.Count)
+        {
+            backgroundImage.sprite = backgroundList[currentIndex];
+        }
+
+        if (previewImage != null && currentIndex < backgroundList.Count)
+        {
+            previewImage.sprite = backgroundList[currentIndex];
+        }
+
+        if (backgroundNameText != null && currentIndex < backgroundNames.Count)
+        {
+            backgroundNameText.text = backgroundNames[currentIndex];
+        }
     }
 }

@@ -3,7 +3,6 @@ using UnityEngine;
 public class Modal_RiskReward : MonoBehaviour
 {
     public GameObject riskRewardModal;
-    public KeyShorts keyShortsSource;
 
     [SerializeField] System_RiskReward systemRiskReward;
 
@@ -25,11 +24,6 @@ public class Modal_RiskReward : MonoBehaviour
         if (riskRewardModal == null) return;
 
         bool wasActive = riskRewardModal.activeInHierarchy;
-
-        if (keyShortsSource != null)
-        {
-            keyShortsSource.CloseAllModals();
-        }
 
         if (!wasActive)
         {

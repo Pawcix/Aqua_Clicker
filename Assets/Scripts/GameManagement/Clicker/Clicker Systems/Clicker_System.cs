@@ -25,10 +25,6 @@ public class Clicker_System : MonoBehaviour
     [SerializeField] System_Critical criticalSystem;
     [SerializeField] System_CriticalEffect criticalEffect;
 
-    [Header("Anti-Cheat:")]
-    [SerializeField] AntiCheat_Clicks antiClick;
-    [SerializeField] AntiCheat_Break antiBreak;
-
     float uiUpdateTimer = 0f;
     float uiUpdateInterval = 0.1f;
 
@@ -106,7 +102,6 @@ public class Clicker_System : MonoBehaviour
         if (AudioManager.Instance != null) AudioManager.Instance.PlaySFX("Main Button");
 
         if (data == null) return;
-        if (antiClick != null && !antiClick.CheckClickLegal()) return;
         if (cpsSystem != null) cpsSystem.OnClickRegistered();
 
         double basePoints = (double)data.pointsPerClick * data.clickMultiplier * data.wheelMultiplier;

@@ -3,7 +3,6 @@ using UnityEngine;
 public class Modal_Wardrobe : MonoBehaviour
 {
     public GameObject wardrobeModal;
-    public KeyShorts keyShortsSource;
 
     void Awake()
     {
@@ -15,11 +14,6 @@ public class Modal_Wardrobe : MonoBehaviour
         if (wardrobeModal == null) return;
 
         bool wasActive = wardrobeModal.activeInHierarchy;
-
-        if (keyShortsSource != null)
-        {
-            keyShortsSource.CloseAllModals();
-        }
 
         if (!wasActive)
         {

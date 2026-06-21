@@ -5,7 +5,6 @@ public class Modal_DailyBonus : MonoBehaviour
     [SerializeField] System_Data data;
     public GameObject dailyBonusModal;
     public GameObject openButton;
-    public KeyShorts keyShortsSource;
 
     void Awake()
     {
@@ -32,11 +31,6 @@ public class Modal_DailyBonus : MonoBehaviour
         if (dailyBonusModal == null) return;
 
         bool wasActive = dailyBonusModal.activeInHierarchy;
-
-        if (keyShortsSource != null)
-        {
-            keyShortsSource.CloseAllModals();
-        }
 
         if (!wasActive)
         {

@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 6c25980828371d846935230270ca1d96
+guid: 3759f526148c99246b7aa8a3c74fcf3a
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 3581765270503740122
-    second: Background Shop_0
+      213: 7742291438312095283
+    second: Ads button - Hightlight_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Background Shop_0
+      name: Ads button - Hightlight_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 1280
-        height: 1280
+        width: 160
+        height: 160
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: ad2d439598cf4b130800000000000000
-      internalID: 3581765270503740122
+      spriteID: 33ef320fa05227b60800000000000000
+      internalID: 7742291438312095283
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Background Shop_0: 3581765270503740122
+      Ads button - Hightlight_0: 7742291438312095283
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -3,7 +3,6 @@ using UnityEngine;
 public class Modal_WheelReward : MonoBehaviour
 {
     public GameObject wheelRewardModal;
-    public KeyShorts keyShortsSource;
 
     void Awake()
     {
@@ -18,11 +17,6 @@ public class Modal_WheelReward : MonoBehaviour
         if (wheelRewardModal == null) return;
 
         bool wasActive = wheelRewardModal.activeInHierarchy;
-
-        if (keyShortsSource != null)
-        {
-            keyShortsSource.CloseAllModals();
-        }
 
         if (!wasActive)
         {

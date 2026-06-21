@@ -3,7 +3,6 @@ using UnityEngine;
 public class Modal_Skills : MonoBehaviour
 {
     public GameObject skillsModal;
-    public KeyShorts keyShortsSource;
 
     void Awake()
     {
@@ -18,11 +17,6 @@ public class Modal_Skills : MonoBehaviour
         if (skillsModal == null) return;
 
         bool wasActive = skillsModal.activeInHierarchy;
-
-        if (keyShortsSource != null)
-        {
-            keyShortsSource.CloseAllModals();
-        }
 
         if (!wasActive)
         {

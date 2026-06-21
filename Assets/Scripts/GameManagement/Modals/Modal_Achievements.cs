@@ -3,7 +3,6 @@ using UnityEngine;
 public class Modal_Achievements : MonoBehaviour
 {
     public GameObject achievementsModal;
-    public KeyShorts keyShortsSource;
 
     void Awake()
     {
@@ -18,11 +17,6 @@ public class Modal_Achievements : MonoBehaviour
         if (achievementsModal == null) return;
 
         bool wasActive = achievementsModal.activeInHierarchy;
-
-        if (keyShortsSource != null)
-        {
-            keyShortsSource.CloseAllModals();
-        }
 
         if (!wasActive)
         {
