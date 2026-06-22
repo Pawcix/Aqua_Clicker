@@ -56,5 +56,5 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "Aqua_Clicker.sln"
+    "dotnet.defaultSolution": "Aqua_Clicker.slnx"
 }
