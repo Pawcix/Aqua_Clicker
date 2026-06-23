@@ -43,7 +43,7 @@ public class Clicker_System : MonoBehaviour
             }
 
             double totalBasePPS = data.basePPS + data.workersPPS;
-            double finalPPS = totalBasePPS * data.currentDailyMultiplier * data.wheelMultiplier * data.riskMultiplier;
+            double finalPPS = totalBasePPS * data.currentDailyMultiplier * data.wheelMultiplier * data.riskMultiplier * data.adMultiplier;
 
             if (data.isGoldRushActive) finalPPS *= 2.0;
 
@@ -104,8 +104,8 @@ public class Clicker_System : MonoBehaviour
         if (data == null) return;
         if (cpsSystem != null) cpsSystem.OnClickRegistered();
 
-        double basePoints = (double)data.pointsPerClick * data.clickMultiplier * data.wheelMultiplier;
-
+        double basePoints = (double)data.pointsPerClick * data.clickMultiplier * data.wheelMultiplier * data.adMultiplier;
+        
         if (Mastery.Instance != null)
         {
             float masteryBonus = 1.0f + Mastery.Instance.GetMasteryBonus(Mastery.MasteryType.Click);

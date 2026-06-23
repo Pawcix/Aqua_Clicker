@@ -18,21 +18,11 @@ public class Data_Reset : MonoBehaviour
         if (isResetting) return;
         isResetting = true;
 
-        if (AudioManager.Instance != null)
-        {
-            AudioManager.Instance.PlaySFX("Main Button");
-        }
-
-        if (System_Achievements.Instance != null)
-        {
-            System_Achievements.Instance.DisableChecking();
-        }
+        if (AudioManager.Instance != null) AudioManager.Instance.PlaySFX("Main Button");
+        if (System_Achievements.Instance != null) System_Achievements.Instance.DisableChecking();
 
         string savePath = Path.Combine(Application.persistentDataPath, fileName);
-        if (File.Exists(savePath))
-        {
-            File.Delete(savePath);
-        }
+        if (File.Exists(savePath)) File.Delete(savePath);
 
         PlayerPrefs.DeleteAll();
         PlayerPrefs.Save();
@@ -41,14 +31,13 @@ public class Data_Reset : MonoBehaviour
         {
             systemData.pointsCounterFloat = 0f;
             systemData.goldenDrops = 0;
-            if (systemData.unlockedAchievementIDs != null)
-            {
-                systemData.unlockedAchievementIDs.Clear();
-            }
+            systemData.basePPS = 0;
+            systemData.workersPPS = 0;
+            systemData.adMultiplier = 1.0f;
+            if (systemData.unlockedAchievementIDs != null) systemData.unlockedAchievementIDs.Clear();
         }
 
         IrisMaskController transition = Object.FindFirstObjectByType<IrisMaskController>();
-
         if (transition != null)
         {
             transition.targetScene = loadingSceneName;

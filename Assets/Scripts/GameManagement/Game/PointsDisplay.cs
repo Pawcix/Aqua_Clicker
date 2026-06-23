@@ -26,7 +26,7 @@ public class PointsDisplay : MonoBehaviour
     Color bonusColor;
     Color comboColor;
     Color critComboColor;
-    Color goldenDropColor; 
+    Color goldenDropColor;
     Color targetFlashColor;
 
     public static PointsDisplay Instance;
@@ -177,7 +177,16 @@ public class PointsDisplay : MonoBehaviour
         if (pointsText != null)
         {
             if (colorCoroutine != null) StopCoroutine(colorCoroutine);
-            colorCoroutine = StartCoroutine(FlashColorRoutine(critComboColor)); 
+            colorCoroutine = StartCoroutine(FlashColorRoutine(critComboColor));
+        }
+    }
+
+    public void ForceUpdatePoints()
+    {
+        if (data != null)
+        {
+            displayedPoints = data.pointsCounterFloat;
+            UpdateText(System.Math.Floor(displayedPoints));
         }
     }
 
