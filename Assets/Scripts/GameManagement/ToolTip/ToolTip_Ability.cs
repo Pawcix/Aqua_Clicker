@@ -17,7 +17,7 @@ public class ToolTip_AbilityItem : MonoBehaviour, IPointerEnterHandler, IPointer
 
     void Start()
     {
-        skillsSystem = Object.FindFirstObjectByType<Clicker_Skills>();
+        skillsSystem = Object.FindAnyObjectByType<Clicker_Skills>();
     }
 
     bool IsUnlocked()

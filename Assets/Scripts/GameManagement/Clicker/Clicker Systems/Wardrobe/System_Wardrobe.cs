@@ -66,7 +66,8 @@ public class System_Wardrobe : MonoBehaviour
 
     public void RefreshAllItemFrames()
     {
-        Skin_Item[] allItems = Object.FindObjectsByType<Skin_Item>(FindObjectsSortMode.None);
+        Skin_Item[] allItems = Object.FindObjectsByType<Skin_Item>(FindObjectsInactive.Exclude);
+
         foreach (var item in allItems)
         {
             item.RefreshVisuals();

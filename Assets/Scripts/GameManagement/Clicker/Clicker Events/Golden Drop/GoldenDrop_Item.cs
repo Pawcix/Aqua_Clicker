@@ -40,10 +40,9 @@ public class GoldenDrop_Item : MonoBehaviour
         customSwayAmp = Random.Range(sideSwayAmplitude * 0.5f, sideSwayAmplitude * 1.5f);
         customSwayFreq = Random.Range(sideSwayFrequency * 0.7f, sideSwayFrequency * 1.3f);
     }
-
     void Start()
     {
-        data = Object.FindFirstObjectByType<System_Data>();
+        data = Object.FindAnyObjectByType<System_Data>();
 
         Button btn = GetComponent<Button>();
         if (btn != null) btn.onClick.AddListener(OnGoldenDropClicked);
@@ -87,17 +86,10 @@ public class GoldenDrop_Item : MonoBehaviour
 
         if (ScreenFlash.Instance != null) ScreenFlash.Instance.TriggerGoldFlash();
 
-        if (PointsDisplay.Instance != null)
-        {
-            PointsDisplay.Instance.PulseGoldenDrop();
-        }
-        else
-        {
-            PointsDisplay display = Object.FindFirstObjectByType<PointsDisplay>();
-            if (display != null) display.PulseGoldenDrop();
-        }
+        PointsDisplay display = PointsDisplay.Instance != null ? PointsDisplay.Instance : Object.FindAnyObjectByType<PointsDisplay>();
+        if (display != null) display.PulseGoldenDrop();
 
-        Clicker_Prefabs prefabsManager = Object.FindFirstObjectByType<Clicker_Prefabs>();
+        Clicker_Prefabs prefabsManager = Object.FindAnyObjectByType<Clicker_Prefabs>();
         if (prefabsManager != null)
         {
             int displayPPS = (int)System.Math.Floor(data.pointsPerSecond);

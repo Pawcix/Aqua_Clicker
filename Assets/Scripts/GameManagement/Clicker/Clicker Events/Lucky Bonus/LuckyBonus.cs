@@ -163,16 +163,15 @@ public class LuckyBonus : MonoBehaviour
 
         SpawnBonusText(NumberFormatter.FormatWithDots(bonusAmount));
 
-        if (UnityEngine.Object.FindFirstObjectByType<PointsDisplay>() != null)
-            UnityEngine.Object.FindFirstObjectByType<PointsDisplay>().PulseLuckyBonus();
+        PointsDisplay display = UnityEngine.Object.FindAnyObjectByType<PointsDisplay>();
+        if (display != null)
+            display.PulseLuckyBonus();
 
         if (AudioManager.Instance != null)
             AudioManager.Instance.PlaySFX("Lucky Bonus");
 
         if (System_Leveling.Instance != null)
-        {
             System_Leveling.Instance.FlashGoldenDropColor();
-        }
 
         StartCoroutine(CollectParticleRoutine());
     }

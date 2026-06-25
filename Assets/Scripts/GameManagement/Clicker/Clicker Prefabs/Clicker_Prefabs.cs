@@ -20,7 +20,7 @@ public class Clicker_Prefabs : MonoBehaviour
 
     void Awake()
     {
-        data = Object.FindFirstObjectByType<System_Data>();
+        data = Object.FindAnyObjectByType<System_Data>();
     }
 
     public void UpdateAllPrefabs(double totalPoints, double totalPPS)

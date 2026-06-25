@@ -48,11 +48,10 @@ public class Rewarded : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsShowListe
 
     public void ShowAd()
     {
-        // #if UNITY_EDITOR
-        //         Debug.Log("Symulacja reklamy w Edytorze - Nagroda przyznana!");
-        //         OnUnityAdsShowComplete(_adUnitId, UnityAdsShowCompletionState.COMPLETED);
-        //         return;
-        // #endif
+         //#if UNITY_EDITOR
+         //        OnUnityAdsShowComplete(_adUnitId, UnityAdsShowCompletionState.COMPLETED);
+         //        return;
+         //#endif
         _showAdButton.interactable = false;
         Advertisement.Show(_adUnitId, this);
     }
@@ -68,7 +67,6 @@ public class Rewarded : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsShowListe
         {
             double current = System_Economy.Instance.GetPoints();
             System_Economy.Instance.AddPoints(current);
-            Debug.Log("Nagroda przyznana!");
 
             _cooldownTimer = MAX_COOLDOWN;
             _showAdButton.interactable = false;
@@ -78,11 +76,16 @@ public class Rewarded : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsShowListe
 
     void ResetMultiplier()
     {
-        System_Data data = FindObjectOfType<Clicker_System>().GetComponent<System_Data>();
-        if (data != null)
+        Clicker_System clicker = Object.FindAnyObjectByType<Clicker_System>();
+
+        if (clicker != null)
         {
-            data.adMultiplier = 1.0f;
-            Debug.Log("Czas bonusu minƒÖ≈Ç, mno≈ºnik wr√≥ci≈Ç do x1.");
+            System_Data data = clicker.GetComponent<System_Data>();
+            if (data != null)
+            {
+                data.adMultiplier = 1.0f;
+                Debug.Log("Czas bonusu minπ≥, mnoønik wrÛci≥ do x1.");
+            }
         }
     }
 

@@ -105,7 +105,8 @@ public class WorkerSale : MonoBehaviour
 
     void RefreshAllWorkerUI()
     {
-        Worker_Element[] allWorkers = Object.FindObjectsByType<Worker_Element>(FindObjectsSortMode.None);
+        Worker_Element[] allWorkers = Object.FindObjectsByType<Worker_Element>(FindObjectsInactive.Exclude);
+
         foreach (Worker_Element worker in allWorkers)
         {
             worker.UpdateUI();

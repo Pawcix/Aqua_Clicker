@@ -12,7 +12,8 @@ public class Worker_BulkBuyButton : MonoBehaviour
         if (buttonText != null)
             buttonText.text = "BUY: " + Worker_PurchaseSettings.CurrentMode.ToString();
 
-        Worker_List workerList = FindFirstObjectByType<Worker_List>();
+        Worker_List workerList = Object.FindAnyObjectByType<Worker_List>();
+
         if (workerList != null)
         {
             workerList.RefreshAllElements();

@@ -16,7 +16,7 @@ public class Skill_AutoClick : MonoBehaviour
     void Start()
     {
         autoClickButton.onClick.AddListener(ToggleAutoClicker);
-        _clickerSystem = Object.FindFirstObjectByType<Clicker_System>();
+        _clickerSystem = Object.FindAnyObjectByType<Clicker_System>();
     }
 
     void ToggleAutoClicker()

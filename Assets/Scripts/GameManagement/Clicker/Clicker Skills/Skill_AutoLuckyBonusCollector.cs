@@ -12,26 +12,29 @@ public class Skill_AutoLuckyBonusCollector : MonoBehaviour
     [SerializeField] float collectDelay = 1.5f;
 
     float autoCollectTimer = 0f;
+    private LuckyBonus _luckyBonusRef;
 
     void Start()
     {
         if (collectorButton != null)
             collectorButton.onClick.AddListener(ToggleLuckyCollector);
+
+        _luckyBonusRef = Object.FindAnyObjectByType<LuckyBonus>();
     }
 
     void Update()
     {
         if (masterSkills == null || !masterSkills.isLuckyCollectorActive) return;
 
-        LuckyBonus activeBonus = Object.FindFirstObjectByType<LuckyBonus>();
+        if (_luckyBonusRef == null) _luckyBonusRef = Object.FindAnyObjectByType<LuckyBonus>();
 
-        if (activeBonus != null && activeBonus.IsBonusVisible())
+        if (_luckyBonusRef != null && _luckyBonusRef.IsBonusVisible())
         {
             autoCollectTimer += Time.deltaTime;
 
             if (autoCollectTimer >= collectDelay)
             {
-                activeBonus.OnBonusClicked();
+                _luckyBonusRef.OnBonusClicked();
                 autoCollectTimer = 0f;
             }
         }

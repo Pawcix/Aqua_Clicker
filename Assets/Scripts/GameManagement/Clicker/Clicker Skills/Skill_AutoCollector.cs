@@ -8,7 +8,6 @@ public class Skill_AutoCollector : MonoBehaviour
     [SerializeField] Image collectorButtonImage;
     [SerializeField] Sprite neutralIcon;
     [SerializeField] Sprite activeIcon;
-
     [SerializeField] float collectDelay = 2f;
 
     void Start()
@@ -21,7 +20,7 @@ public class Skill_AutoCollector : MonoBehaviour
     {
         if (masterSkills == null || !masterSkills.isAutoCollectorActive) return;
 
-        GoldenDrop_Item[] activeDrops = Object.FindObjectsByType<GoldenDrop_Item>(FindObjectsSortMode.None);
+        GoldenDrop_Item[] activeDrops = Object.FindObjectsByType<GoldenDrop_Item>(FindObjectsInactive.Exclude);
 
         foreach (var drop in activeDrops)
         {

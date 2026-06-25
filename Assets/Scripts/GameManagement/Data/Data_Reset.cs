@@ -37,7 +37,8 @@ public class Data_Reset : MonoBehaviour
             if (systemData.unlockedAchievementIDs != null) systemData.unlockedAchievementIDs.Clear();
         }
 
-        IrisMaskController transition = Object.FindFirstObjectByType<IrisMaskController>();
+        IrisMaskController transition = Object.FindAnyObjectByType<IrisMaskController>();
+
         if (transition != null)
         {
             transition.targetScene = loadingSceneName;

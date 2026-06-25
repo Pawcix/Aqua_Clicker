@@ -92,7 +92,7 @@ public class System_AwayIncome : MonoBehaviour
             string timeStr = string.Format("{0:D2}:{1:D2}:{2:D2}",
                 (int)time.TotalHours, time.Minutes, time.Seconds);
 
-            awayIncomeNotificationText.text = $"Earned: <color=green>+{NumberFormatter.FormatWithDots(earned)}</color>\n<size=70%>Time Away: {timeStr}</size>";
+            awayIncomeNotificationText.text = $"Earned:\n<color=green>+{NumberFormatter.FormatWithDots(earned)}</color>\n<size=70%>Time Away: {timeStr}</size>";
 
             awayIncomeDisplayBox.SetActive(true);
 

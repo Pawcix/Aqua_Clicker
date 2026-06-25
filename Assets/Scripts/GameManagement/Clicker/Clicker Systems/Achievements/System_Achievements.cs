@@ -22,6 +22,7 @@ public class System_Achievements : MonoBehaviour
     [SerializeField] float displayDuration = 5f;
 
     RectTransform notificationRect;
+    System_AchievementsList cachedListUI;
     bool isSystemReady = false;
 
     void Awake()
@@ -39,11 +40,8 @@ public class System_Achievements : MonoBehaviour
         if (notificationPanel != null && notificationRect != null)
         {
             notificationPanel.SetActive(true);
-
             LayoutRebuilder.ForceRebuildLayoutImmediate(notificationRect);
-
             float startHiddenY = -(notificationRect.sizeDelta.y + 100f);
-
             notificationRect.anchoredPosition = new Vector2(0f, startHiddenY);
         }
 
@@ -55,8 +53,8 @@ public class System_Achievements : MonoBehaviour
         if (isSystemReady) return;
         isSystemReady = true;
 
-        System_AchievementsList listUI = Object.FindFirstObjectByType<System_AchievementsList>();
-        if (listUI != null) listUI.RefreshList();
+        cachedListUI = Object.FindAnyObjectByType<System_AchievementsList>();
+        if (cachedListUI != null) cachedListUI.RefreshList();
     }
 
     public void DisableChecking() => isSystemReady = false;
@@ -68,19 +66,16 @@ public class System_Achievements : MonoBehaviour
 
         foreach (var ach in allAchievements)
         {
-            if (ach == null) continue;
-            if (data.unlockedAchievementIDs.Contains(ach.id)) continue;
+            if (ach == null || data.unlockedAchievementIDs.Contains(ach.id)) continue;
 
             bool isConditionMet = false;
             switch (ach.type)
             {
                 case AchievementType.TotalPoints:
-                    if (data.pointsCounterFloat > 0)
-                        isConditionMet = data.pointsCounterFloat >= ach.requiredValue;
+                    isConditionMet = data.pointsCounterFloat >= ach.requiredValue;
                     break;
                 case AchievementType.GoldenDrops:
-                    if (data.goldenDrops > 0)
-                        isConditionMet = data.goldenDrops >= (int)ach.requiredValue;
+                    isConditionMet = data.goldenDrops >= (int)ach.requiredValue;
                     break;
             }
 
@@ -101,60 +96,44 @@ public class System_Achievements : MonoBehaviour
         if (notificationPanel != null && notificationRect != null)
         {
             StopAllCoroutines();
-
             if (notificationText != null)
-            {
                 notificationText.text = "<color=#FFD700>ACHIEVEMENT UNLOCKED:</color>\n" + ach.title;
-            }
-
             if (notificationIcon != null) notificationIcon.sprite = ach.icon;
 
             StartCoroutine(ShowNotificationRoutine());
         }
 
-        System_AchievementsList listUI = Object.FindFirstObjectByType<System_AchievementsList>();
-        if (listUI != null) listUI.RefreshList();
+        if (cachedListUI == null) cachedListUI = Object.FindAnyObjectByType<System_AchievementsList>();
+        if (cachedListUI != null) cachedListUI.RefreshList();
 
         if (Data_SaveManager.instance != null) Data_SaveManager.instance.SaveGame();
     }
 
     IEnumerator ShowNotificationRoutine()
     {
-
         if (AudioManager.Instance != null)
             AudioManager.Instance.PlaySFX("Achievement");
 
-        float timer = 0f;
         LayoutRebuilder.ForceRebuildLayoutImmediate(notificationRect);
-
         float height = notificationRect.sizeDelta.y;
         float dynamicHiddenY = -(height + 100f);
         float targetVisibleY = 25f;
 
-        while (timer < 1f)
-        {
-            timer += Time.unscaledDeltaTime * animationSpeed;
-            float smoothStep = Mathf.SmoothStep(0f, 1f, timer);
-            float newY = Mathf.Lerp(dynamicHiddenY, targetVisibleY, smoothStep);
-
-            notificationRect.anchoredPosition = new Vector2(0f, newY);
-            yield return null;
-        }
-        notificationRect.anchoredPosition = new Vector2(0f, targetVisibleY);
-
+        yield return AnimateNotification(dynamicHiddenY, targetVisibleY);
         yield return new WaitForSecondsRealtime(displayDuration);
-
-        timer = 0f;
+        yield return AnimateNotification(targetVisibleY, dynamicHiddenY);
+    }
+    IEnumerator AnimateNotification(float startY, float endY)
+    {
+        float timer = 0f;
         while (timer < 1f)
         {
             timer += Time.unscaledDeltaTime * animationSpeed;
-            float smoothStep = Mathf.SmoothStep(0f, 1f, timer);
-            float newY = Mathf.Lerp(targetVisibleY, dynamicHiddenY, smoothStep);
-
+            float newY = Mathf.Lerp(startY, endY, Mathf.SmoothStep(0f, 1f, timer));
             notificationRect.anchoredPosition = new Vector2(0f, newY);
             yield return null;
         }
-        notificationRect.anchoredPosition = new Vector2(0f, dynamicHiddenY);
+        notificationRect.anchoredPosition = new Vector2(0f, endY);
     }
 
     public List<Achievement> GetAllAchievements() => allAchievements;

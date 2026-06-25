@@ -15,7 +15,7 @@ public class Modal_RiskReward : MonoBehaviour
 
         if (systemRiskReward == null)
         {
-            systemRiskReward = FindFirstObjectByType<System_RiskReward>();
+            systemRiskReward = Object.FindAnyObjectByType<System_RiskReward>();
         }
     }
 

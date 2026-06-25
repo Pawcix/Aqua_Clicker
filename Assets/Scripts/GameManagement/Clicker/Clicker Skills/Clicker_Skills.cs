@@ -142,7 +142,8 @@ public class Clicker_Skills : MonoBehaviour
     public void RefreshSkillsVisuals()
     {
         if (data == null) return;
-        var wardrobe = Object.FindFirstObjectByType<System_Wardrobe>();
+
+        var wardrobe = Object.FindAnyObjectByType<System_Wardrobe>();
         if (wardrobe != null) wardrobe.LoadSkin(data.currentSkinIndex);
 
         if (autoClickSkill != null && autoClickSkill.autoClickButton != null)
