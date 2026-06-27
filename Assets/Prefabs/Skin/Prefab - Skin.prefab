@@ -136,9 +136,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Skin_Item
   skinID: 0
-  frameImage: {fileID: 6524980582153313743}
-  normalFrame: {fileID: -5102041918933183534, guid: ac522f7edb3492c46aa8cf6ded06b00f, type: 3}
-  selectedFrame: {fileID: 4774501618517927527, guid: ab41061eec438804abb9c59645f4a3b6, type: 3}
+  skinImage: {fileID: 0}
   skinBadge: {fileID: 6716622814445869297}
 --- !u!114 &6716622814445869297
 MonoBehaviour:
@@ -189,7 +187,7 @@ RectTransform:
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 50, y: 50}
+  m_SizeDelta: {x: 60, y: 60}
   m_Pivot: {x: 1, y: 1}
 --- !u!222 &8058006913695487118
 CanvasRenderer:

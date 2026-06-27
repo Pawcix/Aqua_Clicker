@@ -37,7 +37,7 @@ public class RiskReward : MonoBehaviour
 
             if (!PlayerPrefs.HasKey(RiskEndTimeKey) && shouldStartTimer)
             {
-                float calculatedDuration = GetRemainingCooldownSeconds();
+                float calculatedDuration = 300f;
                 data.riskBonusTimer = calculatedDuration;
 
                 DateTime endTime = DateTime.Now.AddSeconds(data.riskBonusTimer);

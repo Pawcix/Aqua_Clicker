@@ -132,11 +132,6 @@ public class ComboChain : MonoBehaviour
             float punchFactor = pulseAmount + (scaleIncreasePerHit * 5f);
             comboUIContainer.transform.localScale = Vector3.one * (currentBaseScale * punchFactor);
         }
-
-        if (Mastery.Instance != null)
-        {
-            Mastery.Instance.AddMasteryXP(Mastery.MasteryType.Combo, 2f);
-        }
     }
 
     void StartCombo()

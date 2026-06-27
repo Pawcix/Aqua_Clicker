@@ -5,6 +5,7 @@ using TMPro;
 
 public class Rewarded : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsShowListener
 {
+    [SerializeField] System_Data data; 
     [SerializeField] Button _showAdButton;
     [SerializeField] TextMeshProUGUI _cooldownText;
     [SerializeField] string _androidAdUnitId = "Rewarded_Android";
@@ -19,7 +20,10 @@ public class Rewarded : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsShowListe
         _adUnitId = (Application.platform == RuntimePlatform.IPhonePlayer) ? _iOSAdUnitId : _androidAdUnitId;
         _showAdButton.interactable = false;
 
-        if (_cooldownText != null) _cooldownText.gameObject.SetActive(false);
+        if (data.rewardedAdCooldownTimer > 0)
+        {
+            if (_cooldownText != null) _cooldownText.gameObject.SetActive(true);
+        }
     }
 
     void Update()
@@ -48,12 +52,13 @@ public class Rewarded : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsShowListe
 
     public void ShowAd()
     {
-         //#if UNITY_EDITOR
-         //        OnUnityAdsShowComplete(_adUnitId, UnityAdsShowCompletionState.COMPLETED);
-         //        return;
-         //#endif
+#if UNITY_EDITOR
+        Debug.Log("Symulacja reklamy w Edytorze - Nagroda przyznana!");
+        OnUnityAdsShowComplete(_adUnitId, UnityAdsShowCompletionState.COMPLETED);
+#else
         _showAdButton.interactable = false;
         Advertisement.Show(_adUnitId, this);
+#endif
     }
 
     public void OnUnityAdsAdLoaded(string adUnitId)
@@ -65,10 +70,17 @@ public class Rewarded : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsShowListe
     {
         if (adUnitId.Equals(_adUnitId) && showCompletionState.Equals(UnityAdsShowCompletionState.COMPLETED))
         {
-            double current = System_Economy.Instance.GetPoints();
-            System_Economy.Instance.AddPoints(current);
+            if (System_Economy.Instance != null)
+            {
+                double current = System_Economy.Instance.GetPoints();
+                System_Economy.Instance.AddPoints(current);
+            }
+            else
+            {
+                Debug.LogError("System_Economy.Instance nie istnieje! SprawdŸ czy obiekt jest w scenie.");
+            }
 
-            _cooldownTimer = MAX_COOLDOWN;
+            data.rewardedAdCooldownTimer = MAX_COOLDOWN;
             _showAdButton.interactable = false;
             if (_cooldownText != null) _cooldownText.gameObject.SetActive(true);
         }
@@ -77,14 +89,12 @@ public class Rewarded : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsShowListe
     void ResetMultiplier()
     {
         Clicker_System clicker = Object.FindAnyObjectByType<Clicker_System>();
-
         if (clicker != null)
         {
             System_Data data = clicker.GetComponent<System_Data>();
             if (data != null)
             {
                 data.adMultiplier = 1.0f;
-                Debug.Log("Czas bonusu min¹³, mno¿nik wróci³ do x1.");
             }
         }
     }

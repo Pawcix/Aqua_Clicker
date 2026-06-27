@@ -89,8 +89,7 @@ public class Clicker_System : MonoBehaviour
 
         if (clickerSkills != null)
         {
-            int skillsValue = currentTotal > int.MaxValue ? int.MaxValue : (int)currentTotal;
-            clickerSkills.UpdateAllSkills(skillsValue);
+            clickerSkills.RefreshSkillsVisuals();
         }
 
         if (clickerStats != null)
@@ -100,18 +99,10 @@ public class Clicker_System : MonoBehaviour
     public void Click()
     {
         if (AudioManager.Instance != null) AudioManager.Instance.PlaySFX("Main Button");
-
         if (data == null) return;
         if (cpsSystem != null) cpsSystem.OnClickRegistered();
 
         double basePoints = (double)data.pointsPerClick * data.clickMultiplier * data.wheelMultiplier * data.adMultiplier;
-        
-        if (Mastery.Instance != null)
-        {
-            float masteryBonus = 1.0f + Mastery.Instance.GetMasteryBonus(Mastery.MasteryType.Click);
-            basePoints *= masteryBonus;
-            Mastery.Instance.AddMasteryXP(Mastery.MasteryType.Click, 1f);
-        }
 
         basePoints *= data.currentDailyMultiplier;
         basePoints *= data.riskMultiplier;
@@ -130,9 +121,6 @@ public class Clicker_System : MonoBehaviour
                 finalPoints *= currentCritMtp;
                 CritComboChain.Instance.OnCritRegistered(finalPoints);
             }
-
-            if (Mastery.Instance != null)
-                Mastery.Instance.AddMasteryXP(Mastery.MasteryType.Critical, 5f);
         }
         else
         {
@@ -146,6 +134,7 @@ public class Clicker_System : MonoBehaviour
 
         System_Economy.Instance.AddPoints(finalPoints);
 
+        FindAnyObjectByType<ClickCounter_CPS>().RegisterClick();
         if (ComboChain.Instance != null) ComboChain.Instance.OnClickRegistered(finalPoints);
 
         if (PointsDisplay.Instance != null) PointsDisplay.Instance.Pulse();

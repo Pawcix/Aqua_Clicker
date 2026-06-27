@@ -72,14 +72,6 @@ public class Data_SaveManager : MonoBehaviour
             currentDailyMultiplier = systemData.currentDailyMultiplier,
             basePPS = systemData.basePPS,
             workersPPS = systemData.workersPPS,
-            clickMasteryLvl = systemData.clickMasteryLvl,
-            critMasteryLvl = systemData.critMasteryLvl,
-            clickMasteryXP = systemData.clickMasteryXP,
-            critMasteryXP = systemData.critMasteryXP,
-            comboMasteryLvl = systemData.comboMasteryLvl,
-            comboMasteryXP = systemData.comboMasteryXP,
-            awayMasteryLvl = systemData.awayMasteryLvl,
-            awayMasteryXP = systemData.awayMasteryXP,
             wheelMultiplier = systemData.wheelMultiplier,
             wheelBonusTimer = systemData.wheelBonusTimer,
             workerSaleTimer = systemData.workerSaleTimer,
@@ -91,7 +83,8 @@ public class Data_SaveManager : MonoBehaviour
             rebirthCount = systemData.rebirthCount,
             rebirthMultiplier = systemData.rebirthMultiplier,
             currentBackground = systemData.currentBackground,
-            adMultiplier = systemData.adMultiplier
+            adMultiplier = systemData.adMultiplier,
+            rewardedAdCooldownTimer = systemData.rewardedAdCooldownTimer
         };
 
         string json = JsonUtility.ToJson(dataToSave, true);
@@ -154,15 +147,6 @@ public class Data_SaveManager : MonoBehaviour
             systemData.basePPS = loadedData.basePPS;
             systemData.workersPPS = loadedData.workersPPS;
 
-            systemData.clickMasteryLvl = loadedData.clickMasteryLvl;
-            systemData.critMasteryLvl = loadedData.critMasteryLvl;
-            systemData.clickMasteryXP = loadedData.clickMasteryXP;
-            systemData.critMasteryXP = loadedData.critMasteryXP;
-            systemData.comboMasteryLvl = loadedData.comboMasteryLvl;
-            systemData.comboMasteryXP = loadedData.comboMasteryXP;
-            systemData.awayMasteryLvl = loadedData.awayMasteryLvl;
-            systemData.awayMasteryXP = loadedData.awayMasteryXP;
-
             systemData.wheelMultiplier = loadedData.wheelMultiplier;
             systemData.wheelBonusTimer = loadedData.wheelBonusTimer;
 
@@ -179,6 +163,7 @@ public class Data_SaveManager : MonoBehaviour
             systemData.currentBackground = loadedData.currentBackground;
 
             systemData.adMultiplier = loadedData.adMultiplier;
+            systemData.rewardedAdCooldownTimer = loadedData.rewardedAdCooldownTimer;
 
             if (loadedData.xpToNextLevel > 0)
                 systemData.xpToNextLevel = loadedData.xpToNextLevel;
@@ -193,8 +178,6 @@ public class Data_SaveManager : MonoBehaviour
         }
         catch (Exception e)
         {
-            Debug.LogError($"Failed to load save data: {e.Message}");
-
             if (System_Achievements.Instance != null) System_Achievements.Instance.EnableChecking();
         }
     }

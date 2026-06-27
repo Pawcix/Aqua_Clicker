@@ -120,9 +120,16 @@ public class System_WheelFortune : MonoBehaviour
     void EvaluateFinalReward(int finalSliceIndex)
     {
         WheelReward finalReward = (finalSliceIndex == 0) ? rewards[0] : rewards[1];
-        spinButtonText.text = (finalSliceIndex == 0) ? "WIN\n " + finalReward.rewardName : "FAILED\n " + finalReward.rewardName;
 
-        GiveReward(finalReward);
+        if (finalReward.value == 0.5f)
+        {
+            spinButtonText.text = "NOTHING!";
+        }
+        else
+        {
+            spinButtonText.text = "WIN!\n" + finalReward.rewardName;
+            GiveReward(finalReward);
+        }
     }
 
     void GiveReward(WheelReward reward)

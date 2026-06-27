@@ -28,7 +28,8 @@ public class System_RiskReward : MonoBehaviour
     [SerializeField] Button buttonB;
 
     [Header("Settings")]
-    [SerializeField] int minutesWait = 60;
+    [SerializeField] int minutesWait = 15;
+    [SerializeField] int effectDurationMinutes = 5;
 
     bool canPlay = false;
     string pendingResultString = "";
@@ -118,7 +119,7 @@ public class System_RiskReward : MonoBehaviour
         if (buttonA != null) buttonA.interactable = false;
         if (buttonB != null) buttonB.interactable = false;
 
-        calculatedBonusDuration = minutesWait * 60f;
+        calculatedBonusDuration = effectDurationMinutes * 60f;
 
         if (resultBox != null) resultBox.SetActive(true);
 

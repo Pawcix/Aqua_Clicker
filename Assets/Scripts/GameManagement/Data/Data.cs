@@ -41,15 +41,6 @@ public class GameData
     public double basePPS;
     public double workersPPS;
 
-    public int clickMasteryLvl;
-    public int critMasteryLvl;
-    public int comboMasteryLvl;
-    public int awayMasteryLvl;
-    public float clickMasteryXP;
-    public float critMasteryXP;
-    public float comboMasteryXP;
-    public float awayMasteryXP;
-
     public float wheelMultiplier;
     public float wheelBonusTimer;
 
@@ -65,6 +56,7 @@ public class GameData
     public float rebirthMultiplier;
 
     public float adMultiplier;
+    public float rewardedAdCooldownTimer;
 
     public int currentBackground = 0;
 }

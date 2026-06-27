@@ -106,7 +106,7 @@ public class System_Rebirth : MonoBehaviour
                     timeRemaining.Minutes, timeRemaining.Seconds);
             }
 
-            cooldownTimerText.text = $"Next Rebirth in: {timeStr}";
+            cooldownTimerText.text = $"Next Rebirth: {timeStr}";
         }
     }
 
@@ -141,7 +141,8 @@ public class System_Rebirth : MonoBehaviour
 
     float CalculatePotentialBonus()
     {
-        return (data.currentLevel * data.currentLevel) * 0.001f;
+        float bonus = data.currentLevel * 0.2f;
+        return bonus;
     }
 
     public void ExecuteRebirth()

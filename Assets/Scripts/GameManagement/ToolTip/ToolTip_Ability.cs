@@ -4,9 +4,9 @@ using UnityEngine.EventSystems;
 
 public class ToolTip_AbilityItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
-    public enum AbilityType { ClickMastery, AwayMastery }
+    public enum AbilityType { GeneralLevel }
 
-    [SerializeField] AbilityType type = AbilityType.ClickMastery;
+    [SerializeField] AbilityType type = AbilityType.GeneralLevel;
     [SerializeField] int requiredLevel = 20;
     [SerializeField] string abilityName = "Auto Clicker";
     [SerializeField] float delay = 0.3f;
@@ -23,15 +23,7 @@ public class ToolTip_AbilityItem : MonoBehaviour, IPointerEnterHandler, IPointer
     bool IsUnlocked()
     {
         if (skillsSystem == null || skillsSystem.data == null) return false;
-
-        if (type == AbilityType.ClickMastery)
-        {
-            return skillsSystem.data.clickMasteryLvl >= requiredLevel;
-        }
-        else
-        {
-            return skillsSystem.data.awayMasteryLvl >= requiredLevel;
-        }
+        return skillsSystem.data.currentLevel >= requiredLevel;
     }
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -67,13 +59,6 @@ public class ToolTip_AbilityItem : MonoBehaviour, IPointerEnterHandler, IPointer
         if (skillsSystem == null || skillsSystem.data == null) return "Ability Info";
 
         bool unlocked = IsUnlocked();
-
-        string currentLvlStr = type == AbilityType.ClickMastery
-            ? $"Current Click Mastery: {skillsSystem.data.clickMasteryLvl} LVL"
-            : $"Current Income Mastery: {skillsSystem.data.awayMasteryLvl} LVL";
-
-        string reqTypeStr = type == AbilityType.ClickMastery ? "Click Mastery" : "Income Mastery";
-
         string text = "";
 
         if (unlocked)
@@ -84,8 +69,10 @@ public class ToolTip_AbilityItem : MonoBehaviour, IPointerEnterHandler, IPointer
         else
         {
             text += $"<color=#FF4444>{abilityName} (LOCKED)</color>\n";
-            text += $"Requires: <color=#FFBF00>{requiredLevel} LVL</color> in {reqTypeStr}\n";
+            text += $"Requires: <color=#FFBF00>{requiredLevel} LVL</color>\n";
         }
+
+        text += $"<size=80%>Your Current Level: {skillsSystem.data.currentLevel} LVL</size>";
 
         return text;
     }

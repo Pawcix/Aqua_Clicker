@@ -57,16 +57,6 @@ public class System_Data : MonoBehaviour
     public string lastNotificationDate;
     public float currentDailyMultiplier = 1.0f;
 
-    [Header("Mastery Levels:")]
-    public int clickMasteryLvl = 0;
-    public int critMasteryLvl = 0;
-    public int comboMasteryLvl = 0;
-    public int awayMasteryLvl = 0;
-    public float clickMasteryXP = 0;
-    public float critMasteryXP = 0;
-    public float comboMasteryXP = 0;
-    public float awayMasteryXP = 0;
-
     [Header("Wheel Fortune Stats:")]
     public float wheelMultiplier = 1.0f;
     public float wheelBonusTimer = 0f;
@@ -83,6 +73,7 @@ public class System_Data : MonoBehaviour
 
     [Header("Ads:")]
     public float adMultiplier = 1.0f;
+    public float rewardedAdCooldownTimer = 0f; 
 
     public int currentBackground = 0;
 }
